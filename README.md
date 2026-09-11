@@ -9,49 +9,60 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:3000. Production: `npm run build`, then `npm start`. Checks: `npm run lint` and `npm run build`.
+Open http://localhost:3000. Production: `npm run build`, then `npm start`. Required checks: `npm run lint` and `npm run build`.
 
-Uses Next.js App Router, TypeScript, and Tailwind CSS 4. No additional dependencies or external font requests. Pages are server-rendered and statically generated; navigation and trailer anchors work without custom client JavaScript.
+Next.js App Router, TypeScript, Tailwind CSS 4. No additional dependencies or external font requests. Pages are statically generated. Native links and horizontal scrolling work without custom client JavaScript.
 
 ## Routes
 
-- `/`: complete landing page
-- `/game`: factions, defenses, and unit progression
-- `/campaign`: free campaign, Hard Mode, mastery, and final boss teaser
-- `/multiplayer`: competitive loop
-- `/media`: cinematic and artwork slots
-- `/privacy`, `/terms`: explicitly unpublished legal placeholders, excluded from indexing and sitemap until final text is approved
-- `/contact`: contact publication status; no invented email address or inactive form
+`/`, `/game`, `/campaign`, `/multiplayer`, `/media`, `/privacy`, `/terms`, `/contact`.
+
+Privacy and terms are explicitly unpublished placeholders, excluded from indexing and sitemap until final text is approved. Contact has no invented address or inactive form.
 
 ## Components and content
 
 - `components/site-shell.tsx`: Header and Footer
-- `components/game-sections.tsx`: Hero, SectionHeading, StorePlaceholders, GameSideSection, CampaignSection, MultiplayerSection, UnitShowcase, TrailerSection, ReleaseCTA, PageIntro
-- `components/artwork-slot.tsx`: ArtworkSlot with optional Next Image and neutral fallback
-- `components/information-page.tsx`: shared legal/contact page structure
-- `lib/site.ts`: editable copy, navigation, metadata helper, artwork and trailer configuration
-- `app/globals.css`: theme, layout, responsive breakpoints, focus states and reduced-motion support
+- `components/game-sections.tsx`: Hero, ThisIsFloat, SectionHeading, StorePlaceholders, GameSideSection, CampaignSection, MultiplayerSection, UnitShowcase, TrailerSection, ReleaseCTA, PageIntro
+- `components/artwork-slot.tsx`: Next Image wrapper with configurable sizes, object position, contain/cover, preload, and neutral fallback
+- `components/information-page.tsx`: legal/contact page structure
+- `lib/site.ts`: copy, navigation, metadata helper, artwork, unit rosters, and trailer configuration
+- `app/globals.css`: Float color tokens, typography, responsive layout, focus states, and reduced motion support
 
-## Adding approved artwork
+## Supplied artwork
 
-Place real game assets in:
+Original PNG files are preserved without modification:
 
-- `public/images/frogs/`: frog faction and defensive units
-- `public/images/balloons/`: Lion Balloons and airships
-- `public/images/campaign/`: campaign scenes
-- `public/images/branding/`: hero key art, logo, final icons and social preview
-- `public/video/`: local trailer and related video files
+| File | Website use |
+| --- | --- |
+| `public/images/brand/float-icon.png` | Header, release section, favicon and Apple icon |
+| `public/images/hero/float-key-art.png` | Main hero, soft hero background, This Is Float, campaign, social metadata |
+| `public/images/frogs/float-frog-defense.png` | Frog faction, multiplayer left half, media gallery |
+| `public/images/lions/float-lion-base.png` | Lion faction, multiplayer right half, cinematic placeholder, media gallery |
 
-Add a `src` public URL (e.g. `/images/frogs/basic-frog.webp`) and descriptive `alt` in `lib/site.ts`, under `artwork`, `frogUnits`, or `lionUnits`. Slots retain their dimensions until images arrive. Hero and campaign use cover; unit and faction artwork uses contain. No game artwork has been generated. The text-only F favicon in `app/icon.svg` can be replaced by final branding.
+Images use Next.js responsive optimization; only the main hero uses preload (the Next.js 16 replacement for priority). No generated artwork or new image dependencies.
 
-## Trailer and store links
+The hero foreground uses contain to preserve the cloud logo, balloons, and frog defenders. Desktop has a light edge mask and a tinted secondary backdrop; mobile displays the full 2:3 poster without masking, followed by the copy. The overview crops the key art at 50% 76%, campaign at 50% 65%, frog faction at 43% 52%, and lion faction at 42% 50%. Mobile factions use the source aspect ratios; desktop fills large artwork regions. Media displays complete original compositions.
 
-`TrailerSection` in `components/game-sections.tsx` is shared by home and media. In `lib/site.ts`, set `trailer.src` to a local video URL, optionally `poster`, or set `trailer.embedUrl` to an approved YouTube embed URL. The player replaces the placeholder inside the existing frame. Provide captions for spoken content with a track element when publishing the final video. No external video request occurs until configured.
+## Unit artwork
 
-Store labels are non-interactive availability placeholders. Replace them with verified store links in StorePlaceholders when published. The hero Watch trailer link currently leads to the clearly marked Coming Soon cinematic section.
+Individual units still have neutral, clearly labeled poster slots. The supplied faction scenes are not presented as unit portraits. Add a public `src` and descriptive `alt` to `frogUnits` or `lionUnits` in `lib/site.ts` when approved individual assets arrive. Existing `public/images/balloons/` can hold offensive unit art. Both rosters scroll horizontally with touch, trackpad, or keyboard focus and arrow keys.
 
-Multiplayer role-reversal wording is provisional and centralized in `multiplayerCopy`; confirm it against the final game structure before release.
+## Color tokens
 
-## SEO and launch preparation
+`app/globals.css` defines `--float-sky`, `--float-sky-light`, `--float-cloud`, `--float-frog-green`, `--float-frog-purple`, `--float-lion-red`, `--float-lion-gold`, `--float-navy`, `--float-olive`, `--float-stone`, `--float-wood`, and `--float-ink`.
 
-Canonical origin: https://floatgame.io. Every page defines its canonical path, title, description, and Open Graph/Twitter text metadata. The root provides website identity and locale. `app/sitemap.ts` and `app/robots.ts` provide discovery. No social accounts are invented. Add an approved social preview image and switch Twitter to summary_large_image when art is available. Final legal text, verified contact channels, approved artwork, store URLs, and the trailer remain publication tasks.
+Default surfaces are sunny blue and warm cloud white, with strong purple and red faction sections. Deep navy is reserved for the cinematic and readable accents.
+
+## Trailer and stores
+
+Set `trailer.src` in `lib/site.ts` to a local video URL under `public/video/`, with optional `poster`, or set `trailer.embedUrl` to an approved YouTube embed URL. `TrailerSection` replaces the placeholder inside its existing 16:9 frame. Add captions for spoken content when publishing the video. No external video request occurs until configured.
+
+Store labels are non-interactive Coming Soon placeholders. Replace them with verified URLs in StorePlaceholders when published. Hero Watch Trailer leads to the clearly labeled cinematic placeholder; Coming Soon leads to release availability.
+
+Multiplayer role-reversal wording remains centralized in `multiplayerCopy`; confirm against the final game structure before release.
+
+## SEO and publication
+
+Canonical origin: https://floatgame.io. Page-specific canonical paths, titles, descriptions, Open Graph, and Twitter metadata are preserved. Supplied key art is the social image; platforms may crop its portrait composition. A dedicated landscape social export can replace it later. No social accounts are invented. `app/sitemap.ts` and `app/robots.ts` provide discovery.
+
+Final legal text, verified contact channels, unit art, store URLs, and the trailer remain publication tasks.

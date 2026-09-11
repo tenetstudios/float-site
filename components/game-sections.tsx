@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArtworkSlot } from "@/components/artwork-slot";
 import { artwork, frogUnits, lionUnits, multiplayerCopy, trailer } from "@/lib/site";
@@ -11,31 +12,95 @@ export function StorePlaceholders() {
 }
 
 export function Hero() {
-  return <section className="hero"><div className="hero-topline"><span className="eyebrow"><span className="status-dot" /> Strategy. With a serious air problem.</span><span className="eyebrow">01 — The standoff</span></div><div className="hero-stage"><ArtworkSlot asset={artwork.hero} label="The battlefield is taking shape. Artwork coming soon." className="hero-art" preload /><div className="hero-title"><p className="eyebrow">Welcome to</p><h1>FLOAT<span className="title-period">.</span></h1><p className="hero-tagline"><span>Frogs defend.</span><span>Lions ascend.</span></p></div><span className="hero-side-note eyebrow">Ground control meets animal ambition</span></div><div className="hero-bottom"><div><p className="hero-description">Build your defense. Launch your balloons.<br />Break the other side before they break you.</p><div className="hero-actions"><a className="button" href="#cinematic"><span aria-hidden="true">▷</span> Watch trailer <small>Coming soon</small></a><a className="text-link" href="#sides">Enter the standoff <span aria-hidden="true">↓</span></a></div></div><div className="hero-release"><p className="eyebrow">Coming October 2026</p><StorePlaceholders /></div></div></section>;
+  return (
+    <section className="hero" aria-labelledby="hero-title">
+      <div className="hero-backdrop" aria-hidden="true"><ArtworkSlot asset={{ ...artwork.hero, alt: "" }} position="50% 73%" sizes="620px" /></div>
+      <ArtworkSlot asset={artwork.hero} className="hero-art" contain preload sizes="(max-width: 760px) 100vw, (max-width: 1100px) 58vw, 620px" />
+      <div className="hero-copy">
+        <p className="eyebrow">A very airborne rivalry.</p>
+        <h1 id="hero-title" className="sr-only">FLOAT</h1>
+        <p className="hero-tagline">Frogs defend.<br /><span>Lions ascend.</span></p>
+        <p className="hero-description">Build your defense.<br /> Launch your balloons.</p>
+        <p className="hero-date">Coming October 2026</p>
+        <div className="hero-actions"><a className="button button-gold" href="#cinematic"><span aria-hidden="true">▷</span> Watch Trailer</a><a className="button button-white" href="#release">Coming Soon</a></div>
+      </div>
+      <a className="hero-scroll" href="#this-is-float">Welcome to the standoff <span aria-hidden="true">↓</span></a>
+    </section>
+  );
+}
+
+export function ThisIsFloat() {
+  return (
+    <section className="this-is-float" id="this-is-float">
+      <ArtworkSlot asset={artwork.hero} className="overview-art" position="50% 76%" />
+      <div className="overview-copy"><p className="eyebrow">This is Float</p><h2>BUILD.<br />DEFEND.<br /><span>OUTLAST.</span></h2><p>One side builds Frog defenses. The other launches Lion Balloons. Things get out of hand. Fast.</p><Link className="text-link" href="/game">Meet the game <span aria-hidden="true">↗</span></Link></div>
+    </section>
+  );
 }
 
 export function GameSideSection() {
-  return <section className="section" id="sides"><SectionHeading number="02" label="Choose your side" title="Nature’s most unnecessary rivalry."><p>One wall. Two very different approaches to conflict resolution.</p></SectionHeading><div className="sides-grid"><article className="side frogs"><div className="side-top"><span className="eyebrow">01 / Ground crew</span><span aria-hidden="true">↙</span></div><h3>FROGS</h3><ArtworkSlot asset={artwork.frogs} contain /><div className="side-copy"><h4>Stand your ground.</h4><p>Defend the wall. Deploy specialized frogs. Build increasingly ridiculous anti-air defenses.</p></div></article><span className="versus" aria-hidden="true">VS</span><article className="side lions"><div className="side-top"><span className="eyebrow">02 / Air superiority</span><span aria-hidden="true">↗</span></div><h3>LIONS</h3><ArtworkSlot asset={artwork.lions} contain /><div className="side-copy"><h4>Make an entrance.</h4><p>Launch balloon formations. Overwhelm the defense. Bring in bombers, gunships and siege airships.</p></div></article></div></section>;
+  return (
+    <div id="sides">
+      <section className="faction-section frogs">
+        <ArtworkSlot asset={artwork.frogs} className="faction-art" position="43% 52%" />
+        <div className="faction-copy"><p className="eyebrow">The Frogs / Ground crew</p><h2>DEFEND<br />THE WALL<span>.</span></h2><p>Deploy frogs.<br />Reinforce your position.<br />Turn the sky into a no-fly zone.</p><div className="faction-motto">SMALL FROGS.<br /><span>BIG FIREPOWER.</span></div><Link className="text-link" href="/game#units">Meet the defenders ↗</Link></div>
+      </section>
+      <section className="faction-section lions">
+        <ArtworkSlot asset={artwork.lions} className="faction-art" position="42% 50%" />
+        <div className="faction-copy"><p className="eyebrow">The Lions / Air superiority</p><h2>ASCEND<span>.</span></h2><p>Launch balloon formations.<br />Break the defense.<br />Bring in bombers, gunships and siege airships.</p><div className="faction-motto">BIG MANES.<br /><span>BIGGER PLANS.</span></div><Link className="text-link" href="/game#units">Meet the fleet ↗</Link></div>
+      </section>
+    </div>
+  );
 }
 
 export function CampaignSection() {
-  return <section className="section campaign-section"><div className="campaign-copy"><SectionHeading number="03" label="The free campaign" title="Start small. End with a BIG problem."><p>Work through mission-based progression with an escalating Frog and Lion roster. The sky only gets more crowded.</p></SectionHeading><ul className="feature-list"><li><span>01</span>Take on optional Hard Mode</li><li><span>02</span>Master missions with no lives lost</li><li><span>03</span>Face the campaign-only BIG BOSS Balloon</li></ul><p className="muted">The final encounter? We’re keeping that one under wraps.</p><Link className="text-link" href="/campaign">Explore the campaign ↗</Link></div><ArtworkSlot asset={artwork.campaign} label="Campaign artwork coming soon" className="campaign-art" /></section>;
+  return (
+    <section className="campaign-section">
+      <ArtworkSlot asset={artwork.campaign} className="campaign-art" position="50% 65%" />
+      <div className="campaign-copy"><p className="eyebrow">One wall. A whole adventure.</p><h2>THE FREE<br />CAMPAIGN</h2><p>Mission by mission. Frog by frog.<br />The sky only gets more crowded.</p><ul className="campaign-features"><li>Escalating Frog &amp; Lion rosters</li><li>Optional Hard Mode</li><li>No-lives-lost mastery</li></ul><p className="boss-tease">And a campaign-only<br /><strong>BIG BOSS FINALE.</strong></p><Link className="button button-gold" href="/campaign">Your campaign awaits ↗</Link></div>
+    </section>
+  );
 }
 
 export function MultiplayerSection() {
-  return <section className="section multiplayer-section"><SectionHeading number="04" label="Multiplayer" title={multiplayerCopy.title}><p>{multiplayerCopy.description}</p></SectionHeading><div className="versus-loop" aria-label="Build, attack, reverse roles"><span>BUILD<span className="lime">↓</span></span><span>ATTACK<span className="amber">↑</span></span><p className="eyebrow">Switch sides. Rethink everything. ↺</p></div><Link className="text-link" href="/multiplayer">Meet your next rivalry ↗</Link></section>;
+  return (
+    <section className="multiplayer-section">
+      <div className="match-art" aria-hidden="true"><ArtworkSlot asset={{ ...artwork.frogs, alt: "" }} position="36% 54%" sizes="50vw" /><ArtworkSlot asset={{ ...artwork.lions, alt: "" }} position="38% 50%" sizes="50vw" /></div>
+      <div className="multiplayer-copy"><p className="eyebrow">Multiplayer / Two sides. One rivalry.</p><h2><span>BUILD</span><em>VS</em><span>ASCEND</span></h2><p>{multiplayerCopy.description}</p><Link className="button button-white" href="/multiplayer">Challenge the other side ↗</Link></div>
+    </section>
+  );
 }
 
 export function UnitShowcase() {
-  return <section className="section" id="units"><SectionHeading number="05" label="The escalation" title="Well, that escalated quickly."><p>From the first frog on the wall to a Royal Airship on the horizon. Reinforce your walls. Prepare for siege warfare.</p></SectionHeading>{[{ name: "The defense", units: frogUnits, tone: "lime" }, { name: "The offense", units: lionUnits, tone: "amber" }].map(({ name, units, tone }) => <div className="unit-roster" key={name}><h3 className={`eyebrow ${tone}`}>{name} <span aria-hidden="true">→</span></h3><ol className="unit-grid">{units.map((unit, i) => <li key={unit.alt}><div className="unit-index">{String(i + 1).padStart(2, "0")}<span aria-hidden="true">↗</span></div><ArtworkSlot asset={unit} label="Art coming soon" contain /><h4>{unit.alt}</h4></li>)}</ol></div>)}</section>;
+  return (
+    <section className="unit-section" id="units">
+      <SectionHeading number="05" label="Meet the escalation" title="WELL, THAT ESCALATED."><p>From a frog on the wall to a Royal Airship on the horizon.</p></SectionHeading>
+      {[
+        { name: "FROGS", units: frogUnits, tone: "frog-roster", label: "The defense" },
+        { name: "LIONS", units: lionUnits, tone: "lion-roster", label: "The offense" },
+      ].map(({ name, units, tone, label }) => (
+        <div className={`unit-roster ${tone}`} key={name}>
+          <div className="roster-heading"><h3>{name}</h3><p className="eyebrow">{label} <span aria-hidden="true">/</span> Scroll to explore →</p></div>
+          <div className="unit-scroll" tabIndex={0} role="region" aria-label={`${name} unit progression, scroll horizontally`}>
+            <ol className="unit-track">{units.map((unit, i) => <li key={unit.alt}><span className="unit-index">{String(i + 1).padStart(2, "0")}</span><ArtworkSlot asset={unit} contain sizes="(max-width: 760px) 72vw, 300px" /><h4>{unit.alt}</h4></li>)}</ol>
+          </div>
+        </div>
+      ))}
+    </section>
+  );
 }
 
 export function TrailerSection() {
-  return <section className="section" id="cinematic"><div className="cinematic-frame">{trailer.embedUrl ? <iframe src={trailer.embedUrl} title="Float cinematic trailer" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen loading="lazy" /> : trailer.src ? <video controls preload="none" poster={trailer.poster} aria-label="Float cinematic trailer"><source src={trailer.src} />Your browser does not support video playback.</video> : <div className="cinematic-placeholder"><span className="eyebrow cinematic-label">06 / From the world of Float</span><span className="play-placeholder" aria-hidden="true">▷</span><h2>FLOAT CINEMATIC</h2><p className="eyebrow">Coming Soon</p><span className="cinematic-footnote">Some rivalries deserve a bigger screen.</span></div>}</div></section>;
+  return (
+    <section className="cinematic-section" id="cinematic">
+      <div className="cinematic-heading"><p className="eyebrow">From the world of Float</p><h2>FLOAT CINEMATIC</h2><p>Coming Soon</p></div>
+      <div className="cinematic-frame">{trailer.embedUrl ? <iframe src={trailer.embedUrl} title="Float cinematic trailer" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen loading="lazy" /> : trailer.src ? <video controls preload="none" poster={trailer.poster} aria-label="Float cinematic trailer"><source src={trailer.src} />Your browser does not support video playback.</video> : <div className="cinematic-placeholder"><ArtworkSlot asset={artwork.lions} position="50% 45%" sizes="90vw" /><div className="cinematic-overlay"><span className="play-placeholder" aria-hidden="true">▷</span><p className="eyebrow">The sky is not ready.</p><span>Trailer coming soon</span></div></div>}</div>
+    </section>
+  );
 }
 
 export function ReleaseCTA() {
-  return <section className="release-section" id="release"><p className="eyebrow">Clear your schedule. And the skies.</p><h2>FLOAT<span>.</span></h2><p className="release-date">Coming October 2026</p><StorePlaceholders /><p className="release-note">Frogs defend. Lions ascend. You decide what happens next.</p></section>;
+  return <section className="release-section" id="release"><Image src="/images/brand/float-icon.png" alt="Float app icon" width={112} height={112} className="release-icon" /><p className="eyebrow">See you above the battlefield.</p><h2>FLOAT</h2><p className="release-date">Coming October 2026</p><StorePlaceholders /><p className="release-note">Frogs defend. Lions ascend.</p></section>;
 }
 
 export function PageIntro({ label, title, children }: { label: string; title: string; children: React.ReactNode }) {

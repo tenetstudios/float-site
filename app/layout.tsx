@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: { default: "Float — Frogs Defend. Lions Ascend.", template: "%s | Float" },
   description,
   applicationName: "Float",
+  icons: { icon: "/images/brand/float-icon.png", apple: "/images/brand/float-icon.png" },
   openGraph: { type: "website", siteName: "Float", locale: "en_US", title: "Float — Frogs Defend. Lions Ascend.", description },
   twitter: { card: "summary", title: "Float — Frogs Defend. Lions Ascend.", description },
 };

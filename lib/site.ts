@@ -10,18 +10,19 @@ export function pageMetadata(title: string, path: string, summary = description)
     title: path === "/" ? { absolute: title } : title,
     description: summary,
     alternates: { canonical: path },
-    openGraph: { title, description: summary, url: path },
-    twitter: { card: "summary", title, description: summary },
+    openGraph: { type: "website", siteName: "Float", locale: "en_US", title, description: summary, url: path, images: [{ url: "/images/hero/float-key-art.png", width: 1024, height: 1536, alt: "Float — frogs defend as Lion Balloons ascend beneath a cloud logo" }] },
+    twitter: { card: "summary_large_image", title, description: summary, images: ["/images/hero/float-key-art.png"] },
   };
 }
 
-// Set public asset paths here after approved game artwork is copied in.
+// Original supplied artwork. Unit-specific art can be added independently below.
 export type Artwork = { src?: string; alt: string };
 export const artwork: Record<string, Artwork> = {
-  hero: { alt: "Frog defenders face a fleet of Lion Balloons" },
-  frogs: { alt: "Frog units defending the wall" },
-  lions: { alt: "Lion Balloon attack formation" },
-  campaign: { alt: "The Float campaign battlefield" },
+  icon: { src: "/images/brand/float-icon.png", alt: "Float cloud F above a frog defender and Lion Balloons" },
+  hero: { src: "/images/hero/float-key-art.png", alt: "FLOAT written in clouds above frog defenders, a stone wall, and approaching red Lion Balloons" },
+  frogs: { src: "/images/frogs/float-frog-defense.png", alt: "Relaxed green frog soldiers defend a mossy stone wall beneath their purple faction flag" },
+  lions: { src: "/images/lions/float-lion-base.png", alt: "A lion commander rallies navy-uniformed soldiers at a red-and-gold balloon launch base" },
+  campaign: { src: "/images/hero/float-key-art.png", alt: "Frog defenders watch Lion Balloons approach over a sunny fantasy battlefield" },
 };
 export const frogUnits: Artwork[] = ["Basic Frog", "Rocket Frog", "Flak Frog", "Anti-Aircraft Frog"].map((alt) => ({ alt }));
 export const lionUnits: Artwork[] = ["Lion Balloon", "Shield Balloon", "War Balloon", "Dread Balloon", "Royal Airship"].map((alt) => ({ alt }));
