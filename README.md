@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Float website
 
-## Getting Started
+Independent official website for Float by Tenet Studios, targeting October 2026. This repository does not connect to or modify float-app.
 
-First, run the development server:
+## Development
 
-```bash
+```sh
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000. Production: `npm run build`, then `npm start`. Checks: `npm run lint` and `npm run build`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Uses Next.js App Router, TypeScript, and Tailwind CSS 4. No additional dependencies or external font requests. Pages are server-rendered and statically generated; navigation and trailer anchors work without custom client JavaScript.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Routes
 
-## Learn More
+- `/`: complete landing page
+- `/game`: factions, defenses, and unit progression
+- `/campaign`: free campaign, Hard Mode, mastery, and final boss teaser
+- `/multiplayer`: competitive loop
+- `/media`: cinematic and artwork slots
+- `/privacy`, `/terms`: explicitly unpublished legal placeholders, excluded from indexing and sitemap until final text is approved
+- `/contact`: contact publication status; no invented email address or inactive form
 
-To learn more about Next.js, take a look at the following resources:
+## Components and content
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `components/site-shell.tsx`: Header and Footer
+- `components/game-sections.tsx`: Hero, SectionHeading, StorePlaceholders, GameSideSection, CampaignSection, MultiplayerSection, UnitShowcase, TrailerSection, ReleaseCTA, PageIntro
+- `components/artwork-slot.tsx`: ArtworkSlot with optional Next Image and neutral fallback
+- `components/information-page.tsx`: shared legal/contact page structure
+- `lib/site.ts`: editable copy, navigation, metadata helper, artwork and trailer configuration
+- `app/globals.css`: theme, layout, responsive breakpoints, focus states and reduced-motion support
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Adding approved artwork
 
-## Deploy on Vercel
+Place real game assets in:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `public/images/frogs/`: frog faction and defensive units
+- `public/images/balloons/`: Lion Balloons and airships
+- `public/images/campaign/`: campaign scenes
+- `public/images/branding/`: hero key art, logo, final icons and social preview
+- `public/video/`: local trailer and related video files
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Add a `src` public URL (e.g. `/images/frogs/basic-frog.webp`) and descriptive `alt` in `lib/site.ts`, under `artwork`, `frogUnits`, or `lionUnits`. Slots retain their dimensions until images arrive. Hero and campaign use cover; unit and faction artwork uses contain. No game artwork has been generated. The text-only F favicon in `app/icon.svg` can be replaced by final branding.
+
+## Trailer and store links
+
+`TrailerSection` in `components/game-sections.tsx` is shared by home and media. In `lib/site.ts`, set `trailer.src` to a local video URL, optionally `poster`, or set `trailer.embedUrl` to an approved YouTube embed URL. The player replaces the placeholder inside the existing frame. Provide captions for spoken content with a track element when publishing the final video. No external video request occurs until configured.
+
+Store labels are non-interactive availability placeholders. Replace them with verified store links in StorePlaceholders when published. The hero Watch trailer link currently leads to the clearly marked Coming Soon cinematic section.
+
+Multiplayer role-reversal wording is provisional and centralized in `multiplayerCopy`; confirm it against the final game structure before release.
+
+## SEO and launch preparation
+
+Canonical origin: https://floatgame.io. Every page defines its canonical path, title, description, and Open Graph/Twitter text metadata. The root provides website identity and locale. `app/sitemap.ts` and `app/robots.ts` provide discovery. No social accounts are invented. Add an approved social preview image and switch Twitter to summary_large_image when art is available. Final legal text, verified contact channels, approved artwork, store URLs, and the trailer remain publication tasks.
