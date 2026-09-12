@@ -74,6 +74,34 @@ try {
     assert(await evaluate('document.activeElement.id === "tab-known-personnel"'), `${width}: End selects final tab`);
     await key('ArrowRight', 'ArrowRight', 39);
     assert(await evaluate('document.activeElement.id === "tab-field-reports"'), `${width}: arrow wraps to first tab`);
+    await evaluate('document.querySelector(".field-reports").focus()');
+    assert(await evaluate('document.querySelector(".report-previous").disabled'), `${width}: first report boundary`);
+    for (let report = 2; report <= 4; report++) {
+      await key('ArrowRight', 'ArrowRight', 39);
+      assert(await evaluate(`document.querySelector('.report-sheet img').alt.includes('Report 00${report}')`), `${width}: report ${report}`);
+    }
+    assert(await evaluate('document.querySelector(".report-next").disabled'), `${width}: final report boundary`);
+    await key('ArrowRight', 'ArrowRight', 39);
+    assert(await evaluate('document.querySelector(".report-sheet img").alt.includes("Report 004")'), `${width}: reports do not wrap`);
+    for (let report = 3; report >= 1; report--) {
+      await evaluate('document.querySelector(".report-previous").click()');
+    }
+    await pause(300);
+    assert(await evaluate('document.documentElement.scrollWidth <= innerWidth'), `${width}: reports have no horizontal overflow`);
+    assert(await evaluate('document.querySelector(".dossier-field-reports").scrollHeight <= document.querySelector(".dossier-field-reports").clientHeight + 1'), `${width}: report has no internal scrolling`);
+    assert(await evaluate('Math.abs(document.querySelector(".report-sheet img").getBoundingClientRect().width / document.querySelector(".report-sheet img").getBoundingClientRect().height - 1103 / 1426) < .001'), `${width}: report aspect ratio`);
+    if (width === 390 || width === 1440) {
+      await evaluate('document.activeElement.blur()');
+      const shot = await command('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true });
+      await writeFile(`artifacts/archive-${width}-reports.png`, Buffer.from(shot.data, 'base64'));
+      console.log('REPORT DIMENSIONS', width, await evaluate('({ width: document.querySelector(".report-sheet img").clientWidth, height: document.querySelector(".report-sheet img").clientHeight })'));
+    }
+    await evaluate('document.querySelector(".report-enlarge").click()');
+    assert(await evaluate('document.querySelector(".report-dialog").open'), `${width}: enlarge opens`);
+    await evaluate('document.querySelector(".report-dialog-toolbar button").click()');
+    assert(await evaluate('document.querySelector(".report-dialog img").clientWidth === 1103'), `${width}: original size zoom`);
+    await key('Escape', 'Escape', 27);
+    assert(await evaluate('!document.querySelector(".report-dialog").open && document.querySelector(".dossier-hero").classList.contains("is-open")'), `${width}: Escape closes only document`);
     for (let index = 0; index < 5; index++) {
       await evaluate(`document.querySelectorAll('[role="tab"]')[${index}].click()`);
       assert(await evaluate(`document.querySelectorAll('[role="tabpanel"]')[${index}].hidden === false && document.querySelectorAll('[role="tabpanel"]:not([hidden])').length === 1`), `${width}: tab ${index}`);

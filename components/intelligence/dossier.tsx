@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { FieldReports } from "./field-reports";
 import { useLayoutEffect, useRef, useState, type KeyboardEvent, type RefObject } from "react";
 import { dossierFileNumber, dossierSections, type DossierSection } from "@/lib/dossier";
 
@@ -34,6 +35,9 @@ function DossierTabs({ active, onSelect, tabRefs }: { active: number; onSelect: 
 }
 
 export function DossierDocument({ section, active }: { section: DossierSection; active: boolean }) {
+  if (section.id === "field-reports") {
+    return <section className="dossier-document dossier-field-reports" role="tabpanel" id={`document-${section.id}`} aria-labelledby={`tab-${section.id}`} hidden={!active}><FieldReports /></section>;
+  }
   return (
     <section className="dossier-document" role="tabpanel" id={`document-${section.id}`} aria-labelledby={`tab-${section.id}`} tabIndex={0} hidden={!active}>
       <div className="document-heading"><span>Lion Intelligence Directorate</span><span>Top secret</span></div>
@@ -77,7 +81,7 @@ export function DossierHero() {
     setIsDossierOpen(false);
   }
   return (
-    <section className={`dossier-hero${isDossierOpen ? " is-open" : ""}`} aria-label="Classified intelligence archive" onKeyDown={event => { if (event.key === "Escape" && isDossierOpen) { event.preventDefault(); closeDossier(); } }}>
+    <section className={`dossier-hero${isDossierOpen ? " is-open" : ""}${isDossierOpen && dossierSections[activeSection].id === "field-reports" ? " is-field-reports" : ""}`} aria-label="Classified intelligence archive" onKeyDown={event => { if (event.key === "Escape" && isDossierOpen) { event.preventDefault(); closeDossier(); } }}>
       <aside className="dossier-index" aria-hidden="true"><span>Field reports</span><span>Known movements</span><span>Weapon systems</span><span>Source material</span></aside>
       <div className="dossier-stage">
         <DossierViewer open={isDossierOpen} active={activeSection} onSelect={setActiveSection} onClose={closeDossier} tabRefs={tabRefs} />
