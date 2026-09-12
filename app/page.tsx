@@ -1,6 +1,18 @@
-import { Hero, SituationStrip, ThisIsFloat, GameSideSection, CampaignSection, MultiplayerSection, UnitShowcase, ClassifiedThreat, TrailerSection, ReleaseCTA } from "@/components/game-sections";
+import { DossierHero } from "@/components/intelligence/dossier";
+import { IntelligenceHeader, SiteFooter } from "@/components/intelligence/shell";
 import { pageMetadata } from "@/lib/site";
-export const metadata = pageMetadata("Float — Frogs Defend. Lions Ascend.", "/");
+import "./intelligence.css";
+
+export const metadata = pageMetadata("Lion Intelligence Directorate", "/", "Lion Intelligence Directorate. Classified archive, file 773-19-042.");
+
 export default function Home() {
-  return <><Hero /><SituationStrip /><ThisIsFloat /><GameSideSection /><CampaignSection /><MultiplayerSection /><UnitShowcase /><ClassifiedThreat /><TrailerSection /><ReleaseCTA /></>;
+  return (
+    <div className="intelligence-home">
+      <main id="main" className="intelligence-main">
+        <IntelligenceHeader />
+        <DossierHero />
+      </main>
+      <SiteFooter />
+    </div>
+  );
 }
