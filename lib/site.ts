@@ -27,8 +27,8 @@ export const artwork: Record<string, Artwork> = {
 export const frogUnits: Artwork[] = ["Basic Frog", "Rocket Frog", "Flak Frog", "Anti-Aircraft Frog"].map((alt) => ({ alt }));
 export const lionUnits: Artwork[] = ["Lion Balloon", "Shield Balloon", "War Balloon", "Dread Balloon", "Royal Airship"].map((alt) => ({ alt }));
 export const multiplayerCopy = {
-  title: "A rivalry with altitude.",
-  description: "One side builds. One side attacks. Then roles reverse. Test your defense, launch your formations, and find the cracks in the other side’s plan.",
+  title: "Live exercises",
+  description: "Build the defense. Launch the attack. Reverse roles.",
 };
 // Set either a local video source or an approved YouTube embed URL when ready.
 export const trailer: { src?: string; embedUrl?: string; poster?: string } = {};

@@ -9,60 +9,77 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:3000. Production: `npm run build`, then `npm start`. Required checks: `npm run lint` and `npm run build`.
+Open http://localhost:3000. Production: `npm run build`, then `npm start`. Checks: `npm run lint` and `npm run build`.
 
-Next.js App Router, TypeScript, Tailwind CSS 4. No additional dependencies or external font requests. Pages are statically generated. Native links and horizontal scrolling work without custom client JavaScript.
+Next.js App Router, TypeScript, Tailwind CSS 4. No additional dependencies or external fonts. Routes are statically generated; navigation, anchors, and inventory scrolling use native browser behavior.
 
 ## Routes
 
 `/`, `/game`, `/campaign`, `/multiplayer`, `/media`, `/privacy`, `/terms`, `/contact`.
 
-Privacy and terms are explicitly unpublished placeholders, excluded from indexing and sitemap until final text is approved. Contact has no invented address or inactive form.
+Privacy and terms remain unpublished placeholders, excluded from indexing and sitemap until approved. Contact has no invented address or inactive form. Existing metadata and canonical paths are preserved.
 
-## Components and content
+## Field-report homepage
 
-- `components/site-shell.tsx`: Header and Footer
-- `components/game-sections.tsx`: Hero, ThisIsFloat, SectionHeading, StorePlaceholders, GameSideSection, CampaignSection, MultiplayerSection, UnitShowcase, TrailerSection, ReleaseCTA, PageIntro
-- `components/artwork-slot.tsx`: Next Image wrapper with configurable sizes, object position, contain/cover, preload, and neutral fallback
-- `components/information-page.tsx`: legal/contact page structure
-- `lib/site.ts`: copy, navigation, metadata helper, artwork, unit rosters, and trailer configuration
-- `app/globals.css`: Float color tokens, typography, responsive layout, focus states, and reduced motion support
+The homepage is an editorial military briefing, using bright original artwork, cream paper surfaces, thin rules, small technical fields, and asymmetric image studies. Humor lives in secondary captions and labels.
 
-## Supplied artwork
+Sequence:
 
-Original PNG files are preserved without modification:
+1. Field Report 001: main artwork, release date, and a small observation caption
+2. Current Situation: Lions / Frogs / Wall / Outcome status strip
+3. Defensive Asset and Hostile Airframe: large images, margin records, tiny captions
+4. Opposing Doctrines: open editorial split
+5. Field Operations: campaign requirements as a dossier
+6. Live Exercises: defender/attacker role diagram
+7. Defensive Inventory and Known Lion Activity: designation records
+8. Classified final campaign threat: text only, no invented boss art
+9. Visual Record: cinematic screening status and future 16:9 player
+10. Deployment: October 2026 and store availability
 
-| File | Website use |
+Campaign rows describe known features, not invented mission names. Unit costs/ranges and unconfirmed units are not fabricated. Role-reversal wording remains provisional and centralized in `multiplayerCopy` in `lib/site.ts`.
+
+## Components
+
+- `components/site-shell.tsx`: editorial Header and Footer
+- `components/game-sections.tsx`: existing shared sections, plus SituationStrip, AssetReport, TechnicalFields, and ClassifiedThreat
+- `components/artwork-slot.tsx`: responsive Next Image wrapper with configurable sizes, crop position, contain/cover, preload, and neutral fallback
+- `components/information-page.tsx`: unchanged legal/contact page structure
+- `lib/site.ts`: navigation, metadata, artwork, unit rosters, and trailer configuration
+- `app/globals.css`: Float tokens and responsive editorial styling
+
+## Artwork and crops
+
+The supplied PNGs are preserved without modification:
+
+| Asset | Use |
 | --- | --- |
-| `public/images/brand/float-icon.png` | Header, release section, favicon and Apple icon |
-| `public/images/hero/float-key-art.png` | Main hero, soft hero background, This Is Float, campaign, social metadata |
-| `public/images/frogs/float-frog-defense.png` | Frog faction, multiplayer left half, media gallery |
-| `public/images/lions/float-lion-base.png` | Lion faction, multiplayer right half, cinematic placeholder, media gallery |
+| `public/images/brand/float-icon.png` | Favicon and Apple icon |
+| `public/images/hero/float-key-art.png` | Opening photograph, campaign file, social metadata |
+| `public/images/frogs/float-frog-defense.png` | Defensive asset study, doctrine, media |
+| `public/images/lions/float-lion-base.png` | Hostile airframe study, doctrine, media |
 
-Images use Next.js responsive optimization; only the main hero uses preload (the Next.js 16 replacement for priority). No generated artwork or new image dependencies.
+There are no image washes, duplicate tinted hero backgrounds, masks, or opaque text overlays. Captions and records sit outside the art. The desktop opening uses a full-width crop at 50% 43%; mobile shows the complete 2:3 composition. The frog study uses 35% 35% (35% 30% on mobile), preserving the relaxed frog. The lion study uses 60% 35%. Campaign crops at 50% 68%. Media preserves full original compositions.
 
-The hero foreground uses contain to preserve the cloud logo, balloons, and frog defenders. Desktop has a light edge mask and a tinted secondary backdrop; mobile displays the full 2:3 poster without masking, followed by the copy. The overview crops the key art at 50% 76%, campaign at 50% 65%, frog faction at 43% 52%, and lion faction at 42% 50%. Mobile factions use the source aspect ratios; desktop fills large artwork regions. Media displays complete original compositions.
+Only the opening image is preloaded. Other art loads lazily using Next.js image optimization and responsive sizes.
 
-## Unit artwork
+## Inventory and classified art
 
-Individual units still have neutral, clearly labeled poster slots. The supplied faction scenes are not presented as unit portraits. Add a public `src` and descriptive `alt` to `frogUnits` or `lionUnits` in `lib/site.ts` when approved individual assets arrive. Existing `public/images/balloons/` can hold offensive unit art. Both rosters scroll horizontally with touch, trackpad, or keyboard focus and arrow keys.
+Individual units retain neutral Visual record pending slots. Add public `src` paths and descriptive `alt` text in `frogUnits` or `lionUnits` in `lib/site.ts`. Faction scenes are not misrepresented as unit portraits. Inventory rows scroll horizontally when needed, including with keyboard focus and arrow keys. No final-boss image or silhouette has been invented.
 
-## Color tokens
+## Color system
 
-`app/globals.css` defines `--float-sky`, `--float-sky-light`, `--float-cloud`, `--float-frog-green`, `--float-frog-purple`, `--float-lion-red`, `--float-lion-gold`, `--float-navy`, `--float-olive`, `--float-stone`, `--float-wood`, and `--float-ink`.
+Retained tokens: `--float-sky`, `--float-sky-light`, `--float-cloud`, `--float-frog-green`, `--float-frog-purple`, `--float-lion-red`, `--float-lion-gold`, `--float-navy`, `--float-olive`, `--float-stone`, `--float-wood`, and `--float-ink`.
 
-Default surfaces are sunny blue and warm cloud white, with strong purple and red faction sections. Deep navy is reserved for the cinematic and readable accents.
+Cream dominates the editorial space. Purple and red identify faction records; pale sky supports tactical and deployment sections. Deep navy is reserved for the visual-record screening section. No glowing borders, rounded feature cards, or decorative motion.
 
 ## Trailer and stores
 
-Set `trailer.src` in `lib/site.ts` to a local video URL under `public/video/`, with optional `poster`, or set `trailer.embedUrl` to an approved YouTube embed URL. `TrailerSection` replaces the placeholder inside its existing 16:9 frame. Add captions for spoken content when publishing the video. No external video request occurs until configured.
+Set `trailer.src` in `lib/site.ts` to a local URL under `public/video/`, optionally with `poster`, or set `trailer.embedUrl` to an approved YouTube embed URL. TrailerSection replaces the Awaiting transmission placeholder within the existing 16:9 frame. Add captions for spoken content when publishing. No external video loads before configuration.
 
-Store labels are non-interactive Coming Soon placeholders. Replace them with verified URLs in StorePlaceholders when published. Hero Watch Trailer leads to the clearly labeled cinematic placeholder; Coming Soon leads to release availability.
-
-Multiplayer role-reversal wording remains centralized in `multiplayerCopy`; confirm against the final game structure before release.
+Store availability is non-interactive until real links exist. Replace StorePlaceholders entries with verified store URLs when published. The header links to existing content routes; the opening Continue link leads to Current Situation.
 
 ## SEO and publication
 
-Canonical origin: https://floatgame.io. Page-specific canonical paths, titles, descriptions, Open Graph, and Twitter metadata are preserved. Supplied key art is the social image; platforms may crop its portrait composition. A dedicated landscape social export can replace it later. No social accounts are invented. `app/sitemap.ts` and `app/robots.ts` provide discovery.
+Canonical origin: https://floatgame.io. Page-specific titles, descriptions, canonicals, Open Graph, Twitter metadata, sitemap, and robots remain in place. The supplied key art is the social image; platforms may crop its portrait aspect ratio. No social accounts are invented.
 
-Final legal text, verified contact channels, unit art, store URLs, and the trailer remain publication tasks.
+Final legal text, contact details, individual unit artwork, store URLs, and trailer remain publication tasks.
