@@ -96,12 +96,17 @@ try {
       await writeFile(`artifacts/archive-${width}-reports.png`, Buffer.from(shot.data, 'base64'));
       console.log('REPORT DIMENSIONS', width, await evaluate('({ width: document.querySelector(".report-sheet img").clientWidth, height: document.querySelector(".report-sheet img").clientHeight })'));
     }
-    await evaluate('document.querySelector(".report-enlarge").click()');
-    assert(await evaluate('document.querySelector(".report-dialog").open'), `${width}: enlarge opens`);
-    await evaluate('document.querySelector(".report-dialog-toolbar button").click()');
-    assert(await evaluate('document.querySelector(".report-dialog img").clientWidth === 1103'), `${width}: original size zoom`);
-    await key('Escape', 'Escape', 27);
-    assert(await evaluate('!document.querySelector(".report-dialog").open && document.querySelector(".dossier-hero").classList.contains("is-open")'), `${width}: Escape closes only document`);
+    assert(await evaluate('document.querySelector(".report-page-previous").disabled'), `${width}: left half disabled on first page`);
+    for (let report = 2; report <= 4; report++) {
+      await evaluate('document.querySelector(".report-page-next").click()');
+      assert(await evaluate(`document.querySelector('.report-sheet img').alt.includes('Report 00${report}')`), `${width}: right half advances to ${report}`);
+    }
+    assert(await evaluate('document.querySelector(".report-page-next").disabled'), `${width}: right half disabled on last page`);
+    for (let report = 3; report >= 1; report--) {
+      await evaluate('document.querySelector(".report-page-previous").click()');
+      assert(await evaluate(`document.querySelector('.report-sheet img').alt.includes('Report 00${report}')`), `${width}: left half returns to ${report}`);
+    }
+    assert(await evaluate('!document.querySelector(".report-dialog")'), `${width}: no zoom dialog`);
     for (let index = 0; index < 5; index++) {
       await evaluate(`document.querySelectorAll('[role="tab"]')[${index}].click()`);
       assert(await evaluate(`document.querySelectorAll('[role="tabpanel"]')[${index}].hidden === false && document.querySelectorAll('[role="tabpanel"]:not([hidden])').length === 1`), `${width}: tab ${index}`);
