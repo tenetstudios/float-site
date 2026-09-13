@@ -8,7 +8,7 @@ export const fieldReports = [
   {
     id: "002", title: "Ground Contact",
     image: "/images/intelligence/field-reports/field-report-002-ground-contact.png",
-    width: 1208, height: 1302,
+    width: 1207, height: 1303,
     alt: "Lion Intelligence Field Report 002 — Ground Contact. Status: Suspected. A small green shape has been seen behind stone walls. It does not appear concerned. Assessment: Could be wildlife. Recommendation: Continue launches.",
   },
   {
@@ -22,5 +22,17 @@ export const fieldReports = [
     image: "/images/intelligence/field-reports/field-report-004-tongue-weapon.png",
     width: 1122, height: 1402,
     alt: "Lion Intelligence Field Report 004 — Tongue Weapon. Status: Confirmed. The suspected Frog appears to attack balloons using its tongue. No ammunition observed. No reload observed. Assessment: This is inconvenient. Witness sketch: a frog striking a Lion balloon from behind a stone wall. Tongue extends farther than expected.",
+  },
+  {
+    id: "005", title: "Frogs Confirmed",
+    image: "/images/intelligence/field-reports/field-report-005-frogs-confirmed.png",
+    width: 1122, height: 1402,
+    alt: "Lion Intelligence Field Report 005 — Frogs Confirmed. Status: Active Threat. They are Frogs. There are several. They have walls. Assessment: Previous weather theory withdrawn.",
+  },
+  {
+    id: "006", title: "Armored Frog",
+    image: "/images/intelligence/field-reports/field-report-006-armored-frog.png",
+    width: 1198, height: 1313,
+    alt: "Lion Intelligence Field Report 006 — Armored Frog. Status: Escalation. A Frog has been observed wearing armor. The Frog appears pleased with this arrangement. Assessment: Threat increased. Witness sketch: an armored frog behind a stone wall on a floating island. Protective shell observed. Frog appears satisfied.",
   },
 ] as const;
