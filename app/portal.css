@@ -1,3 +1,12 @@
+/* One shared gap on both sides of every homepage pattern divider. */
+.float-portal { --divider-gap: 96px; }
+.float-portal > main { display: flow-root; }
+.float-portal .pattern-divider { margin-block: var(--divider-gap); }
+.float-portal > .site-footer { border-top: 0; padding-top: 0; }
+@media (max-width: 700px) {
+  .float-portal { --divider-gap: 64px; }
+}
+
 .portal-hero { display: grid; grid-template-columns: 42% 58%; background: #e7f5ff; min-height: 590px; height: min(680px, 78svh); }
 .portal-hero-copy { align-self: center; padding: 36px 10% 44px 14%; position: relative; z-index: 1; }
 .portal-hero h1 { font-size: clamp(64px, 8.5vw, 140px); font-weight: 900; letter-spacing: -.075em; line-height: 1; margin: 25px 0 24px; }
@@ -6,8 +15,7 @@
 .portal-start { display: inline-flex; align-items: center; gap: 34px; font-size: 12px; font-weight: 700; padding: 16px 0 8px; border-bottom: 1px solid var(--float-navy); margin-top: 18px; }
 .portal-start span { font-size: 22px; }
 .portal-key-art { min-width: 0; height: 100%; }
-.sky-hero + .pattern-divider { margin-top: 72px; }
-.portal-modes { padding: 72px 3%; }
+.portal-modes { padding: 0 3%; }
 .portal-section-heading { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 30px; }
 .portal-section-heading h2 { font-size: clamp(27px, 3.1vw, 48px); letter-spacing: -.05em; line-height: 1.1; }
 .portal-section-heading .eyebrow + h2 { margin-top: 10px; }
@@ -35,7 +43,7 @@
 .mode-door:is(:hover, :focus-visible) img { transform: scale(1.025); }
 .mode-door:is(:hover, :focus-visible) h3 { transform: translateX(3px); }
 .mode-door:is(:hover, :focus-visible) .mode-arrow { transform: translate(3px, -3px); }
-.game-glimpse { padding: 72px 6%; }
+.game-glimpse { padding: 0 6%; }
 .glimpse-heading { display: flex; justify-content: space-between; gap: 20px; border-top: 1px solid var(--rule); padding-top: 24px; margin-bottom: 24px; }
 .glimpse-heading > p { font-size: 12px; }
 .glimpse-sides { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
@@ -44,7 +52,7 @@
 .glimpse-side figcaption > div { display: flex; align-items: center; justify-content: space-between; }
 .glimpse-side h3 { font-size: 26px; text-transform: uppercase; color: var(--float-navy); letter-spacing: -1px; }
 .glimpse-side figcaption > p { margin-top: 8px; font-size: 10px; }
-.portal-cinematic { margin-block: 72px; padding: 54px 12% 60px; color: var(--float-cloud); background: var(--float-navy); }
+.portal-cinematic { padding: 54px 12% 60px; color: var(--float-cloud); background: var(--float-navy); }
 .portal-cinematic h2 { font-size: clamp(24px, 3vw, 42px); text-transform: uppercase; }
 .portal-screen { aspect-ratio: 16/9; background: #172139; border: 1px solid #ffffff30; position: relative; }
 .portal-screen iframe, .portal-screen video { width: 100%; height: 100%; border: 0; }
@@ -72,8 +80,7 @@
   .hero-mantra { font-size: 34px; grid-row: span 2; }
   .hero-date { margin: 0; font-size: 12px; align-self: end; }
   .portal-start { margin: 0; gap: 15px; justify-self: start; align-self: start; padding-top: 0; font-size: 11px; }
-  .sky-hero + .pattern-divider { margin-top: 48px; }
-  .portal-modes { padding: 48px 4%; }
+  .portal-modes { padding: 0 4%; }
   .portal-section-heading { align-items: start; }
   .portal-modes .portal-section-heading > span { display: none; }
   .mode-doors { grid-template-columns: 1fr; gap: 26px; }
@@ -82,11 +89,11 @@
   .mode-title-row h3 { font-size: clamp(30px, 8vw, 48px); }
   .mode-copy > p { font-size: 14px; }
   .mode-arrow { font-size: 30px; }
-  .game-glimpse { padding: 48px 4%; }
+  .game-glimpse { padding: 0 4%; }
   .glimpse-sides { grid-template-columns: 1fr; gap: 24px; }
   .glimpse-heading { flex-wrap: wrap; gap: 8px; }
   .glimpse-side .artwork-slot { height: 190px; }
-  .portal-cinematic { margin-block: 48px; padding: 35px 4%; }
+  .portal-cinematic { padding: 35px 4%; }
   .portal-cinematic .portal-section-heading { align-items: center; gap: 12px; }
   .portal-cinematic .portal-section-heading > span { font-size: 8px; white-space: nowrap; }
   .portal-cinematic h2 { font-size: 22px; }
@@ -117,12 +124,12 @@
 
 /* Carry the same separator between the individual posters when they stack. */
 @media (max-width: 700px) {
-  .mode-doors { gap: 150px; }
+  .mode-doors { gap: calc(54px + var(--divider-gap) + var(--divider-gap)); }
   .mode-door + .mode-door { position: relative; }
   .mode-door + .mode-door::before {
     content: "";
     position: absolute;
-    top: -102px;
+    top: calc(-54px - var(--divider-gap));
     left: 0;
     width: 100%;
     height: 54px;
