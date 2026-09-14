@@ -24,6 +24,7 @@ export function SiteFooter() {
         <button disabled><span>Google Play</span><small>Coming soon</small></button>
       </div>
       <nav aria-label="Footer navigation">
+        <Link href="/">Home</Link>
         {["About", "Privacy", "Terms", "Safety", "Contact"].map(label => <Link key={label} href={`/${label.toLowerCase()}`}>{label}</Link>)}
       </nav>
     </footer>
