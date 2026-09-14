@@ -288,7 +288,7 @@ img { display: block; }
 .site-header .header-release { margin-left: auto; white-space: nowrap; }
 .site-header nav { margin-inline: auto; }
 .footer-insignia { position: relative; display: block; width: 48px; height: 78px; overflow: hidden; flex: none; }
-.footer-insignia img { position: absolute; width: 1672px; height: 941px; max-width: none; left: -62px; top: -19px; }
+.footer-insignia img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
 .footer-top > .eyebrow { margin-right: auto; }
 .sandbox-preview .artwork-slot { height: min(70vw, 650px); }
 .sandbox-preview .caption { margin-block: 18px; }
