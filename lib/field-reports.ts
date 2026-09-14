@@ -35,4 +35,22 @@ export const fieldReports = [
     width: 1198, height: 1313,
     alt: "Lion Intelligence Field Report 006 — Armored Frog. Status: Escalation. A Frog has been observed wearing armor. The Frog appears pleased with this arrangement. Assessment: Threat increased. Witness sketch: an armored frog behind a stone wall on a floating island. Protective shell observed. Frog appears satisfied.",
   },
+  {
+    id: "007", title: "Rocket Frog",
+    image: "/images/intelligence/field-reports/field-report-007-rocket-frog.png",
+    width: 1086, height: 1448,
+    alt: "Lion Intelligence Field Report 007 — Rocket Frog. Status: Severe. A Frog has been observed carrying rockets. Source of rockets: Unknown. Source of concern: Obvious. Notes: Capabilities, range, and payload are currently unknown. Further observation required.",
+  },
+  {
+    id: "008", title: "Flak Frog",
+    image: "/images/intelligence/field-reports/field-report-008-flak-frog.png",
+    width: 1122, height: 1402,
+    alt: "Lion Intelligence Field Report 008 — Flak Frog. Status: Severe. A Frog has been observed operating a Flak Gun. Equipment: Frog helmet observed. Assessment: Air superiority no longer assumed. Witness sketch: a helmeted frog operating a twin-barreled flak gun on a floating island. Anti-air capability observed. This is worsening.",
+  },
+  {
+    id: "009", title: "Anti-Aircraft Frog",
+    image: "/images/intelligence/field-reports/field-report-009-anti-aircraft-frog.png",
+    width: 1086, height: 1448,
+    alt: "Lion Intelligence Field Report 009 — Anti-Aircraft Frog. Status: Very Bad. Long-range guns confirmed. Radar confirmed. Frog remains calm. Assessment: Air superiority no longer assumed. Notes: The Frog appears to operate advanced anti-aircraft systems with high accuracy. Detection and targeting capabilities suggest coordinated defenses. Exercise increased caution on all flight operations in the region.",
+  },
 ] as const;
