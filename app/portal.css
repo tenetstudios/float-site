@@ -1,11 +1,5 @@
-/* One shared gap on both sides of every homepage pattern divider. */
-.float-portal { --divider-gap: 96px; }
 .float-portal > main { display: flow-root; }
-.float-portal .pattern-divider { margin-block: var(--divider-gap); }
 .float-portal > .site-footer { border-top: 0; padding-top: 0; }
-@media (max-width: 700px) {
-  .float-portal { --divider-gap: 64px; }
-}
 
 .portal-hero { display: grid; grid-template-columns: 42% 58%; background: #e7f5ff; min-height: 590px; height: min(680px, 78svh); }
 .portal-hero-copy { align-self: center; padding: 36px 10% 44px 14%; position: relative; z-index: 1; }

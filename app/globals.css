@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 :root {
+  --divider-gap: 96px;
   --float-sky: #0e8ef7;
   --float-sky-light: #68c8ff;
   --float-cloud: #faf9f3;
@@ -302,9 +303,11 @@ img { display: block; }
 .pattern-divider {
   width: 100%;
   height: 72px;
+  margin-block: var(--divider-gap);
   flex: none;
   background: #fcfaf5 url("/images/patterns/float-divider.png") repeat-x center calc(50% + 6px) / 652px auto;
 }
 @media (max-width: 700px) {
+  :root { --divider-gap: 64px; }
   .pattern-divider { height: 54px; background-size: 490px auto; background-position: center calc(50% + 5px); }
 }
