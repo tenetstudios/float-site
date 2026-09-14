@@ -1,0 +1,5 @@
+Tool: built-in image_gen
+Output: public/images/intelligence/footer-lion-insignia.png
+Verified PNG alpha transparency in background, arrow interior, face interior and arrow/head gap.
+
+Use case: background-extraction. Edit this exact lion insignia image. Remove ALL dark slate background and make it genuinely transparent PNG alpha, including the interior hollow areas of the outlined arrow, inside the lion face, between facial features and the gap between arrow and head. Preserve ONLY the existing muted silver-grey emblem strokes and solid silver-grey eyes, inner ears, nose and mouth. Keep the exact current geometry, proportions, placement, stroke weight, grey colors and small detached gap between arrow and head. Preserve canvas 1024x1536 and original margins. No new background, no checkerboard painted into image, no shadow, glow, border or additional marks. Actual transparent alpha channel is required. This is a clean cutout of the existing emblem, not a redesign.
