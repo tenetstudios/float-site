@@ -1,4 +1,4 @@
-﻿.portal-hero { display: grid; grid-template-columns: 42% 58%; background: #e7f5ff; min-height: 590px; height: min(680px, 78svh); }
+.portal-hero { display: grid; grid-template-columns: 42% 58%; background: #e7f5ff; min-height: 590px; height: min(680px, 78svh); }
 .portal-hero-copy { align-self: center; padding: 36px 10% 44px 14%; position: relative; z-index: 1; }
 .portal-hero h1 { font-size: clamp(64px, 8.5vw, 140px); font-weight: 900; letter-spacing: -.075em; line-height: 1; margin: 25px 0 24px; }
 .hero-mantra { font-size: clamp(30px, 3.6vw, 56px); font-weight: 800; letter-spacing: -.045em; line-height: 1.03; }
@@ -6,7 +6,8 @@
 .portal-start { display: inline-flex; align-items: center; gap: 34px; font-size: 12px; font-weight: 700; padding: 16px 0 8px; border-bottom: 1px solid var(--float-navy); margin-top: 18px; }
 .portal-start span { font-size: 22px; }
 .portal-key-art { min-width: 0; height: 100%; }
-.portal-modes { padding: 64px 3% 48px; }
+.sky-hero + .pattern-divider { margin-top: 32px; }
+.portal-modes { padding: 32px 3% 48px; }
 .portal-section-heading { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 30px; }
 .portal-section-heading h2 { font-size: clamp(27px, 3.1vw, 48px); letter-spacing: -.05em; line-height: 1.1; }
 .portal-section-heading .eyebrow + h2 { margin-top: 10px; }
@@ -71,7 +72,8 @@
   .hero-mantra { font-size: 34px; grid-row: span 2; }
   .hero-date { margin: 0; font-size: 12px; align-self: end; }
   .portal-start { margin: 0; gap: 15px; justify-self: start; align-self: start; padding-top: 0; font-size: 11px; }
-  .portal-modes { padding: 42px 4% 30px; }
+  .sky-hero + .pattern-divider { margin-top: 21px; }
+  .portal-modes { padding: 21px 4% 30px; }
   .portal-section-heading { align-items: start; }
   .portal-modes .portal-section-heading > span { display: none; }
   .mode-doors { grid-template-columns: 1fr; gap: 26px; }
