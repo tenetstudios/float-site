@@ -130,3 +130,7 @@
     pointer-events: none;
   }
 }
+
+/* Preserve the entire landscape illustration inside the taller Sandbox poster. */
+.mode-sandbox .mode-art { background: #e7f5ff; }
+.mode-sandbox:is(:hover, :focus-visible) .mode-art img { transform: none; }
