@@ -1,3 +1,4 @@
+import webHero from "@/public/images/hero/float-web-hero.png";
 import Image from "next/image";
 import Link from "next/link";
 import { ArtworkSlot } from "@/components/artwork-slot";
@@ -13,10 +14,10 @@ export function PortalHero() {
     <header className="sky-hero" aria-labelledby="portal-title">
       <h1 id="portal-title" className="sr-only">Float</h1>
       <Image
-        src="/images/hero/float-web-hero.png"
-        alt="Float written in clouds above floating castles, with red and gold lion balloons in a bright blue sky"
-        width={1916}
-        height={821}
+        src={webHero}
+        alt="Float written in clouds above a helmeted frog peeking over a stone wall, with floating castles and red and gold lion balloons in a bright blue sky"
+        width={1912}
+        height={823}
         sizes="100vw"
         preload
         className="sky-hero-image"
