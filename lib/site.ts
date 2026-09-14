@@ -22,6 +22,7 @@ export const artwork: Record<string, Artwork> = {
   hero: { src: "/images/hero/float-key-art.png", alt: "FLOAT written in clouds above frog defenders, a stone wall, and approaching red Lion Balloons" },
   frogs: { src: "/images/frogs/float-frog-defense.png", alt: "Relaxed green frog soldiers defend a mossy stone wall beneath their purple faction flag" },
   lions: { src: "/images/lions/float-lion-base.png", alt: "A lion commander rallies navy-uniformed soldiers at a red-and-gold balloon launch base" },
+  multiplayer: { src: "/images/modes/float-multiplayer.png", alt: "Frog soldiers defend floating islands with cannons as red and gold lion balloons approach" },
   sandbox: { src: "/images/modes/float-sandbox-portrait.png", alt: "A relaxed frog tinkers with a rocket in a wooden sandbox beneath floating sky islands" },
   campaign: { src: "/images/hero/float-key-art.png", alt: "Frog defenders watch Lion Balloons approach over a sunny fantasy battlefield" },
 };
