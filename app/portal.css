@@ -98,3 +98,17 @@
 /* Crop the cloud wordmark out of the campaign poster, retaining the battlefield. */
 .mode-campaign .mode-art img { height: calc(100% + 100px) !important; top: -100px !important; }
 @media (max-width: 700px) { .portal-key-art { height: clamp(360px, 58svh, 520px); } }
+
+.sky-hero { position: relative; width: 100%; background: var(--float-sky); }
+.sky-hero-image { display: block; width: 100%; height: auto; }
+.sky-hero-links { position: absolute; bottom: 6%; left: 50%; transform: translateX(-50%); display: flex; justify-content: center; gap: 10px; width: max-content; max-width: 94%; }
+.sky-hero-links a { display: inline-flex; align-items: center; justify-content: center; gap: 18px; min-height: 44px; padding: 10px 19px; border: 1px solid #ffffffb3; border-radius: 9px; background: #ffffff59; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: inset 0 1px 0 #ffffff80, 0 3px 12px #1f2b4610; color: var(--float-navy); font-size: 12px; font-weight: 600; transition: background 180ms ease; }
+.sky-hero-links a:hover { text-decoration: none; background: #ffffffa6; }
+.sky-hero-links a:focus-visible { outline: 2px solid var(--float-navy); outline-offset: 4px; background: #ffffffc9; }
+.sky-hero-links a span { font-size: 13px; opacity: .65; }
+@media (max-width: 700px) {
+  .sky-hero-image { height: clamp(280px, 65vw, 440px); object-fit: cover; object-position: center; }
+  .sky-hero-links { bottom: 14px; flex-wrap: wrap; gap: 7px; width: 94%; }
+  .sky-hero-links a { padding: 8px 12px; gap: 9px; font-size: 11px; }
+}
+@media (prefers-reduced-motion: reduce) { .sky-hero-links a { transition: none; } }

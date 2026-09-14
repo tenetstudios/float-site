@@ -1,7 +1,7 @@
-﻿import Image from "next/image";
+import Image from "next/image";
 import Link from "next/link";
 import { ArtworkSlot } from "@/components/artwork-slot";
-import { artwork, frogUnits, lionUnits, trailer } from "@/lib/site";
+import { artwork, frogUnits, lionUnits, navigation, trailer } from "@/lib/site";
 
 const modes = [
   { slug: "campaign", label: "Solo", title: "Campaign", lines: ["Fight through escalating missions.", "Master both sides.", "Meet the problem at the end."], note: "Situation developing." },
@@ -9,7 +9,25 @@ const modes = [
   { slug: "sandbox", label: "Free play", title: "Sandbox", lines: ["Build anything.", "Test everything.", "See what happens."], note: "Supervision not provided." },
 ];
 export function PortalHero() {
-  return <section className="portal-hero" aria-labelledby="portal-title"><div className="portal-hero-copy"><p className="eyebrow">Frogs defend. Lions ascend.</p><h1 id="portal-title">FLOAT</h1><p className="hero-mantra">Build.<br />Defend.<br />Ascend.</p><p className="hero-date">Coming October 2026</p><a className="portal-start" href="#modes">Choose your mode <span aria-hidden="true">↓</span></a></div><ArtworkSlot asset={artwork.hero} className="portal-key-art" preload sizes="(max-width: 700px) 100vw, 58vw" position="50% 48%" /></section>;
+  return (
+    <header className="sky-hero" aria-labelledby="portal-title">
+      <h1 id="portal-title" className="sr-only">Float</h1>
+      <Image
+        src="/images/hero/float-web-hero.png"
+        alt="Float written in clouds above floating castles, with red and gold lion balloons in a bright blue sky"
+        width={1916}
+        height={821}
+        sizes="100vw"
+        preload
+        className="sky-hero-image"
+      />
+      <nav className="sky-hero-links" aria-label="Main navigation">
+        {navigation.map(item => (
+          <Link key={item.href} href={item.href}>{item.label}<span aria-hidden="true">↗</span></Link>
+        ))}
+      </nav>
+    </header>
+  );
 }
 export function ModeDoors() {
   return <section className="portal-modes" id="modes" aria-labelledby="modes-title"><div className="portal-section-heading"><div><p className="eyebrow">Pick your kind of trouble</p><h2 id="modes-title">Three ways into Float.</h2></div><span className="eyebrow">One very disputed sky.</span></div><div className="mode-doors">{modes.map((mode, index) => <Link className={`mode-door mode-${mode.slug}`} href={`/${mode.slug}`} key={mode.slug} aria-labelledby={`${mode.slug}-title`} aria-describedby={`${mode.slug}-copy`}><div className="mode-art">{mode.slug === "multiplayer" ? <><ArtworkSlot asset={artwork.frogs} className="split-frogs" position="30% 48%" sizes="(max-width: 700px) 48vw, 16vw" /><ArtworkSlot asset={artwork.lions} className="split-lions" position="38% 45%" sizes="(max-width: 700px) 48vw, 16vw" /><span className="versus" aria-hidden="true">VS</span></> : <ArtworkSlot asset={mode.slug === "campaign" ? artwork.campaign : artwork.frogs} position={mode.slug === "campaign" ? "50% 72%" : "45% 58%"} preload={mode.slug === "campaign"} sizes="(max-width: 700px) 94vw, 32vw" />}<span className="mode-number" aria-hidden="true">0{index + 1}</span><span className="mode-label eyebrow">{mode.label}</span></div><div className="mode-copy"><div className="mode-title-row"><h3 id={`${mode.slug}-title`}>{mode.title}</h3><span className="mode-arrow" aria-hidden="true">↗</span></div><p id={`${mode.slug}-copy`}>{mode.lines.map(line => <span key={line}>{line}</span>)}</p><p className="mode-note">{mode.note}</p></div></Link>)}</div></section>;
