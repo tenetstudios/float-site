@@ -27,7 +27,7 @@
 .mode-door:focus-visible { outline: 3px solid var(--float-navy); outline-offset: 5px; }
 .mode-art { aspect-ratio: 1149 / 1369; flex: none; position: relative; overflow: hidden; display: flex; }
 .mode-art > .artwork-slot { position: absolute; inset: 0; height: 100%; width: 100%; }
-.mode-art img { transition: transform 450ms ease; }
+.mode-art img { transform: scaleX(var(--art-direction, 1)); transition: transform 450ms ease; }
 .mode-art > .split-frogs, .mode-art > .split-lions { width: 50%; }
 .mode-art > .split-frogs { border-right: 3px solid var(--float-lion-gold); }
 .mode-number { position: absolute; top: 20px; left: 20px; color: white; font: 12px var(--label-font); text-shadow: 0 1px 4px #162238; }
@@ -40,7 +40,7 @@
 .mode-copy > p { font-size: 14px; line-height: 1.65; margin-top: 17px; }
 .mode-copy > p span { display: block; }
 .mode-copy > .mode-note { font: 10px/1.6 var(--label-font); border-top: 1px solid #16223826; margin-top: 22px; padding-top: 16px; }
-.mode-door:is(:hover, :focus-visible) img { transform: scale(1.025); }
+.mode-door:is(:hover, :focus-visible) img { transform: scaleX(var(--art-direction, 1)) scale(1.025); }
 .mode-door:is(:hover, :focus-visible) h3 { transform: translateX(3px); }
 .mode-door:is(:hover, :focus-visible) .mode-arrow { transform: translate(3px, -3px); }
 .game-glimpse { padding: 0 6%; }
@@ -102,9 +102,7 @@
   .portal-stores { gap: 10px; }
   .portal-stores button { min-width: 0; padding: 14px 22px; }
 }
-@media (prefers-reduced-motion: reduce) { .mode-art img, .mode-title-row h3, .mode-arrow { transition: none; } .mode-door:is(:hover, :focus-visible) img, .mode-door:is(:hover, :focus-visible) h3, .mode-door:is(:hover, :focus-visible) .mode-arrow { transform: none; } }
-/* Preserve the full campaign artwork, including on hover and keyboard focus. */
-.mode-campaign:is(:hover, :focus-visible) .mode-art img { transform: none; }
+@media (prefers-reduced-motion: reduce) { .mode-art img, .mode-title-row h3, .mode-arrow { transition: none; } .mode-door:is(:hover, :focus-visible) img { transform: scaleX(var(--art-direction, 1)); } .mode-door:is(:hover, :focus-visible) h3, .mode-door:is(:hover, :focus-visible) .mode-arrow { transform: none; } }
 @media (max-width: 700px) { .portal-key-art { height: clamp(360px, 58svh, 520px); } }
 
 .sky-hero { position: relative; width: 100%; background: var(--float-sky); }
@@ -139,5 +137,4 @@
 
 /* Portrait artwork fills the Sandbox poster without letterboxing. */
 .mode-sandbox .mode-art { background: #e7f5ff; }
-.mode-sandbox .mode-art img,
-.mode-sandbox:is(:hover, :focus-visible) .mode-art img { transform: scaleX(-1); }
+.mode-sandbox { --art-direction: -1; }
