@@ -48,6 +48,7 @@
 .glimpse-heading > p { font-size: 12px; }
 .glimpse-sides { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
 .glimpse-side .artwork-slot { height: auto; aspect-ratio: 3 / 1; }
+.glimpse-lions .artwork-slot img { transform: scaleX(-1); }
 .glimpse-side figcaption { margin-top: 14px; }
 .glimpse-side figcaption > div { display: flex; align-items: center; justify-content: space-between; }
 .glimpse-side h3 { font-size: 26px; text-transform: uppercase; color: var(--float-navy); letter-spacing: -1px; }
