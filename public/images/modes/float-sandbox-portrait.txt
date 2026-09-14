@@ -1,0 +1,4 @@
+Created with the built-in image generation tool from float-sandbox.png.
+
+Prompt:
+Edit target: supplied Float sandbox illustration. Extend this landscape artwork into a tall portrait image with a 3:4 width-to-height aspect ratio for a website mode card. Outpaint more matching blue sky and clouds above and more sandbox wood/sand foreground below, keeping the original scene and 90%+ of its contents visible. Preserve the same frog identity, relaxed expression, pose, leaf in mouth, wrench, green rocket with red tip, bucket, shovel, floating islands, sunny lighting, polished playful 3D illustration style and colors. The frog and rocket should remain large and central, fully visible, with room around them for small responsive edge crops. Seamlessly fill the entire portrait canvas with real extended scene; no borders, no letterboxing, no blurred padding, no text, no new characters. Output one portrait 3:4 image.

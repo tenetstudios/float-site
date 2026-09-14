@@ -131,6 +131,6 @@
   }
 }
 
-/* Preserve the entire landscape illustration inside the taller Sandbox poster. */
+/* Portrait artwork fills the Sandbox poster without letterboxing. */
 .mode-sandbox .mode-art { background: #e7f5ff; }
 .mode-sandbox:is(:hover, :focus-visible) .mode-art img { transform: none; }
