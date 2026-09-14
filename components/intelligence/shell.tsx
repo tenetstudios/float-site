@@ -6,7 +6,7 @@ export function IntelligenceHeader() {
     <header className="intelligence-header">
       <div className="intelligence-identity">
         <span className="intelligence-insignia" aria-hidden="true">
-          <Image src="/images/intelligence/intelligence-background-eyes-corrected.webp" alt="" width={1672} height={941} sizes="1672px" />
+          <Image src="/images/intelligence/footer-lion-insignia.png" alt="" width={1024} height={1536} sizes="48px" />
         </span>
         <h1>Lion Intelligence Directorate</h1>
       </div>

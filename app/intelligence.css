@@ -34,8 +34,8 @@
 .intelligence-home :is(button,a,[tabindex]):focus-visible { outline: 2px solid #e4d6b3; outline-offset: 5px; }
 .intelligence-header { min-height: 100px; padding: 20px 4%; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
 .intelligence-identity { display: flex; align-items: center; gap: 26px; }
-.intelligence-insignia { position: relative; display: block; width: 48px; height: 78px; overflow: hidden; flex: none; mix-blend-mode: lighten; }
-.intelligence-insignia img { position: absolute; width: 1672px; height: 941px; max-width: none; left: -62px; top: -19px; }
+.intelligence-insignia { position: relative; display: block; width: 48px; height: 78px; overflow: hidden; flex: none; }
+.intelligence-insignia img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
 .intelligence-identity h1 { border-left: 1px solid #bbc0bc80; padding: 18px 0 18px 24px; font: 400 13px/1.6 var(--archive-mono); letter-spacing: 3px; text-transform: uppercase; }
 .intelligence-clearance { font: 10px/1.8 var(--archive-mono); letter-spacing: 2px; text-transform: uppercase; }
 .intelligence-clearance span { display: block; font-size: 9px; letter-spacing: 1.6px; margin-top: 3px; }
@@ -103,7 +103,6 @@
   .intelligence-header { min-height: 98px; padding: 18px 24px; }
   .intelligence-identity { gap: 12px; }
   .intelligence-insignia { width: 38px; height: 60px; }
-  .intelligence-insignia img { width: 1338px; height: 753px; left: -50px; top: -15px; }
   .intelligence-identity h1 { max-width: 260px; padding: 8px 0 8px 14px; font-size: 11px; letter-spacing: 2px; }
   .intelligence-clearance { display: none; }
   .dossier-hero { padding: 16px 12px 28px; gap: 28px; }
