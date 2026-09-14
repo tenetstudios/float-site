@@ -2,7 +2,7 @@ import webHero from "@/public/images/hero/float-web-hero.png";
 import Image from "next/image";
 import Link from "next/link";
 import { ArtworkSlot } from "@/components/artwork-slot";
-import { artwork, frogUnits, lionUnits, navigation, trailer } from "@/lib/site";
+import { artwork, frogUnits, lionUnits, trailer } from "@/lib/site";
 
 const modes = [
   { slug: "campaign", label: "Solo", title: "Campaign", lines: ["Fight through escalating missions.", "Master both sides.", "Meet the problem at the end."], note: "Situation developing." },
@@ -22,11 +22,6 @@ export function PortalHero() {
         preload
         className="sky-hero-image"
       />
-      <nav className="sky-hero-links" aria-label="Main navigation">
-        {navigation.map(item => (
-          <Link key={item.href} href={item.href}>{item.label}<span aria-hidden="true">↗</span></Link>
-        ))}
-      </nav>
     </header>
   );
 }
