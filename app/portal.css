@@ -25,8 +25,8 @@
 .mode-sandbox { --mode-color: #466520; background: #e9efda; }
 .mode-door:hover { text-decoration: none; }
 .mode-door:focus-visible { outline: 3px solid var(--float-navy); outline-offset: 5px; }
-.mode-art { height: clamp(400px, 39vw, 650px); position: relative; overflow: hidden; display: flex; }
-.mode-art > .artwork-slot { height: 100%; width: 100%; }
+.mode-art { aspect-ratio: 1149 / 1369; flex: none; position: relative; overflow: hidden; display: flex; }
+.mode-art > .artwork-slot { position: absolute; inset: 0; height: 100%; width: 100%; }
 .mode-art img { transition: transform 450ms ease; }
 .mode-art > .split-frogs, .mode-art > .split-lions { width: 50%; }
 .mode-art > .split-frogs { border-right: 3px solid var(--float-lion-gold); }
@@ -84,7 +84,6 @@
   .portal-section-heading { align-items: start; }
   .portal-modes .portal-section-heading > span { display: none; }
   .mode-doors { grid-template-columns: 1fr; gap: 26px; }
-  .mode-art { height: clamp(390px, 110vw, 620px); }
   .mode-copy { padding: 22px 24px; }
   .mode-title-row h3 { font-size: clamp(30px, 8vw, 48px); }
   .mode-copy > p { font-size: 14px; }
@@ -104,8 +103,8 @@
   .portal-stores button { min-width: 0; padding: 14px 22px; }
 }
 @media (prefers-reduced-motion: reduce) { .mode-art img, .mode-title-row h3, .mode-arrow { transition: none; } .mode-door:is(:hover, :focus-visible) img, .mode-door:is(:hover, :focus-visible) h3, .mode-door:is(:hover, :focus-visible) .mode-arrow { transform: none; } }
-/* Crop the cloud wordmark out of the campaign poster, retaining the battlefield. */
-.mode-campaign .mode-art img { height: calc(100% + 100px) !important; top: -100px !important; }
+/* Preserve the full campaign artwork, including on hover and keyboard focus. */
+.mode-campaign:is(:hover, :focus-visible) .mode-art img { transform: none; }
 @media (max-width: 700px) { .portal-key-art { height: clamp(360px, 58svh, 520px); } }
 
 .sky-hero { position: relative; width: 100%; background: var(--float-sky); }
