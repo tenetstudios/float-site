@@ -44,7 +44,7 @@ try {
   await command('Runtime.enable');
   await command('Page.enable');
   await command('Page.bringToFront');
-  await command('Page.navigate', { url: base });
+  await command('Page.navigate', { url: base + '/intelligence' });
   for (let attempt = 0; attempt < 100; attempt++) {
     if (await evaluate('document.querySelector(".dossier-cover") !== null && [...document.images].every(i => i.complete)')) break;
     await pause(150);
@@ -76,14 +76,14 @@ try {
     assert(await evaluate('document.activeElement.id === "tab-field-reports"'), `${width}: arrow wraps to first tab`);
     await evaluate('document.querySelector(".field-reports").focus()');
     assert(await evaluate('document.querySelector(".report-previous").disabled'), `${width}: first report boundary`);
-    for (let report = 2; report <= 4; report++) {
+    for (let report = 2; report <= 9; report++) {
       await key('ArrowRight', 'ArrowRight', 39);
       assert(await evaluate(`document.querySelector('.report-sheet img').alt.includes('Report 00${report}')`), `${width}: report ${report}`);
     }
     assert(await evaluate('document.querySelector(".report-next").disabled'), `${width}: final report boundary`);
     await key('ArrowRight', 'ArrowRight', 39);
-    assert(await evaluate('document.querySelector(".report-sheet img").alt.includes("Report 004")'), `${width}: reports do not wrap`);
-    for (let report = 3; report >= 1; report--) {
+    assert(await evaluate('document.querySelector(".report-sheet img").alt.includes("Report 009")'), `${width}: reports do not wrap`);
+    for (let report = 8; report >= 1; report--) {
       await evaluate('document.querySelector(".report-previous").click()');
     }
     await pause(300);
@@ -97,12 +97,12 @@ try {
       console.log('REPORT DIMENSIONS', width, await evaluate('({ width: document.querySelector(".report-sheet img").clientWidth, height: document.querySelector(".report-sheet img").clientHeight })'));
     }
     assert(await evaluate('document.querySelector(".report-page-previous").disabled'), `${width}: left half disabled on first page`);
-    for (let report = 2; report <= 4; report++) {
+    for (let report = 2; report <= 9; report++) {
       await evaluate('document.querySelector(".report-page-next").click()');
       assert(await evaluate(`document.querySelector('.report-sheet img').alt.includes('Report 00${report}')`), `${width}: right half advances to ${report}`);
     }
     assert(await evaluate('document.querySelector(".report-page-next").disabled'), `${width}: right half disabled on last page`);
-    for (let report = 3; report >= 1; report--) {
+    for (let report = 8; report >= 1; report--) {
       await evaluate('document.querySelector(".report-page-previous").click()');
       assert(await evaluate(`document.querySelector('.report-sheet img').alt.includes('Report 00${report}')`), `${width}: left half returns to ${report}`);
     }
@@ -131,7 +131,7 @@ try {
   await evaluate('document.querySelector(".dossier-toolbar button").click()');
   await pause(100);
   assert(await evaluate('!document.querySelector(".dossier-hero").classList.contains("is-open")'), 'Close file button closes folder');
-  for (const route of ['/about','/privacy','/terms','/safety','/contact','/game','/campaign','/multiplayer','/media']) {
+  for (const route of ['/about','/privacy','/terms','/safety','/contact','/game','/campaign','/multiplayer','/sandbox','/media']) {
     assert.equal((await fetch(base + route)).status, 200, route);
   }
   assert.deepEqual(errors, [], 'No browser runtime exceptions');

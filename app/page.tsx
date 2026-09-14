@@ -1,18 +1,8 @@
-import { DossierHero } from "@/components/intelligence/dossier";
-import { IntelligenceHeader, SiteFooter } from "@/components/intelligence/shell";
+﻿import { Header, Footer } from "@/components/site-shell";
+import { PortalHero, ModeDoors, GameGlimpse, PortalCinematic, PortalRelease } from "@/components/home-portal";
 import { pageMetadata } from "@/lib/site";
-import "./intelligence.css";
-
-export const metadata = pageMetadata("Lion Intelligence Directorate", "/", "Lion Intelligence Directorate. Classified archive, file 773-19-042.");
-
+import "./portal.css";
+export const metadata = pageMetadata("Float — Build. Defend. Ascend.", "/");
 export default function Home() {
-  return (
-    <div className="intelligence-home">
-      <main id="main" className="intelligence-main">
-        <IntelligenceHeader />
-        <DossierHero />
-      </main>
-      <SiteFooter />
-    </div>
-  );
+  return <div className="float-portal"><Header /><main id="main"><PortalHero /><ModeDoors /><GameGlimpse /><PortalCinematic /><PortalRelease /></main><Footer /></div>;
 }

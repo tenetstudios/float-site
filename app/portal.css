@@ -1,0 +1,100 @@
+﻿.portal-hero { display: grid; grid-template-columns: 42% 58%; background: #e7f5ff; min-height: 590px; height: min(680px, 78svh); }
+.portal-hero-copy { align-self: center; padding: 36px 10% 44px 14%; position: relative; z-index: 1; }
+.portal-hero h1 { font-size: clamp(64px, 8.5vw, 140px); font-weight: 900; letter-spacing: -.075em; line-height: 1; margin: 25px 0 24px; }
+.hero-mantra { font-size: clamp(30px, 3.6vw, 56px); font-weight: 800; letter-spacing: -.045em; line-height: 1.03; }
+.hero-date { margin-top: 26px; font-size: 14px; }
+.portal-start { display: inline-flex; align-items: center; gap: 34px; font-size: 12px; font-weight: 700; padding: 16px 0 8px; border-bottom: 1px solid var(--float-navy); margin-top: 18px; }
+.portal-start span { font-size: 22px; }
+.portal-key-art { min-width: 0; height: 100%; }
+.portal-modes { padding: 64px 3% 48px; }
+.portal-section-heading { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 30px; }
+.portal-section-heading h2 { font-size: clamp(27px, 3.1vw, 48px); letter-spacing: -.05em; line-height: 1.1; }
+.portal-section-heading .eyebrow + h2 { margin-top: 10px; }
+.mode-doors { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.mode-door { --mode-color: var(--float-frog-purple); background: #eee7f6; min-width: 0; display: flex; flex-direction: column; }
+.mode-multiplayer { --mode-color: var(--float-lion-red); background: #fae8db; }
+.mode-sandbox { --mode-color: #466520; background: #e9efda; }
+.mode-door:hover { text-decoration: none; }
+.mode-door:focus-visible { outline: 3px solid var(--float-navy); outline-offset: 5px; }
+.mode-art { height: clamp(400px, 39vw, 650px); position: relative; overflow: hidden; display: flex; }
+.mode-art > .artwork-slot { height: 100%; width: 100%; }
+.mode-art img { transition: transform 450ms ease; }
+.mode-art > .split-frogs, .mode-art > .split-lions { width: 50%; }
+.mode-art > .split-frogs { border-right: 3px solid var(--float-lion-gold); }
+.mode-number { position: absolute; top: 20px; left: 20px; color: white; font: 12px var(--label-font); text-shadow: 0 1px 4px #162238; }
+.mode-label { position: absolute; left: 20px; bottom: 20px; padding: 8px 14px; background: var(--float-cloud); color: var(--float-navy); font-weight: bold; }
+.versus { position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%); background: var(--float-lion-gold); color: var(--float-navy); padding: 13px 10px; font-size: 22px; font-weight: 900; font-style: italic; }
+.mode-copy { padding: 25px 25px 22px; border-top: 5px solid var(--mode-color); flex: 1; }
+.mode-title-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.mode-title-row h3 { font-size: clamp(24px, 2.65vw, 44px); text-transform: uppercase; font-weight: 900; letter-spacing: -.065em; transition: transform 300ms ease; }
+.mode-arrow { font-size: 26px; transition: transform 300ms ease; }
+.mode-copy > p { font-size: 14px; line-height: 1.65; margin-top: 17px; }
+.mode-copy > p span { display: block; }
+.mode-copy > .mode-note { font: 10px/1.6 var(--label-font); border-top: 1px solid #16223826; margin-top: 22px; padding-top: 16px; }
+.mode-door:is(:hover, :focus-visible) img { transform: scale(1.025); }
+.mode-door:is(:hover, :focus-visible) h3 { transform: translateX(3px); }
+.mode-door:is(:hover, :focus-visible) .mode-arrow { transform: translate(3px, -3px); }
+.game-glimpse { padding: 30px 6% 65px; }
+.glimpse-heading { display: flex; justify-content: space-between; gap: 20px; border-top: 1px solid var(--rule); padding-top: 24px; margin-bottom: 24px; }
+.glimpse-heading > p { font-size: 12px; }
+.glimpse-sides { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+.glimpse-side .artwork-slot { height: 210px; }
+.glimpse-side figcaption { margin-top: 14px; }
+.glimpse-side figcaption > div { display: flex; align-items: center; justify-content: space-between; }
+.glimpse-side h3 { font-size: 26px; text-transform: uppercase; color: var(--float-navy); letter-spacing: -1px; }
+.glimpse-side figcaption > p { margin-top: 8px; font-size: 10px; }
+.portal-cinematic { padding: 54px 12% 60px; color: var(--float-cloud); background: var(--float-navy); }
+.portal-cinematic h2 { font-size: clamp(24px, 3vw, 42px); text-transform: uppercase; }
+.portal-screen { aspect-ratio: 16/9; background: #172139; border: 1px solid #ffffff30; position: relative; }
+.portal-screen iframe, .portal-screen video { width: 100%; height: 100%; border: 0; }
+.portal-screen-placeholder { position: absolute; inset: 0; padding: 25px; display: flex; flex-direction: column; justify-content: space-between; }
+.portal-screen-placeholder > span { font-size: 8px; color: #c1cadb; }
+.portal-screen-placeholder > div { text-align: center; }
+.portal-screen-placeholder > div > p { font-size: clamp(45px, 9vw, 130px); font-weight: 900; letter-spacing: -.07em; line-height: 1.15; color: #c1cadb; }
+.portal-release { position: relative; isolation: isolate; overflow: hidden; text-align: center; padding: 75px 5%; background: #d3efff; }
+.portal-release .release-sky { object-fit: cover; object-position: 50% 8%; opacity: .15; z-index: -1; }
+.portal-release h2 { font-size: clamp(70px, 10vw, 145px); font-weight: 900; letter-spacing: -.07em; line-height: 1.05; }
+.portal-release p { font-size: 20px; margin-top: 15px; }
+.portal-release > div > small { font: 10px/1.6 var(--label-font); }
+.portal-stores { display: flex; justify-content: center; gap: 14px; margin: 28px 0; }
+.portal-stores button { background: var(--float-navy); color: white; border: 0; border-radius: 5px; padding: 14px 28px; min-width: 155px; font: 16px Arial, sans-serif; }
+.portal-stores small { display: block; font: 9px var(--label-font); margin-top: 7px; color: #d3dcec; text-transform: uppercase; }
+@media (min-width: 1700px) { .portal-modes { max-width: 2000px; margin-inline: auto; } }
+@media (max-width: 1000px) { .mode-doors { gap: 12px; } .mode-copy { padding: 20px 15px; } .mode-title-row h3 { font-size: 2.65vw; } .mode-arrow { font-size: 20px; } .mode-copy > p { font-size: 12px; } }
+@media (max-width: 700px) {
+  .portal-hero { display: flex; flex-direction: column; height: auto; min-height: 0; position: relative; }
+  .portal-key-art { height: 520px; order: -1; width: 100%; }
+  .portal-key-art img { object-position: 50% 35% !important; }
+  .portal-hero-copy { padding: 24px 6% 28px; width: 100%; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 12px 20px; }
+  .portal-hero-copy > .eyebrow { grid-column: 1 / -1; }
+  .portal-hero h1 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .hero-mantra { font-size: 34px; grid-row: span 2; }
+  .hero-date { margin: 0; font-size: 12px; align-self: end; }
+  .portal-start { margin: 0; gap: 15px; justify-self: start; align-self: start; padding-top: 0; font-size: 11px; }
+  .portal-modes { padding: 42px 4% 30px; }
+  .portal-section-heading { align-items: start; }
+  .portal-modes .portal-section-heading > span { display: none; }
+  .mode-doors { grid-template-columns: 1fr; gap: 26px; }
+  .mode-art { height: clamp(390px, 110vw, 620px); }
+  .mode-copy { padding: 22px 24px; }
+  .mode-title-row h3 { font-size: clamp(30px, 8vw, 48px); }
+  .mode-copy > p { font-size: 14px; }
+  .mode-arrow { font-size: 30px; }
+  .game-glimpse { padding: 24px 4% 40px; }
+  .glimpse-sides { grid-template-columns: 1fr; gap: 24px; }
+  .glimpse-heading { flex-wrap: wrap; gap: 8px; }
+  .glimpse-side .artwork-slot { height: 190px; }
+  .portal-cinematic { padding: 35px 4%; }
+  .portal-cinematic .portal-section-heading { align-items: center; gap: 12px; }
+  .portal-cinematic .portal-section-heading > span { font-size: 8px; white-space: nowrap; }
+  .portal-cinematic h2 { font-size: 22px; }
+  .portal-screen-placeholder { padding: 12px; }
+  .portal-screen-placeholder > span { font-size: 6px; }
+  .portal-screen-placeholder > div > .eyebrow { font-size: 8px; }
+  .portal-stores { gap: 10px; }
+  .portal-stores button { min-width: 0; padding: 14px 22px; }
+}
+@media (prefers-reduced-motion: reduce) { .mode-art img, .mode-title-row h3, .mode-arrow { transition: none; } .mode-door:is(:hover, :focus-visible) img, .mode-door:is(:hover, :focus-visible) h3, .mode-door:is(:hover, :focus-visible) .mode-arrow { transform: none; } }
+/* Crop the cloud wordmark out of the campaign poster, retaining the battlefield. */
+.mode-campaign .mode-art img { height: calc(100% + 100px) !important; top: -100px !important; }
+@media (max-width: 700px) { .portal-key-art { height: clamp(360px, 58svh, 520px); } }

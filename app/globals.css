@@ -283,3 +283,17 @@ img { display: block; }
   .screening-heading { gap: 12px; }.screening-heading h2 { font-size: 17px; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+.float-portal { --display-font: "Arial Rounded MT Bold", "Arial Black", Arial, sans-serif; }
+.float-portal .site-header { background: #e7f5ff; border: 0; }
+.site-header .header-release { margin-left: auto; white-space: nowrap; }
+.site-header nav { margin-inline: auto; }
+.footer-insignia { position: relative; display: block; width: 48px; height: 78px; overflow: hidden; flex: none; }
+.footer-insignia img { position: absolute; width: 1672px; height: 941px; max-width: none; left: -62px; top: -19px; }
+.footer-top > .eyebrow { margin-right: auto; }
+.sandbox-preview .artwork-slot { height: min(70vw, 650px); }
+.sandbox-preview .caption { margin-block: 18px; }
+@media (max-width: 760px) {
+  .site-header { justify-content: space-between; }
+  .site-header nav { order: 3; width: 100%; justify-content: space-between; margin: 0; gap: 8px; flex-wrap: wrap; }
+  .site-header .header-release { font-size: 8px; }
+}

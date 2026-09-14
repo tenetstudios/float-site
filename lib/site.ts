@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const siteUrl = "https://floatgame.io";
-export const description = "Build your defense. Launch your balloons. Float is a frog-vs-lion strategy game featuring a free campaign and multiplayer.";
-export const navigation = [{ href: "/game", label: "Game" }, { href: "/campaign", label: "Campaign" }, { href: "/multiplayer", label: "Multiplayer" }, { href: "/media", label: "Media" }];
-export const routes = ["/", "/game", "/campaign", "/multiplayer", "/media", "/about", "/privacy", "/terms", "/safety", "/contact"];
+export const description = "Build your defense. Launch your balloons. Float is a frog-vs-lion strategy game with Campaign, Multiplayer, and Sandbox.";
+export const navigation = [{ href: "/game", label: "Game" }, { href: "/campaign", label: "Campaign" }, { href: "/multiplayer", label: "Multiplayer" }, { href: "/sandbox", label: "Sandbox" }, { href: "/media", label: "Media" }];
+export const routes = ["/", "/game", "/campaign", "/multiplayer", "/sandbox", "/media", "/about", "/privacy", "/terms", "/safety", "/contact"];
 
 export function pageMetadata(title: string, path: string, summary = description): Metadata {
   return {
