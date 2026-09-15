@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { description, siteUrl } from "@/lib/site";
 import "./globals.css";
 export const metadata: Metadata = {
@@ -11,5 +12,5 @@ export const metadata: Metadata = {
   twitter: { card: "summary", title: "Float — Frogs Defend. Lions Ascend.", description },
 };
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return <html lang="en"><body><a className="skip-link" href="#main">Skip to content</a>{children}</body></html>;
+  return <html lang="en"><body><a className="skip-link" href="#main">Skip to content</a>{children}<Analytics /></body></html>;
 }
