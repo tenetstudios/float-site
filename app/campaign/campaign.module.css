@@ -1,0 +1,100 @@
+.page {
+  --display-font: "Arial Rounded MT Bold", "Arial Black", Arial, sans-serif;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  color: #10134b;
+  background: #c4e0ff;
+  padding-bottom: 8.5vw;
+}
+
+.scenery { position: absolute; z-index: -1; top: -5.5vw; left: 0; width: 100%; height: auto; min-height: calc(100% + 5.5vw); object-fit: cover; object-position: center top; }
+.hero { min-height: 54vw; padding-top: 1.6vw; text-align: center; }
+.heroSign { position: relative; width: 50vw; aspect-ratio: 1902 / 827; margin-inline: auto; }
+.heroSign img { object-fit: contain; }
+.campaignTitle, .soloTitle, .howSign span { position: absolute; display: block; color: #fffaf3; font-family: "Arial Rounded MT Bold", "Arial Black", Arial, sans-serif; font-weight: 900; white-space: nowrap; }
+.campaignTitle { top: 21%; left: 9%; width: 82%; font-size: 6.45vw; line-height: 1.2; letter-spacing: -.25vw; transform: rotate(-1deg); -webkit-text-stroke: 1px #fff6ed; text-shadow: 0 2px 0 #ead8c6, 0 4px 0 #c3a28a, 0 6px 0 #8a593d, 0 8px 3px #422310; }
+.soloTitle { top: 57%; left: 21%; width: 58%; font-size: 3.75vw; line-height: 1.3; letter-spacing: .02em; text-shadow: 0 3px 1px #49168f, 0 5px 3px #471883; }
+.intro { position: relative; width: fit-content; margin: 2vw auto 0; padding: 0 16px; transform: translateX(3vw); }
+.intro::before { content: ""; position: absolute; z-index: -1; inset: -14px -20px; border-radius: 50%; background: #f4f8ff8c; filter: blur(22px); }
+.intro p { font-size: clamp(20px, 2.05vw, 34px); line-height: 1.3; font-weight: 900; letter-spacing: -.025em; }
+.playButton { display: inline-flex; align-items: center; justify-content: center; gap: 14px; min-height: 54px; margin-top: 24px; padding: 8px 23px; border: 1px solid #b57cff; border-radius: 15px; background: linear-gradient(120deg, #902afa, #710ce4); color: white; box-shadow: inset 0 1px 2px #ca96ff, 0 5px 9px #59209a35; font: 700 clamp(16px, 1.5vw, 23px) Arial, sans-serif; cursor: pointer; transition: transform .18s, box-shadow .18s; }
+.playButton svg { width: 32px; height: 32px; }
+.playButton > span { font: 32px/1 Arial, sans-serif; }
+.playButton:hover { transform: translateY(-2px); box-shadow: 0 7px 15px #59209a50; }
+.page button:focus-visible { outline: 3px solid #451891; outline-offset: 5px; }
+.content { width: 87.7%; margin-inline: auto; }
+.features { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.feature { min-width: 0; padding: 8px 8px 18px; border: 1px solid white; border-radius: 24px; background: #fffffff7; box-shadow: 0 6px 20px #597fbc15; text-align: center; }
+.imageSlot { width: 100%; aspect-ratio: 1.86; border-radius: 18px; background: radial-gradient(ellipse at 48% 42%, #eef7ff, #dcecff 58%, #b9d6fc); box-shadow: inset 0 1px 3px #92b8ef33; }
+.feature h2 { margin: 12px 0 7px; font-size: clamp(17px, 1.78vw, 28px); line-height: 1.2; font-weight: 900; letter-spacing: -.04em; }
+.feature p { color: #7281a4; font-size: clamp(13px, 1.35vw, 21px); line-height: 1.25; }
+.feature p span { display: block; }
+.howItWorks { padding-top: 20px; }
+.howSign { position: relative; width: 35vw; aspect-ratio: 4 / 1; margin: 0 auto 20px; }
+.howSign span { inset: 25% 0 auto; text-align: center; font-size: 3.35vw; line-height: 1.2; letter-spacing: -.025em; transform: rotate(-1deg); text-shadow: 0 2px 0 #d5b89e, 0 4px 0 #805033, 0 6px 3px #422310; }
+.steps { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3.5vw; list-style: none; margin: 0; padding: 0 7px; }
+.steps::before { content: ""; position: absolute; z-index: -1; top: 50%; left: 5%; right: 5%; border-top: 2px dashed #8057d1; }
+.steps li { display: flex; align-items: center; gap: 12px; min-width: 0; min-height: 96px; padding: 12px; border: 1px solid white; border-radius: 23px; background: #fffffff7; box-shadow: 0 5px 15px #597fbc0d; }
+.stepNumber { align-self: flex-start; display: grid; place-items: center; flex: 0 0 37px; height: 37px; margin-top: 5px; border-radius: 50%; color: white; background: linear-gradient(135deg, #9b3df9, #6308df); box-shadow: inset 0 1px 3px #c094ff; font-size: 25px; font-weight: 900; }
+.steps svg { flex: 0 0 54px; width: 54px; height: 64px; }
+.steps h3 { font: 900 clamp(13px, 1.25vw, 20px)/1.15 Arial, sans-serif; letter-spacing: -.025em; margin-bottom: 6px; }
+.steps p { color: #7281a4; font-size: clamp(12px, 1.12vw, 18px); line-height: 1.25; }
+.availability { position: fixed; inset: 0; margin: auto; max-width: calc(100vw - 32px); padding: 44px 36px; border: 1px solid white; border-radius: 24px; background: #f3f6ff; color: #171a50; box-shadow: 0 16px 70px #13245155; }
+.availability::backdrop { background: #13245166; backdrop-filter: blur(5px); }
+.availability h2 { font-size: 23px; }
+.availability button { position: absolute; top: 4px; right: 6px; width: 44px; height: 44px; border: 0; background: transparent; color: inherit; font-size: 28px; cursor: pointer; }
+
+@media (min-width: 1800px) {
+  .page { max-width: 1800px; margin-inline: auto; }
+  .hero { min-height: 972px; padding-top: 29px; }
+  .heroSign { width: 900px; }
+  .campaignTitle { font-size: 116px; }
+  .soloTitle { font-size: 67px; }
+  .howSign { width: 630px; }
+  .howSign span { font-size: 60px; }
+}
+@media (max-width: 1000px) {
+  .content { width: 92%; }
+  .hero { min-height: 57vw; }
+  .heroSign { width: 56vw; }
+  .campaignTitle { font-size: 7.2vw; }
+  .soloTitle { font-size: 4.2vw; }
+  .intro { margin-top: 1.5vw; }
+  .features { gap: 12px; }
+  .feature h2 { font-size: 18px; }
+  .feature p { font-size: 14px; }
+  .steps { gap: 14px; padding: 0; }
+  .steps li { gap: 8px; flex-wrap: wrap; }
+  .steps li > div { flex-basis: 100%; }
+  .steps svg { height: 50px; }
+  .steps h3 { font-size: 16px; }
+  .steps p { font-size: 14px; }
+}
+@media (max-width: 600px) {
+  .page { padding-bottom: 48px; background: linear-gradient(#0f91ff, #dbedff 650px, #ecf5ff); }
+  .scenery { top: 0; width: 100%; height: 780px; min-height: 0; object-fit: cover; object-position: 35% top; mask-image: linear-gradient(#000 70%, transparent); }
+  .hero { min-height: 520px; padding-top: 16px; }
+  .heroSign { width: 96vw; }
+  .campaignTitle { font-size: 12.3vw; letter-spacing: -.6vw; text-shadow: 0 2px 0 #e0c4a9, 0 4px 0 #956748, 0 6px 3px #422310; }
+  .soloTitle { font-size: 7.3vw; }
+  .intro { transform: none; margin-top: 28px; }
+  .intro::before { background: #f4f8ffe0; filter: blur(16px); }
+  .intro p { font-size: 22px; }
+  .playButton { min-height: 54px; margin-top: 20px; font-size: 18px; }
+  .content { width: calc(100% - 32px); }
+  .features { grid-template-columns: 1fr; gap: 20px; max-width: 420px; margin-inline: auto; }
+  .feature { padding-bottom: 20px; }
+  .feature h2 { font-size: 22px; }
+  .feature p { font-size: 16px; }
+  .howItWorks { padding-top: 28px; }
+  .howSign { width: min(100%, 400px); margin-bottom: 20px; }
+  .howSign span { font-size: clamp(26px, 8vw, 38px); }
+  .steps { grid-template-columns: 1fr; gap: 16px; max-width: 420px; margin-inline: auto; }
+  .steps::before { top: 0; bottom: 0; left: 32px; right: auto; border-top: 0; border-left: 2px dashed #8057d1; }
+  .steps li { flex-wrap: nowrap; gap: 12px; padding: 14px; }
+  .steps li > div { flex-basis: auto; }
+  .steps svg { flex-basis: 48px; width: 48px; height: 58px; }
+  .stepNumber { align-self: center; margin: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .playButton { transition: none; } }
