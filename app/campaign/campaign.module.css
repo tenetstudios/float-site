@@ -70,9 +70,9 @@
   .page { padding-bottom: 48px; background: linear-gradient(#0f91ff, #dbedff 650px, #ecf5ff); }
   .scenery { top: 0; width: 100%; height: 780px; min-height: 0; object-fit: cover; object-position: 35% top; mask-image: linear-gradient(#000 70%, transparent); }
   .homeLink { top: 12px; left: 16px; font-size: 25px; }
-  .hero { min-height: 584px; padding-top: 80px; }
+  .hero { min-height: 624px; padding: 56px 0 40px; }
   .heroSign { width: 96vw; }
-  .intro { transform: none; margin-top: 28px; }
+  .intro { transform: none; margin-top: 140px; }
   .intro::before { background: #f4f8ffe0; filter: blur(16px); }
   .intro p { font-size: 22px; }
   .playButton { min-height: 54px; margin-top: 20px; font-size: 18px; }
