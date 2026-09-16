@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Footer } from "@/components/site-shell";
 import { pageMetadata } from "@/lib/site";
 import styles from "./sandbox.module.css";
@@ -56,6 +57,7 @@ function SandboxSign({ small = false }: { small?: boolean }) {
 export default function SandboxPage() {
   return <>
     <main id="main" className={styles.page}>
+      <Link href="/" className={styles.homeLink} aria-label="Float home">Float</Link>
       <Image src="/images/sandbox/builder-scene.webp" alt="" width={1182} height={1330} sizes="100vw" preload className={styles.scenery} />
       <section className={styles.hero} aria-labelledby="sandbox-title">
         <SandboxSign />

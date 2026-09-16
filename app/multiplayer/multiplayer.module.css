@@ -74,7 +74,7 @@
   .header { top: 12px; left: 16px; }
   .brand { font-size: 25px; }
   .main { width: calc(100% - 32px); }
-  .hero { min-height: 490px; padding-top: 26px; }
+  .hero { min-height: 620px; padding-top: 26px; }
   .intro { padding: 20px 0 24px; }
   .intro::before { inset: -6px -8px 0; filter: blur(13px); }
   .intro > p { max-width: 340px; margin-inline: auto; font-size: 20px; line-height: 1.35; }
