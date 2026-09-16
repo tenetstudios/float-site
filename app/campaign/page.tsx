@@ -56,8 +56,8 @@ function CampaignIcon({ name }: { name: "gamepad" | "map" | "swords" | "star" })
 function CampaignSign({ small = false }: { small?: boolean }) {
   if (small) {
     return <h2 id="campaign-steps-title" className={styles.howSign}>
-      <Image src="/images/campaign/how-it-works-board.webp" alt="" fill sizes="(max-width: 600px) 90vw, 35vw" />
-      <span>How It Works</span>
+      <span className="sr-only">How It Works</span>
+      <Image src="/images/sandbox/how-it-works.webp" alt="" fill sizes="(max-width: 600px) 90vw, 35vw" />
     </h2>;
   }
 
