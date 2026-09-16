@@ -38,7 +38,7 @@ function Icon({ name, className }: { name: string; className?: string }) {
 export default function MultiplayerPage() {
   return (
     <div className={styles.page}>
-      <Image src="/images/multiplayer/sky-scene.webp" alt="" fill sizes="100vw" preload className={styles.scenery} />
+      <Image src="/images/multiplayer/sky-scene-lion-crew.webp" alt="" fill sizes="100vw" preload className={styles.scenery} />
       <header className={styles.header}>
         <Link href="/" className={styles.brand} aria-label="Float home"><Icon name="frog" />Float</Link>
         <nav aria-label="Main navigation">
@@ -51,10 +51,7 @@ export default function MultiplayerPage() {
 
       <main id="main" className={styles.main}>
         <section className={styles.hero} aria-labelledby="multiplayer-title">
-          <div className={styles.titleSign}>
-            <h1 id="multiplayer-title">Multiplayer</h1>
-            <p className={styles.ribbon}>– Online PvP –</p>
-          </div>
+          <h1 id="multiplayer-title" className="sr-only">Multiplayer — Online PvP</h1>
           <div className={styles.intro}>
             <p>Defend <span>as frogs.</span> <span>Attack as lions.</span> Face off above the clouds.</p>
             <div className={styles.actions}>
