@@ -64,7 +64,10 @@ export default function MultiplayerPage() {
         </section>
 
         <section id="how-it-works" className={styles.howItWorks} aria-labelledby="match-title">
-          <h2 id="match-title" className={styles.matchSign}>How a Match Works</h2>
+          <h2 id="match-title" className={styles.matchSign}>
+            <span className="sr-only">How a Match Works</span>
+            <Image src="/images/multiplayer/how-a-match-works.png" alt="" width={2149} height={446} sizes="(max-width: 600px) 90vw, 34vw" />
+          </h2>
           <ol className={styles.steps}>
             {steps.map((step, index) => (
               <li key={step.title}>

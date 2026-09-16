@@ -24,16 +24,6 @@
 .brand { display: inline-flex; align-items: center; min-height: 44px; padding: 4px 18px; border: 1px solid #fff; border-radius: 16px; background: #eff6ffeb; box-shadow: 0 5px 22px #386bb715; font-size: 28px; font-weight: 900; letter-spacing: -1px; }
 .main { width: 80.5%; margin-left: 4.5%; }
 .hero { position: relative; min-height: 57vw; border-radius: 32px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding-top: 30px; }
-.matchSign {
-  position: relative;
-  text-align: center;
-  color: #fff9ee;
-  border: 4px solid #9b622d;
-  border-radius: 42% 35% 25% 30% / 15% 18% 22% 20%;
-  background: repeating-linear-gradient(176deg, #ffffff08 0 2px, transparent 3px 14px), linear-gradient(#9a5929 0%, #693817 47%, #9a592e 49%, #6d351b 100%);
-  box-shadow: inset 0 4px 2px #e4a653, inset 0 -6px 3px #432713, 0 7px 8px #29211333;
-  text-shadow: 0 3px 0 #785137, 0 5px 3px #392411;
-}
 .intro { margin-top: auto; position: relative; width: 100%; text-align: center; padding: 20px 8px 28px; }
 .intro::before { content: ""; position: absolute; z-index: -1; inset: -20px 8% -2px; background: #ffffffed; filter: blur(22px); border-radius: 50%; }
 .intro > p { color: #000; font-size: clamp(17px, 1.9vw, 29px); font-weight: 900; letter-spacing: -.5px; }
@@ -54,7 +44,8 @@
 .feature p { font-size: clamp(12px, 1.14vw, 17px); line-height: 1.35; color: #66759f; }
 .feature p span { display: block; }
 .howItWorks { padding-top: 26px; scroll-margin-top: 24px; }
-.matchSign { width: fit-content; margin: 0 auto 22px; padding: 7px 30px 10px; font-size: clamp(23px, 2.65vw, 40px); font-weight: 900; transform: rotate(-1deg); }
+.matchSign { width: min(34vw, 520px); margin: 0 auto 12px; }
+.matchSign img { display: block; width: 100%; height: auto; }
 .steps { position: relative; display: grid; grid-template-columns: 1fr .9fr 1.02fr; gap: 25px; list-style: none; padding: 0; margin: 0; }
 .steps::before { content: ""; position: absolute; z-index: -1; top: 50%; left: 10%; right: 10%; border-top: 2px dashed #9092d5; }
 .steps li { display: flex; align-items: center; gap: 10px; padding: 12px; min-height: 84px; border: 1px solid white; border-radius: 28px; background: #fffffff2; }
@@ -102,7 +93,7 @@
   .feature h2 { font-size: 22px; margin-top: 13px; }
   .feature p { font-size: 15px; }
   .howItWorks { padding-top: 32px; }
-  .matchSign { padding-inline: 16px; font-size: clamp(21px, 6vw, 30px); margin-bottom: 24px; }
+  .matchSign { width: min(100%, 400px); margin-bottom: 24px; }
   .steps { grid-template-columns: 1fr; gap: 16px; max-width: 420px; margin-inline: auto; }
   .steps::before { top: 0; bottom: 0; left: 30px; right: auto; border-top: 0; border-left: 2px dashed #9092d5; }
   .steps li { flex-wrap: nowrap; padding: 14px; gap: 12px; }
