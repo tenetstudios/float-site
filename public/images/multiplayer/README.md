@@ -1,5 +1,9 @@
 # Multiplayer background
 
+## Frog reference refresh
+
+The three foreground frogs in `sky-scene-lion-crew.webp` were updated with built-in imagegen using `base frog.png` and `better frogs.webp` as appearance references. The edit adds broad cream jaws, half-lidded eyes, glossy lime skin and sharper character detail while retaining the scene composition, equipment, lion crews and title. The generated image is encoded as WebP at quality 95. The full edit prompt is saved in `frog-refresh-prompt.txt`.
+
 ## Current lion crew and centerpiece revision
 
 `sky-scene-lion-crew.webp` is the current page artwork. Built-in imagegen replaced the basket crews using `balloon dread.png` as the character reference, then recreated and integrated the mockup's wooden MULTIPLAYER / ONLINE PVP centerpiece. The heading has an accessible HTML equivalent; its visible lettering is now rendered artwork as requested. The original background remains available as `sky-scene.webp`.
