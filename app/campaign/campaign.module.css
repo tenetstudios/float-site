@@ -9,12 +9,11 @@
 }
 
 .scenery { position: absolute; z-index: -1; top: -5.5vw; left: 0; width: 100%; height: auto; min-height: calc(100% + 5.5vw); object-fit: cover; object-position: center top; }
+.homeLink { position: absolute; z-index: 2; top: 18px; left: 6.15%; display: inline-flex; align-items: center; min-height: 44px; padding: 4px 18px; border: 1px solid #fff; border-radius: 16px; background: #eff6ffeb; color: #121951; box-shadow: 0 5px 22px #386bb715; font-size: 28px; font-weight: 900; letter-spacing: -1px; }
 .hero { min-height: 54vw; padding-top: 1.6vw; text-align: center; }
 .heroSign { position: relative; width: 50vw; aspect-ratio: 1902 / 827; margin-inline: auto; }
 .heroSign img { object-fit: contain; }
-.campaignTitle, .soloTitle, .howSign span { position: absolute; display: block; color: #fffaf3; font-family: "Arial Rounded MT Bold", "Arial Black", Arial, sans-serif; font-weight: 900; white-space: nowrap; }
-.campaignTitle { top: 21%; left: 9%; width: 82%; font-size: 6.45vw; line-height: 1.2; letter-spacing: -.25vw; transform: rotate(-1deg); -webkit-text-stroke: 1px #fff6ed; text-shadow: 0 2px 0 #ead8c6, 0 4px 0 #c3a28a, 0 6px 0 #8a593d, 0 8px 3px #422310; }
-.soloTitle { top: 57%; left: 21%; width: 58%; font-size: 3.75vw; line-height: 1.3; letter-spacing: .02em; text-shadow: 0 3px 1px #49168f, 0 5px 3px #471883; }
+.howSign span { position: absolute; display: block; color: #fffaf3; font-family: "Arial Rounded MT Bold", "Arial Black", Arial, sans-serif; font-weight: 900; white-space: nowrap; }
 .intro { position: relative; width: fit-content; margin: 2vw auto 0; padding: 0 16px; transform: translateX(3vw); }
 .intro::before { content: ""; position: absolute; z-index: -1; inset: -14px -20px; border-radius: 50%; background: #f4f8ff8c; filter: blur(22px); }
 .intro p { font-size: clamp(20px, 2.05vw, 34px); line-height: 1.3; font-weight: 900; letter-spacing: -.025em; }
@@ -49,8 +48,6 @@
   .page { max-width: 1800px; margin-inline: auto; }
   .hero { min-height: 972px; padding-top: 29px; }
   .heroSign { width: 900px; }
-  .campaignTitle { font-size: 116px; }
-  .soloTitle { font-size: 67px; }
   .howSign { width: 630px; }
   .howSign span { font-size: 60px; }
 }
@@ -58,8 +55,6 @@
   .content { width: 92%; }
   .hero { min-height: 57vw; }
   .heroSign { width: 56vw; }
-  .campaignTitle { font-size: 7.2vw; }
-  .soloTitle { font-size: 4.2vw; }
   .intro { margin-top: 1.5vw; }
   .features { gap: 12px; }
   .feature h2 { font-size: 18px; }
@@ -74,10 +69,9 @@
 @media (max-width: 600px) {
   .page { padding-bottom: 48px; background: linear-gradient(#0f91ff, #dbedff 650px, #ecf5ff); }
   .scenery { top: 0; width: 100%; height: 780px; min-height: 0; object-fit: cover; object-position: 35% top; mask-image: linear-gradient(#000 70%, transparent); }
-  .hero { min-height: 520px; padding-top: 16px; }
+  .homeLink { top: 12px; left: 16px; font-size: 25px; }
+  .hero { min-height: 584px; padding-top: 80px; }
   .heroSign { width: 96vw; }
-  .campaignTitle { font-size: 12.3vw; letter-spacing: -.6vw; text-shadow: 0 2px 0 #e0c4a9, 0 4px 0 #956748, 0 6px 3px #422310; }
-  .soloTitle { font-size: 7.3vw; }
   .intro { transform: none; margin-top: 28px; }
   .intro::before { background: #f4f8ffe0; filter: blur(16px); }
   .intro p { font-size: 22px; }

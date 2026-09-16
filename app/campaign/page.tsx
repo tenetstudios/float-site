@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Footer } from "@/components/site-shell";
 import { pageMetadata } from "@/lib/site";
 import styles from "./campaign.module.css";
@@ -61,15 +62,15 @@ function CampaignSign({ small = false }: { small?: boolean }) {
   }
 
   return <h1 id="campaign-title" className={styles.heroSign}>
-    <Image src="/images/campaign/campaign-board.webp" alt="" fill sizes="(max-width: 600px) 96vw, 50vw" preload />
-    <span className={styles.campaignTitle}>CAMPAIGN</span>
-    <span className={styles.soloTitle}>- SOLO -</span>
+    <Image src="/images/campaign/campaign-title-board.webp" alt="" fill sizes="(max-width: 600px) 96vw, 50vw" preload />
+    <span className="sr-only">Campaign — Solo</span>
   </h1>;
 }
 
 export default function CampaignPage() {
   return <>
     <main id="main" className={styles.page}>
+      <Link href="/" className={styles.homeLink} aria-label="Float home">Float</Link>
       <Image className={styles.scenery} src="/images/campaign/sky-scene.webp" alt="" width={1182} height={1330} sizes="100vw" preload />
       <section className={styles.hero} aria-labelledby="campaign-title">
         <CampaignSign />
