@@ -53,7 +53,7 @@ export default function MultiplayerPage() {
         <section className={styles.hero} aria-labelledby="multiplayer-title">
           <h1 id="multiplayer-title" className="sr-only">Multiplayer — Online PvP</h1>
           <div className={styles.intro}>
-            <p>Defend <span>as frogs.</span> <span>Attack as lions.</span> Face off above the clouds.</p>
+            <p>Defend <span>as frogs.</span> Attack <span>as lions.</span> Face off above the clouds.</p>
             <div className={styles.actions}>
               <button type="button" className={styles.primary} popoverTarget="multiplayer-availability"><Icon name="gamepad" />Play Multiplayer<span aria-hidden="true">›</span></button>
               <a href="#how-it-works" className={styles.secondary}><Icon name="play" />How It Works<span aria-hidden="true">›</span></a>

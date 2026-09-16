@@ -46,7 +46,7 @@
 }
 .intro { margin-top: auto; position: relative; width: 100%; text-align: center; padding: 20px 8px 28px; }
 .intro::before { content: ""; position: absolute; z-index: -1; inset: -20px 8% -2px; background: #ffffffed; filter: blur(22px); border-radius: 50%; }
-.intro > p { font-size: clamp(17px, 1.9vw, 29px); font-weight: 900; letter-spacing: -.5px; }
+.intro > p { color: #000; font-size: clamp(17px, 1.9vw, 29px); font-weight: 900; letter-spacing: -.5px; }
 .intro > p span { color: #7024d5; }
 .actions { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 18px; }
 .actions > * { display: inline-flex; align-items: center; justify-content: center; gap: 15px; min-height: 56px; padding: 10px 30px; border-radius: 23px; font: 800 18px Arial, Helvetica, sans-serif; transition: transform .18s, box-shadow .18s; }
