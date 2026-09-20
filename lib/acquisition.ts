@@ -7,6 +7,7 @@ export type Report = {
   daily: { day: string; installs: number }[];
   countries: Group[]; campaigns: Group[]; creators: Group[]; sources: Group[];
   platforms: Group[]; campaignCountries: Group[]; creatorReport: Group[];
+  regions?: Group[]; referrals?: Group[];
 };
 export function dateRange(days: number, now = new Date()): Filters {
   const end = now.toISOString().slice(0, 10);

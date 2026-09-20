@@ -58,6 +58,15 @@ try {
   assert.match(response.headers.getSetCookie().find(c => c.startsWith('__Host-float-admin-pkce=')), /Max-Age=0/i);
   response = await finish(flow); assert.match(response.headers.get('location'), /auth_error=signin/, 'Consumed code rejected');
   const headers = { cookie: cookie.split(';')[0] };
+  response = await api('/api/admin/retention'); assert.equal(response.status, 401);
+  response = await api('/api/admin/retention', { headers: { cookie: '__Host-float-admin=fixture-nonadmin' } }); assert.equal(response.status, 403);
+  response = await api('/api/admin/retention', { headers }); assert.equal(response.status, 200);
+  assert.match(response.headers.get('cache-control'), /no-store/);
+  assert.equal((await response.json()).report.summary.d1.percent, 25);
+  response = await api('/api/admin/retention?source=missing', { headers }); assert.equal(response.status, 503);
+  response = await api('/api/admin/retention?source=failure', { headers }); assert.equal(response.status, 502);
+  response = await api('/api/admin/retention?activityStart=invalid', { headers }); assert.equal(response.status, 400);
+  console.log('PASS retention API: authentication, allowlist, aggregates, no-store, setup-required, errors, validation');
   response = await api('/api/admin/acquisition?start=2026-01-01&end=2026-01-30&paid=unknown', { headers });
   assert.equal(response.status, 200); assert.equal((await response.json()).report.summary.total, 1201);
   response = await api('/api/admin/acquisition?paid=invalid', { headers }); assert.equal(response.status, 400);

@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "test:acquisition": "node --test scripts/test-acquisition.mjs",
-    "test:acquisition:api": "node scripts/test-acquisition-api.mjs"
+    "test:acquisition:api": "node scripts/test-acquisition-api.mjs",
+    "test:retention": "node --test scripts/test-retention.mjs",
+    "test:reporting:sql": "node scripts/test-reporting-sql.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",

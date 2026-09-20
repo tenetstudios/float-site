@@ -3,7 +3,7 @@ import { authUser, config, token } from "@/lib/acquisition-server";
 import { ReportError } from "@/lib/acquisition";
 import Dashboard from "./acquisition/dashboard";
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = { title: "Acquisition | Admin", robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: "Analytics | Admin", robots: { index: false, follow: false } };
 export default async function AcquisitionPage({ searchParams }: { searchParams: Promise<{ auth_error?: string }> }) {
   let authorized = false;
   let message = "";

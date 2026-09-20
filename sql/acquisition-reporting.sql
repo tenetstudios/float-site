@@ -34,7 +34,7 @@ begin
     raise exception 'Invalid filter' using errcode = '22023';
   end if;
   with filtered as materialized (
-    select first_seen_at, is_paid, country_code, campaign_id, campaign_name,
+    select first_seen_at, is_paid, country_code, region_code, referral_code, campaign_id, campaign_name,
            creator_code, acquisition_source, acquisition_medium, platform, app_version
     from public.player_acquisition
     where first_seen_at >= (p_start::timestamp at time zone 'UTC')
@@ -60,6 +60,8 @@ begin
       left join daily_counts d on d.report_date = days.report_date),
     'countries', (select coalesce(jsonb_agg(jsonb_build_object('values', vals, 'installs', installs) order by installs desc, vals::text), '[]'::jsonb) from (select jsonb_build_array(country_code) vals, count(*) installs from filtered group by country_code order by count(*) desc, jsonb_build_array(country_code)::text limit 50) g),
     'campaigns', (select coalesce(jsonb_agg(jsonb_build_object('values', vals, 'installs', installs) order by installs desc, vals::text), '[]'::jsonb) from (select jsonb_build_array(campaign_id, campaign_name) vals, count(*) installs from filtered group by campaign_id, campaign_name order by count(*) desc, jsonb_build_array(campaign_id, campaign_name)::text limit 50) g),
+    'regions', (select coalesce(jsonb_agg(jsonb_build_object('values', vals, 'installs', installs) order by installs desc, vals::text), '[]'::jsonb) from (select jsonb_build_array(country_code, region_code) vals, count(*) installs from filtered group by country_code, region_code order by count(*) desc, jsonb_build_array(country_code, region_code)::text limit 50) g),
+    'referrals', (select coalesce(jsonb_agg(jsonb_build_object('values', vals, 'installs', installs) order by installs desc, vals::text), '[]'::jsonb) from (select jsonb_build_array(referral_code) vals, count(*) installs from filtered group by referral_code order by count(*) desc, jsonb_build_array(referral_code)::text limit 50) g),
     'creators', (select coalesce(jsonb_agg(jsonb_build_object('values', vals, 'installs', installs) order by installs desc, vals::text), '[]'::jsonb) from (select jsonb_build_array(creator_code) vals, count(*) installs from filtered group by creator_code order by count(*) desc, jsonb_build_array(creator_code)::text limit 50) g),
     'sources', (select coalesce(jsonb_agg(jsonb_build_object('values', vals, 'installs', installs) order by installs desc, vals::text), '[]'::jsonb) from (select jsonb_build_array(acquisition_source, acquisition_medium) vals, count(*) installs from filtered group by acquisition_source, acquisition_medium order by count(*) desc, jsonb_build_array(acquisition_source, acquisition_medium)::text limit 50) g),
     'platforms', (select coalesce(jsonb_agg(jsonb_build_object('values', vals, 'installs', installs) order by installs desc, vals::text), '[]'::jsonb) from (select jsonb_build_array(platform, app_version) vals, count(*) installs from filtered group by platform, app_version order by count(*) desc, jsonb_build_array(platform, app_version)::text limit 50) g),

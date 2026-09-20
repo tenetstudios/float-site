@@ -20,6 +20,15 @@ globalThis.fetch = async (input, init = {}) => {
     return Response.json({ error: 'invalid' }, { status: 401 });
   }
   if (url.pathname === '/auth/v1/logout') return new Response(null, { status: 204 });
+  if (url.pathname === '/rest/v1/rpc/float_retention_report') {
+    if (headers.get('apikey') !== 'sb_secret_fixture') return new Response(null, { status: 403 });
+    const args = JSON.parse(init.body);
+    if (args.p_source === 'missing') return Response.json({ code: 'PGRST202' }, { status: 404 });
+    if (args.p_source === 'failure') return Response.json({ code: 'XX000' }, { status: 500 });
+    const rate = { eligible: 100, retained: 25, pending: 1, unavailable: 2, percent: 25 };
+    const summary = { installs: 103, tracked: 101, firstSeen: '2026-01-01T00:00:00Z', lastSeen: '2026-02-15T12:00:00Z', activeDays: 202, averageActiveDays: 2, averageSessions: 1, d1: rate, d7: rate, d30: { eligible: 0, retained: 0, pending: 103, unavailable: 0, percent: null } };
+    return Response.json({ asOf: '2026-02-15', summary, activity: { activeDays: 200, sessionStarts: 100, sessionsPerActiveDay: 0.5 }, daily: [{ day: '2026-02-14', activeDays: 100, sessionStarts: 50, sessionsPerActiveDay: 0.5 }], cohorts: [{ values: ['2026-01-01'], metrics: summary }], inactivity: [{ label: 'Unavailable', installs: 2 }], breakdowns: { country: [], campaign: [], creator: [], source: [], platform: [], creatorCampaign: [] } });
+  }
   if (url.pathname === '/rest/v1/rpc/float_acquisition_report') {
     if (headers.get('apikey') !== 'sb_secret_fixture') return new Response(null, { status: 403 });
     const args = JSON.parse(init.body);

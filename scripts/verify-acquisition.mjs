@@ -47,6 +47,22 @@ try {
     const originalFetch = window.fetch;
     window.fetch = async (input, init) => {
       const url = String(input);
+      if (url.startsWith('/api/admin/retention?')) {
+        const f = window.fixture;
+        f.retentionCalls = (f.retentionCalls || 0) + 1;
+        f.retentionActive = (f.retentionActive || 0) + 1;
+        f.retentionMax = Math.max(f.retentionMax || 0, f.retentionActive);
+        const { retentionStatus, retentionDelay, retentionTotal } = f;
+        try {
+          // Ignore abort deliberately so the client must reject stale generations.
+          await new Promise(resolve => setTimeout(resolve, retentionDelay || 0));
+          if (retentionStatus) return Response.json({ error: 'Retention setup required.' }, { status: retentionStatus });
+          const response = await originalFetch(input, { ...init, signal: undefined });
+          const body = await response.json();
+          if (body.report && retentionTotal !== undefined) body.report.summary.installs = retentionTotal;
+          return Response.json(body, { status: response.status });
+        } finally { f.retentionActive--; }
+      }
       if (url === '/api/admin/auth/google') {
         const response = await originalFetch(input, init);
         if (!response.ok) return response;
@@ -112,6 +128,40 @@ try {
   await pause(900);
   assert.equal(await evaluate('document.querySelector("strong").textContent'), '222', 'Older filters never overwrite newer results');
   console.log('PASS visible-only timer, no overlapping refreshes, stale-response protection');
+  assert.equal(await evaluate('document.querySelectorAll("details > summary > span").length'), 7, 'Seven collapsible categories');
+  await evaluate('window.fixture.retentionStatus = 503; document.querySelector("#retention > summary").click()');
+  await until('document.querySelector("[data-retention-panel]")?.textContent.includes("Retention setup required")');
+  assert.equal(await evaluate('document.querySelectorAll("[data-retention-panel] strong").length'), 0, 'Missing backend never shows zeros');
+  await evaluate(`window.fixture.retentionStatus = 0; Array.from(document.querySelectorAll('button')).find(b => b.textContent === 'Retry retention').click()`);
+  await until('document.querySelector("[data-retention-panel]")?.textContent.includes("25% · 25 / 100")');
+  assert(await evaluate('document.querySelector("[data-retention-panel]").textContent.includes("Pending")'));
+  assert(await evaluate('document.querySelector("[data-retention-panel]").textContent.includes("Unavailable")'));
+  await evaluate('window.fixture.retentionDelay = 300; window.fixture.retentionMax = 0; window.fixture.tick(); window.fixture.tick()');
+  await until('window.fixture.retentionActive === 0');
+  assert.equal(await evaluate('window.fixture.retentionMax'), 1, 'Retention timers do not overlap');
+  const retentionCalls = await evaluate('window.fixture.retentionCalls');
+  await evaluate('window.fixture.visible = false; window.fixture.tick()');
+  assert.equal(await evaluate('window.fixture.retentionCalls'), retentionCalls, 'Hidden retention does not refresh');
+  await evaluate('window.fixture.visible = true; window.fixture.retentionTotal = 999; window.fixture.retentionDelay = 800; window.fixture.tick()');
+  await until('window.fixture.retentionActive === 1');
+  await evaluate(`window.fixture.retentionTotal = 222; window.fixture.retentionDelay = 0; const input = Array.from(document.querySelectorAll('[data-retention-panel] label')).find(l => l.textContent === 'Source').querySelector('input'); Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(input, 'new-source'); input.dispatchEvent(new Event('input', { bubbles: true }));`);
+  await evaluate('document.querySelector("[data-retention-panel] form").requestSubmit()');
+  await until('document.querySelector("[data-retention-panel] strong")?.textContent === "222"');
+  await pause(900);
+  assert.equal(await evaluate('document.querySelector("[data-retention-panel] strong").textContent'), '222', 'Retention ignores stale filter results');
+  for (const width of [320, 390, 1440]) {
+    await command('Emulation.setDeviceMetricsOverride', { width, height: 1000, deviceScaleFactor: 1, mobile: false });
+    assert(await evaluate('document.documentElement.scrollWidth <= innerWidth'), 'Retention responsive without page overflow');
+  }
+  await evaluate(`Array.from(document.querySelectorAll('details > summary')).find(s => s.textContent.includes('03 · Engagement')).click()`);
+  assert(await evaluate('document.body.textContent.includes("Campaign missions started / completed / failed")'));
+  assert(await evaluate('document.body.textContent.includes("Not connected")'));
+  await evaluate(`document.querySelector('details > summary').click(); document.querySelector('#retention').scrollIntoView()`);
+  const retentionShot = await command('Page.captureScreenshot', { format: 'png' });
+  await writeFile('artifacts/admin-retention.png', Buffer.from(retentionShot.data, 'base64'));
+  await evaluate('document.querySelector("#retention > summary").click()');
+  await until('!document.querySelector("[data-retention-panel]")');
+  console.log('PASS seven collapsible categories, retention setup/retry/metrics, pending/unavailable, responsive layout, planned metrics');
   await evaluate(`window.fixture.status = 403; ${clickRefresh}`);
   await until('document.body?.textContent.includes("Sign in with Google")');
   assert.equal(await evaluate('document.querySelectorAll("strong").length'), 0, 'Unauthorized session clears report data');

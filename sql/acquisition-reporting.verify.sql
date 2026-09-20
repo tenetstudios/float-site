@@ -19,6 +19,8 @@ insert into acquisition_fixture
 select '2026-01-04 12:00+00', null, 'CA', 'group-' || i, null, null, null, null, null, null from generate_series(1, 60) i;
 
 -- Test the deployed function body against only the isolated fixtures.
+alter table acquisition_fixture add column region_code text, add column referral_code text;
+update acquisition_fixture set region_code='ON', referral_code='fixture-referral' where campaign_id='fixture-campaign';
 do $verify$
 declare definition text; r jsonb;
 begin
@@ -38,6 +40,7 @@ begin
   r := pg_temp.fixture_report('2026-01-01', '2026-01-02');
   if r->'summary' <> '{"total":1201,"paid":401,"organic":400,"unknown":400}'::jsonb then raise exception 'FAIL: >1000 / paid partition: %', r->'summary'; end if;
   if r->'daily' <> '[{"day":"2026-01-01","installs":1200},{"day":"2026-01-02","installs":1}]'::jsonb then raise exception 'FAIL: UTC boundaries'; end if;
+  if r#>'{regions,0,values}' is distinct from '["CA","ON"]'::jsonb or r#>'{referrals,0,values}' is distinct from '["fixture-referral"]'::jsonb then raise exception 'FAIL: region/referral breakdowns'; end if;
   r := pg_temp.fixture_report('2026-01-01','2026-01-02','fixture-campaign','fixture-creator','CA','ios','unknown');
   if (r #>> '{summary,total}')::int <> 400 then raise exception 'FAIL: combined filters / null paid'; end if;
   if (r #>> '{creatorReport,0,installs}')::int <> 400 or (r #>> '{campaignCountries,0,installs}')::int <> 400 then raise exception 'FAIL: breakdown filters'; end if;

@@ -1,6 +1,7 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import MetricSections from "../metric-sections";
 import { dateRange, TOP, type Filters, type Group, type Report } from "@/lib/acquisition";
 import styles from "./dashboard.module.css";
 
@@ -9,6 +10,8 @@ const columns: { key: keyof Omit<Report, "summary" | "daily">; title: string; la
   { key: "countries", title: "Countries · device-locale estimates", labels: ["Country"] },
   { key: "campaigns", title: "Campaigns", labels: ["Campaign ID", "Campaign name"] },
   { key: "creators", title: "Creators", labels: ["Creator code"] },
+  { key: "regions", title: "Countries & regions · device-locale estimates", labels: ["Country", "Region"] },
+  { key: "referrals", title: "Referral codes", labels: ["Referral code"] },
   { key: "sources", title: "Sources & mediums", labels: ["Source", "Medium"] },
   { key: "platforms", title: "Platforms & app versions", labels: ["Platform", "App version"] },
   { key: "campaignCountries", title: "Campaign + country", labels: ["Campaign ID", "Campaign name", "Country"] },
@@ -85,12 +88,14 @@ export default function Dashboard({ authorized, initialMessage }: { authorized: 
     } catch (error) { setMessage(error instanceof Error ? error.message : "Sign-out failed."); }
     finally { setLoginBusy(false); }
   }
+  const unauthorized = useCallback(() => { sequence.current++; setSignedIn(false); setResult(null); setBusy(false); setMessage("Your session expired or this account is not authorized. Please sign in again."); }, []);
   const report = result?.query === query ? result.report : null;
   const update = (key: keyof Filters, value: string) => setDraft(current => ({ ...current, [key]: value }));
   return <main id="main" className={styles.shell}>
-    <header className={styles.header}><div><Link className={styles.brand} href="/">FLOAT <span>/ PRIVATE ADMIN</span></Link><h1>Acquisition</h1><p>Understand how installations find Float.</p></div>{signedIn && <button disabled={loginBusy} onClick={() => void logout()}>Sign out</button>}</header>
+    <header className={styles.header}><div><Link className={styles.brand} href="/">FLOAT <span>/ PRIVATE ADMIN</span></Link><h1>Admin analytics</h1><p>Acquisition, retention and the metrics behind Float.</p></div>{signedIn && <button disabled={loginBusy} onClick={() => void logout()}>Sign out</button>}</header>
     {message && <div role="alert" className={styles.error}>{message}{signedIn && <button disabled={busy} onClick={() => setRefresh(n => n + 1)}>Retry</button>}</div>}
     {!signedIn ? <section className={`${styles.panel} ${styles.login}`}><h2>Admin sign-in</h2><p>Choose the Google account you use in Float. Access is limited to approved administrators.</p><div className={styles.signInAction}><button disabled={loginBusy} onClick={() => void login()}>{loginBusy ? "Opening Google…" : "Sign in with Google"}</button></div><p className={styles.muted}>Sessions last up to one hour. Sign in again when your session expires.</p></section> : <>
+      <details className={styles.category} open><summary><span>01 · Acquisition</span><small>Install dates, attribution and audiences</small></summary><div className={styles.categoryContent}>
       <form className={styles.panel} onSubmit={event => { event.preventDefault(); setFilters({ ...draft }); setRefresh(n => n + 1); }}>
         <div className={styles.filterHeading}><h2>Report filters</h2><span>Reporting timezone: UTC</span></div>
         <div className={styles.filters}>
@@ -109,9 +114,10 @@ export default function Dashboard({ authorized, initialMessage }: { authorized: 
         <section className={styles.cards} aria-label="Install summary">{([["Total installs", report.summary.total], ["Paid installs", report.summary.paid], ["Organic / unpaid", report.summary.organic], ["Unknown paid status", report.summary.unknown]] as const).map(([label, count]) => <div className={styles.panel} key={label}><h2>{label}</h2><strong>{number(count)}</strong></div>)}</section>
         {report.summary.total === 0 && <p className={styles.empty}>No installations match this period and these filters.</p>}
         <section className={styles.panel}><h2>Daily installs</h2><p className={styles.muted}>Observed first launches · UTC</p><div className={styles.chart} role="img" aria-label={`Daily installations from ${filters.start} through ${filters.end}. Exact values are in the daily table below.`}>{report.daily.map(day => <div key={day.day} title={`${day.day}: ${number(day.installs)} installs`} style={{ height: `${Math.max(day.installs > 0 ? 1 : 0, day.installs / Math.max(1, ...report.daily.map(d => d.installs)) * 100)}%` }} />)}</div><div className={styles.axis}><span>{filters.start}</span><span>{filters.end}</span></div><details><summary>View daily values</summary><div className={styles.tableScroll}><table><thead><tr><th scope="col">Date (UTC)</th><th scope="col">Installs</th></tr></thead><tbody>{report.daily.map(day => <tr key={day.day}><td>{day.day}</td><td>{number(day.installs)}</td></tr>)}</tbody></table></div></details></section>
-        <div className={styles.breakdowns}>{columns.map(column => <Breakdown key={column.key} title={column.title} labels={column.labels} rows={report[column.key]} />)}</div>
+        <div className={styles.breakdowns}>{columns.map(column => report[column.key] ? <Breakdown key={column.key} title={column.title} labels={column.labels} rows={report[column.key]!} /> : <section className={styles.panel} key={column.key}><h2>{column.title}</h2><p>Reporting update required. Re-run the updated acquisition-reporting.sql file to enable this breakdown.</p></section>)}</div>
       </div>}
       <footer className={styles.notes}><h2>Reading this report</h2><p>Each row in the source represents one installation, not a unique account. Dates use observed first-launch time, not server receipt time. Existing installations were first observed when tracking was introduced.</p><p>Attribution is client-reported and is not independently verified ad-network data. Country is estimated from device locale. Unknown paid status is separate from organic / unpaid. Missing grouping values appear as Unknown.</p></footer>
+      </div></details><MetricSections onUnauthorized={unauthorized} />
     </>}
   </main>;
 }
