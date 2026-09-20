@@ -14,5 +14,9 @@ export function checkOrigin(request: Request) {
   if (request.headers.get("origin") !== new URL(request.url).origin) throw new ReportError(403, "This request is not allowed.");
 }
 export function sessionCookie(value: string, maxAge: number) {
-  return { name: COOKIE, value, httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "strict" as const, path: "/", maxAge };
+  return { name: COOKIE, value, httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "lax" as const, path: "/", maxAge };
+}
+export const PKCE_COOKIE = process.env.NODE_ENV === "production" ? "__Host-float-admin-pkce" : "float-admin-pkce";
+export function pkceCookie(value: string, maxAge = 600) {
+  return { ...sessionCookie(value, maxAge), name: PKCE_COOKIE };
 }

@@ -6,6 +6,7 @@ import { join } from 'node:path';
 import assert from 'node:assert/strict';
 
 const base = process.env.ACQUISITION_TEST_URL || 'http://localhost:3100';
+assert.equal(process.env.FLOAT_TEST_AUTH_FIXTURE, '1', 'Run npm run test:acquisition:api -- --browser to use an isolated Auth fixture');
 assert(['localhost', '127.0.0.1'].includes(new URL(base).hostname), 'Browser fixture tests must use a local website');
 const profile = await mkdtemp(join(tmpdir(), 'float-acquisition-test-'));
 const browser = spawn(process.env.CHROME_PATH || 'C:/Program Files/Google/Chrome/Application/chrome.exe', ['--headless=new', '--disable-gpu', '--disable-gpu-sandbox', '--no-sandbox', '--no-first-run', '--remote-debugging-port=9341', `--user-data-dir=${profile}`, 'about:blank'], { windowsHide: true, stdio: 'ignore' });
@@ -46,7 +47,12 @@ try {
     const originalFetch = window.fetch;
     window.fetch = async (input, init) => {
       const url = String(input);
-      if (url === '/api/admin/session') return Response.json({ ok: true, revoked: true });
+      if (url === '/api/admin/auth/google') {
+        const response = await originalFetch(input, init);
+        if (!response.ok) return response;
+        const authorize = new URL((await response.json()).url);
+        return Response.json({ url: location.origin + '/api/admin/auth/callback?code=admin.' + authorize.searchParams.get('code_challenge') });
+      }
       if (!url.startsWith('/api/admin/acquisition?')) return originalFetch(input, init);
       const f = window.fixture; f.calls++; f.active++; f.maxActive = Math.max(f.maxActive, f.active);
       const { status, total, delay } = f;
@@ -65,9 +71,10 @@ try {
     };
   ` });
   await command('Page.navigate', { url: `${base}/admin/acquisition` });
-  await until('!!document.querySelector("input[name=email]")');
+  await until('document.body?.textContent.includes("Sign in with Google")');
   await pause(1500); // Allow the server-rendered sign-in form to hydrate.
-  await evaluate(`document.querySelector('[name=email]').value = 'fixture@example.test'; document.querySelector('[name=password]').value = 'fixture-password'; document.querySelector('form').requestSubmit()`);
+  assert.equal(await evaluate('document.querySelectorAll("input[type=password]").length'), 0);
+  await evaluate(`Array.from(document.querySelectorAll('button')).find(b => b.textContent === 'Sign in with Google').click()`);
   await until('document.querySelector("strong")?.textContent === "1,201"');
   assert.equal(await evaluate(`document.querySelectorAll('section[aria-label="Install summary"] strong').length`), 4);
   assert(await evaluate('document.body.textContent.includes("Unknown paid status")'), 'NULL status visible');
@@ -106,14 +113,14 @@ try {
   assert.equal(await evaluate('document.querySelector("strong").textContent'), '222', 'Older filters never overwrite newer results');
   console.log('PASS visible-only timer, no overlapping refreshes, stale-response protection');
   await evaluate(`window.fixture.status = 403; ${clickRefresh}`);
-  await until('!!document.querySelector("input[name=email]")');
+  await until('document.body?.textContent.includes("Sign in with Google")');
   assert.equal(await evaluate('document.querySelectorAll("strong").length'), 0, 'Unauthorized session clears report data');
   assert(await evaluate('document.body.textContent.includes("not authorized")'));
   assert.deepEqual(errors, [], 'No browser runtime errors');
   const response = await fetch(`${base}/api/admin/acquisition`);
   assert([401, 503].includes(response.status), 'Actual direct API rejects unauthenticated or unconfigured access');
   assert.match(response.headers.get('cache-control'), /no-store/);
-  const csrf = await fetch(`${base}/api/admin/session`, { method: 'POST', headers: { 'Content-Type': 'application/json', Origin: 'https://untrusted.example' }, body: '{}' });
+  const csrf = await fetch(`${base}/api/admin/auth/google`, { method: 'POST', headers: { Origin: 'https://untrusted.example' } });
   assert.equal(csrf.status, 403, 'Actual session endpoint rejects foreign origins');
   console.log('PASS unauthorized UI, direct API rejection, private cache headers, same-origin checks');
 } finally { socket?.close(); browser.kill(); }

@@ -22,14 +22,41 @@ try {
   assert.equal(response.status, 403, 'Direct non-admin API request rejected');
   response = await api('/api/admin/acquisition', { headers: { cookie: '__Host-float-admin=forged-token' } });
   assert.equal(response.status, 401, 'Forged session rejected');
-  const login = email => api('/api/admin/session', { method: 'POST', headers: { origin: base, 'content-type': 'application/json' }, body: JSON.stringify({ email, password: 'fixture-password' }) });
-  response = await login('ordinary@example.test');
-  assert.equal(response.status, 403); assert.equal(response.headers.get('set-cookie'), null, 'Non-admin never receives admin session');
-  response = await login('admin@example.test');
-  assert.equal(response.status, 200);
-  const cookie = response.headers.get('set-cookie');
-  assert.match(cookie, /HttpOnly/i); assert.match(cookie, /Secure/i); assert.match(cookie, /SameSite=strict/i);
-  assert.deepEqual(await response.json(), { ok: true }, 'Tokens are not returned in JSON');
+  const begin = async () => {
+    const start = await api('/api/admin/auth/google', { method: 'POST', headers: { origin: base } });
+    assert.equal(start.status, 200);
+    const cookie = start.headers.get('set-cookie');
+    assert.match(cookie, /HttpOnly/i); assert.match(cookie, /SameSite=lax/i); assert.match(cookie, /Max-Age=600/i);
+    const body = await start.json();
+    const url = new URL(body.url);
+    assert.equal(url.origin, 'https://fixture.supabase.co');
+    assert.equal(url.searchParams.get('provider'), 'google');
+    assert.equal(url.searchParams.get('code_challenge_method'), 's256');
+    assert.equal(url.searchParams.get('redirect_to'), base + '/api/admin/auth/callback');
+    assert.equal(body.access_token, undefined);
+    return { cookie: cookie.split(';')[0], challenge: url.searchParams.get('code_challenge') };
+  };
+  const finish = (flow, who = 'admin') => api('/api/admin/auth/callback?code=' + who + '.' + flow.challenge, { headers: { cookie: flow.cookie }, redirect: 'manual' });
+  response = await api('/api/admin/auth/google', { method: 'POST', headers: { origin: 'https://foreign.example' } }); assert.equal(response.status, 403);
+  response = await api('/api/admin/session', { method: 'POST', headers: { origin: base } }); assert.equal(response.status, 405, 'Password endpoint removed');
+  response = await api('/api/admin/auth/callback?code=forged&next=https://foreign.example', { redirect: 'manual' });
+  assert.equal(response.headers.get('location'), base + '/admin/acquisition?auth_error=signin', 'Missing verifier rejected; redirect cannot be changed');
+  const wrong = await begin();
+  response = await finish({ ...wrong, challenge: 'incorrect' });
+  assert.match(response.headers.get('location'), /auth_error=signin/);
+  response = await api('/api/admin/auth/callback?error=access_denied&error_description=DO_NOT_REFLECT', { redirect: 'manual' });
+  assert.match(response.headers.get('location'), /auth_error=signin/); assert(!response.headers.get('location').includes('DO_NOT_REFLECT'));
+  response = await finish(await begin(), 'nonadmin');
+  assert.match(response.headers.get('location'), /auth_error=unauthorized/);
+  assert(!response.headers.get('set-cookie').includes('fixture-nonadmin'), 'Non-admin never receives session');
+  const flow = await begin();
+  response = await finish(flow);
+  assert.equal(response.status, 303);
+  assert.equal(response.headers.get('location'), base + '/admin/acquisition');
+  const cookie = response.headers.getSetCookie().find(c => c.startsWith('__Host-float-admin='));
+  assert.match(cookie, /HttpOnly/i); assert.match(cookie, /Secure/i); assert.match(cookie, /SameSite=lax/i);
+  assert.match(response.headers.getSetCookie().find(c => c.startsWith('__Host-float-admin-pkce=')), /Max-Age=0/i);
+  response = await finish(flow); assert.match(response.headers.get('location'), /auth_error=signin/, 'Consumed code rejected');
   const headers = { cookie: cookie.split(';')[0] };
   response = await api('/api/admin/acquisition?start=2026-01-01&end=2026-01-30&paid=unknown', { headers });
   assert.equal(response.status, 200); assert.equal((await response.json()).report.summary.total, 1201);
@@ -42,4 +69,10 @@ try {
   response = await api('/api/admin/session', { method: 'DELETE', headers: { ...headers, origin: base } }); assert.equal(response.status, 200);
   assert.match(response.headers.get('set-cookie'), /Max-Age=0/i);
   console.log('PASS actual API: unauthenticated/non-admin/forged sessions, valid admin login/report, cookie security, filter validation, failures, caching, CSRF, sign-out');
+  console.log('PASS Google PKCE: challenge, verifier binding, cancellation, code replay, callback cookies, allowlist, fixed redirects, password endpoint removed');
+  if (process.argv.includes('--browser')) {
+    const browserTests = spawn(process.execPath, ['scripts/verify-acquisition.mjs'], { windowsHide: true, stdio: 'inherit', env: { ...process.env, ACQUISITION_TEST_URL: base, FLOAT_TEST_AUTH_FIXTURE: '1' } });
+    const exitCode = await new Promise(resolve => browserTests.on('exit', resolve));
+    assert.equal(exitCode, 0, 'Browser checks pass');
+  }
 } finally { server.kill(); }

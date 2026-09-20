@@ -30,7 +30,32 @@ On another machine, copy `.env.example` to `.env.local`, then fill these variabl
 
 Your supplied admin UUID is `569feb10-610c-4a20-aa02-8279ba0ee0c4`. To authorize another account, add its UUID to `FLOAT_ADMIN_USER_IDS` and restart/redeploy. Registration and user-editable metadata cannot grant access. Empty or invalid configuration fails closed.
 
-Use the email and password belonging to that **existing Supabase Auth account**. This implementation does not create accounts, set passwords, or add social sign-in. If the account uses only Apple/Google/another provider, email/password sign-in needs to be enabled for that same account through your existing account-management flow before using this screen. Do not create a replacement account with a different UUID and expect access.
+Choose **Sign in with Google**, then select the same Google account you use in the Float app. You do not need a separate password. Supabase verifies the Google identity, and the website verifies that the resulting Supabase user UUID is in the admin allowlist. Other Google accounts cannot access reports.
+
+## Google sign-in setup
+
+In the same Supabase project, open **Authentication → URL Configuration → Redirect URLs** and add:
+
+```text
+http://localhost:3000/api/admin/auth/callback
+https://floatgame.io/api/admin/auth/callback
+```
+
+The production URL above uses the domain currently configured in `lib/site.ts`. If you serve the site on `www.floatgame.io` or another host, add that host's exact `/api/admin/auth/callback` URL too. For local development on a different port, add the exact URL with that port. Keep existing mobile redirect URLs and the existing Site URL; do not replace them. No new website environment variables or SQL changes are needed for Google sign-in.
+
+Check **Authentication → Sign In / Providers → Google**. Browser OAuth needs a Google **Web application** client ID and its matching client secret. Native Google sign-in working in the app does not by itself prove browser OAuth is configured. If multiple client IDs are configured, keep the mobile IDs and place the web client ID first, following Supabase's provider instructions.
+
+For that web OAuth client in Google Cloud, the authorized redirect URI is the **Supabase** callback:
+
+```text
+https://ytvnwiiwhgevvpcdmezw.supabase.co/auth/v1/callback
+```
+
+This is different from the website callback added to Supabase's redirect list. The Google client secret belongs in Supabase's Google provider settings, not in the website's `.env.local`. Do not replace the Supabase server secret with a Google client secret. If your Google OAuth app is in Testing mode, your Google account must be permitted as a test user.
+
+After deployment, visit `/admin/acquisition`, choose Sign in with Google and select your Float account. If sign-in fails, confirm both callback configurations above and that the site's server environment uses the same Supabase project and allowed UUID. Start the flow again after a cancellation or expiration. Starting sign-in in a second tab replaces the first tab's pending attempt.
+
+References: [Supabase Google provider setup](https://supabase.com/docs/guides/auth/social-login/auth-google) and [redirect URL allowlist](https://supabase.com/docs/guides/auth/redirect-urls).
 
 ## Manual SQL execution order
 
@@ -64,7 +89,7 @@ For a production deployment, use a Next.js-compatible **Node server** host (not 
 - Report dates use `first_seen_at`: UTC start midnight through midnight after the inclusive end date. The default is 30 calendar days including today; maximum custom range is 366 days. Filters use exact, case-sensitive matching except country input is normalized to uppercase. Campaign input matches ID or name. Changing inputs requires Apply filters.
 - NULL paid status is unknown, not organic. Counts represent installations, not unique accounts. Device locale estimates country; client-reported attribution is unverified. Original pre-tracking installs appear when tracking first observed them.
 - Browser-visible data never includes installation IDs, user IDs, secret hashes, URLs or raw attribution. A live Auth user lookup and server allowlist check precede every RPC call. The RPC is security-invoker and executable only by the trusted service role, not anon/authenticated/PUBLIC.
-- The access token lives in a same-site, HTTP-only cookie, secure in production. It is never returned as JSON. No refresh token is persisted. Passwords are forwarded only to Supabase Auth and never logged/stored. Supabase enforces its configured sign-in limits; if your project requires CAPTCHA/MFA, that additional flow is not implemented in this screen.
+- Google sign-in uses PKCE with a random verifier held in a 10-minute HTTP-only cookie. The code is exchanged on the server, then the user is verified against the admin allowlist before a session is issued. Callback responses clear the verifier and redirect only to the admin page; provider errors are not reflected. Cookies use SameSite=Lax to support the external Google redirect, with Secure and `__Host-` names in production. The session access token is never returned as JSON, and no refresh token is persisted. There is no password endpoint. Extra Supabase MFA challenge screens are not implemented.
 - Sign-in/sign-out enforce same-origin requests. Pages and API responses prohibit shared caching. The admin route is noindex, not included in the sitemap, and excluded from the existing website analytics component.
 - Refresh occurs every 60 seconds while visible and on return to the tab. In-flight refreshes do not overlap; filter changes cancel the previous request and discard stale responses. Failures retain only same-filter previously successful data with a stale warning, never fabricated zeros.
 
@@ -76,22 +101,24 @@ npm run lint
 npx tsc --noEmit
 npm run build
 npm run test:acquisition:api
-# With a local server running:
-node scripts/verify-acquisition.mjs
+# Starts an isolated server for Google callback and browser checks:
+npm run test:acquisition:api -- --browser
 ```
 
-Node 22.18+ or Node 24 is needed for the dependency-free TypeScript unit tests. Browser verification uses local Chrome, isolated synthetic responses, and writes screenshots to ignored `artifacts/`; it never requests production analytics. Override `ACQUISITION_TEST_URL` and `CHROME_PATH` if needed.
+Node 22.18+ or Node 24 is needed for the dependency-free TypeScript unit tests. Browser verification uses local Chrome, isolated synthetic responses, and writes screenshots to ignored `artifacts/`; it never requests production analytics. Set `CHROME_PATH` if Chrome is installed elsewhere. The API test harness starts the fixture server on port 3102 and supplies the browser's URL automatically.
 
 SQL fixtures are supplied for manual verification; they are not run by the Node tests. Live account authentication, SQL execution and real report accuracy remain setup checks until you supply the private credential and install the SQL.
 
 Implementation validation completed: 9 unit tests; actual production-route integration tests against an isolated Supabase fixture (admin, non-admin, anonymous and forged sessions, cookies, filters, errors, sign-out and caching); Chrome checks at 320/390/768/1440px, empty/error states, visible-only refresh and stale-response rejection; TypeScript, ESLint and production build. PostgreSQL was not available locally, so the SQL verification file has not been executed. No live credentials were used and no deployment was performed.
+
+Google sign-in validation also passed: PKCE challenge/verifier binding, missing or wrong verifier, cancelled sign-in, consumed-code replay, unauthorized Google account rejection, fixed callback destinations, secure cookies, removal of password sign-in, and the browser's sign-in → callback → dashboard flow against isolated fixtures. A real Google account exchange still requires the provider and redirect settings above and was not attempted by these tests.
 
 An additional run of the existing `scripts/verify-portal.mjs` passed its 320/390px checks but failed `768: substantial posters` (its homepage poster-height assertion). Homepage poster markup and styles were not changed by this task; that unrelated failure remains unresolved.
 
 ## Files changed
 
 - `app/admin/acquisition/{page.tsx,dashboard.tsx,dashboard.module.css}`: authorized page and dashboard.
-- `app/api/admin/{session,acquisition}/route.ts`: sign-in/sign-out and protected aggregate API.
+- `app/api/admin/{session,acquisition}/route.ts`: sign-out and protected aggregate API; `app/api/admin/auth/{google,callback}/route.ts`: Google sign-in and PKCE callback.
 - `lib/acquisition.ts`, `lib/acquisition-backend.ts`, `lib/acquisition-server.ts`: filters, types, Supabase access, authorization and cookies.
 - `sql/acquisition-reporting.sql`, `sql/acquisition-reporting.verify.sql`: manual database setup and rollback-only tests.
 - `scripts/test-acquisition.mjs`, `scripts/test-acquisition-api.mjs`, `scripts/fixtures/acquisition-upstream.mjs`, `scripts/verify-acquisition.mjs`: unit, API and browser verification.

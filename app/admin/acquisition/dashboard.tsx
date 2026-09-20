@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { dateRange, TOP, type Filters, type Group, type Report } from "@/lib/acquisition";
 import styles from "./dashboard.module.css";
@@ -64,16 +64,13 @@ export default function Dashboard({ authorized, initialMessage }: { authorized: 
     document.addEventListener("visibilitychange", visible);
     return () => { disposed = true; active?.abort(); clearInterval(timer); document.removeEventListener("visibilitychange", visible); };
   }, [signedIn, query, refresh]);
-  async function login(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const form = event.currentTarget;
-    const data = new FormData(form);
+  async function login() {
     setLoginBusy(true); setMessage("");
     try {
-      const response = await fetch("/api/admin/session", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: data.get("email"), password: data.get("password") }), signal: AbortSignal.timeout(25000) });
+      const response = await fetch("/api/admin/auth/google", { method: "POST", signal: AbortSignal.timeout(25000) });
       const body = await response.json();
       if (!response.ok) throw new Error(body.error || "Sign-in failed.");
-      form.reset(); setSignedIn(true);
+      window.location.assign(body.url);
     } catch (error) { setMessage(error instanceof Error ? error.message : "Sign-in failed."); }
     finally { setLoginBusy(false); }
   }
@@ -93,7 +90,7 @@ export default function Dashboard({ authorized, initialMessage }: { authorized: 
   return <main id="main" className={styles.shell}>
     <header className={styles.header}><div><Link className={styles.brand} href="/">FLOAT <span>/ PRIVATE ADMIN</span></Link><h1>Acquisition</h1><p>Understand how installations find Float.</p></div>{signedIn && <button disabled={loginBusy} onClick={() => void logout()}>Sign out</button>}</header>
     {message && <div role="alert" className={styles.error}>{message}{signedIn && <button disabled={busy} onClick={() => setRefresh(n => n + 1)}>Retry</button>}</div>}
-    {!signedIn ? <section className={`${styles.panel} ${styles.login}`}><h2>Admin sign-in</h2><p>Use your existing Float account. Access is limited to approved administrators.</p><form onSubmit={login}><label>Email<input name="email" type="email" autoComplete="username" required maxLength={254} /></label><label>Password<input name="password" type="password" autoComplete="current-password" required maxLength={1024} /></label><button disabled={loginBusy} type="submit">{loginBusy ? "Signing in…" : "Sign in"}</button></form><p className={styles.muted}>Sessions last up to one hour. Sign in again when your session expires.</p></section> : <>
+    {!signedIn ? <section className={`${styles.panel} ${styles.login}`}><h2>Admin sign-in</h2><p>Choose the Google account you use in Float. Access is limited to approved administrators.</p><div className={styles.signInAction}><button disabled={loginBusy} onClick={() => void login()}>{loginBusy ? "Opening Google…" : "Sign in with Google"}</button></div><p className={styles.muted}>Sessions last up to one hour. Sign in again when your session expires.</p></section> : <>
       <form className={styles.panel} onSubmit={event => { event.preventDefault(); setFilters({ ...draft }); setRefresh(n => n + 1); }}>
         <div className={styles.filterHeading}><h2>Report filters</h2><span>Reporting timezone: UTC</span></div>
         <div className={styles.filters}>
