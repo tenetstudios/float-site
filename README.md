@@ -7,7 +7,7 @@ Independent website for Float by Tenet Studios. This repository does not modify 
 Run `npm install` and `npm run dev`. Production: `npm run build`, then `npm start`.
 Checks: `npm run lint`, `npx tsc --noEmit`, and `npm run build`.
 
-Private acquisition reporting is available at `/admin/acquisition`. See [setup, manual SQL, environment variables and validation](docs/acquisition.md).
+Private acquisition reporting is available at `/admin`. See [setup, manual SQL, environment variables and validation](docs/acquisition.md).
 
 Next.js App Router, TypeScript, Tailwind CSS 4. No new dependencies or external fonts.
 

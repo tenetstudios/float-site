@@ -70,7 +70,7 @@ try {
       }});
     };
   ` });
-  await command('Page.navigate', { url: `${base}/admin/acquisition` });
+  await command('Page.navigate', { url: `${base}/admin` });
   await until('document.body?.textContent.includes("Sign in with Google")');
   await pause(1500); // Allow the server-rendered sign-in form to hydrate.
   assert.equal(await evaluate('document.querySelectorAll("input[type=password]").length'), 0);

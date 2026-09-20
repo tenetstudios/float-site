@@ -1,6 +1,6 @@
 # Private acquisition reporting
 
-Dashboard: `/admin/acquisition`. This website uses the same Supabase project as Float; it does not add tracking or modify the mobile app.
+Dashboard: `/admin`. This website uses the same Supabase project as Float; it does not add tracking or modify the mobile app.
 
 ## Local configuration
 
@@ -53,7 +53,7 @@ https://ytvnwiiwhgevvpcdmezw.supabase.co/auth/v1/callback
 
 This is different from the website callback added to Supabase's redirect list. The Google client secret belongs in Supabase's Google provider settings, not in the website's `.env.local`. Do not replace the Supabase server secret with a Google client secret. If your Google OAuth app is in Testing mode, your Google account must be permitted as a test user.
 
-After deployment, visit `/admin/acquisition`, choose Sign in with Google and select your Float account. If sign-in fails, confirm both callback configurations above and that the site's server environment uses the same Supabase project and allowed UUID. Start the flow again after a cancellation or expiration. Starting sign-in in a second tab replaces the first tab's pending attempt.
+After deployment, visit `/admin`, choose Sign in with Google and select your Float account. If sign-in fails, confirm both callback configurations above and that the site's server environment uses the same Supabase project and allowed UUID. Start the flow again after a cancellation or expiration. Starting sign-in in a second tab replaces the first tab's pending attempt.
 
 References: [Supabase Google provider setup](https://supabase.com/docs/guides/auth/social-login/auth-google) and [redirect URL allowlist](https://supabase.com/docs/guides/auth/redirect-urls).
 
@@ -79,9 +79,9 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:3000/admin/acquisition`. Restart the server after changing `.env.local`. Sessions last at most one hour and require signing in again when expired. Auto-refresh updates reports, not authentication sessions.
+Open `http://localhost:3000/admin`. Restart the server after changing `.env.local`. Sessions last at most one hour and require signing in again when expired. Auto-refresh updates reports, not authentication sessions.
 
-For a production deployment, use a Next.js-compatible **Node server** host (not static export). Set the same environment-variable names privately in the host's project settings, then build with `npm run build` and run with `npm start` (or use the host's Next.js integration). Use HTTPS so the production `__Host-` secure session cookie works. Forward the original host/protocol correctly through a reverse proxy so same-origin sign-in/sign-out checks succeed. Visit `https://your-website/admin/acquisition`. No deployment was performed by this change.
+For a production deployment, use a Next.js-compatible **Node server** host (not static export). Set the same environment-variable names privately in the host's project settings, then build with `npm run build` and run with `npm start` (or use the host's Next.js integration). Use HTTPS so the production `__Host-` secure session cookie works. Forward the original host/protocol correctly through a reverse proxy so same-origin sign-in/sign-out checks succeed. Visit `https://your-website/admin`. No deployment was performed by this change.
 
 ## Reporting behavior and security
 
@@ -117,7 +117,7 @@ An additional run of the existing `scripts/verify-portal.mjs` passed its 320/390
 
 ## Files changed
 
-- `app/admin/acquisition/{page.tsx,dashboard.tsx,dashboard.module.css}`: authorized page and dashboard.
+- `app/admin/page.tsx`: sign-in and analytics; `app/admin/acquisition/page.tsx`: old URL redirect; `app/admin/acquisition/{dashboard.tsx,dashboard.module.css}`: dashboard UI.
 - `app/api/admin/{session,acquisition}/route.ts`: sign-out and protected aggregate API; `app/api/admin/auth/{google,callback}/route.ts`: Google sign-in and PKCE callback.
 - `lib/acquisition.ts`, `lib/acquisition-backend.ts`, `lib/acquisition-server.ts`: filters, types, Supabase access, authorization and cookies.
 - `sql/acquisition-reporting.sql`, `sql/acquisition-reporting.verify.sql`: manual database setup and rollback-only tests.

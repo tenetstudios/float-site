@@ -4,7 +4,7 @@ import { ReportError } from "@/lib/acquisition";
 import { authUser, config, PKCE_COOKIE, pkceCookie, privateHeaders, sessionCookie } from "@/lib/acquisition-server";
 export const dynamic = "force-dynamic";
 export async function GET(request: Request) {
-  const destination = new URL("/admin/acquisition", request.url);
+  const destination = new URL("/admin", request.url);
   let access: string | undefined;
   let lifetime = 0;
   try {

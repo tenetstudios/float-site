@@ -40,7 +40,7 @@ try {
   response = await api('/api/admin/auth/google', { method: 'POST', headers: { origin: 'https://foreign.example' } }); assert.equal(response.status, 403);
   response = await api('/api/admin/session', { method: 'POST', headers: { origin: base } }); assert.equal(response.status, 405, 'Password endpoint removed');
   response = await api('/api/admin/auth/callback?code=forged&next=https://foreign.example', { redirect: 'manual' });
-  assert.equal(response.headers.get('location'), base + '/admin/acquisition?auth_error=signin', 'Missing verifier rejected; redirect cannot be changed');
+  assert.equal(response.headers.get('location'), base + '/admin?auth_error=signin', 'Missing verifier rejected; redirect cannot be changed');
   const wrong = await begin();
   response = await finish({ ...wrong, challenge: 'incorrect' });
   assert.match(response.headers.get('location'), /auth_error=signin/);
@@ -52,7 +52,7 @@ try {
   const flow = await begin();
   response = await finish(flow);
   assert.equal(response.status, 303);
-  assert.equal(response.headers.get('location'), base + '/admin/acquisition');
+  assert.equal(response.headers.get('location'), base + '/admin');
   const cookie = response.headers.getSetCookie().find(c => c.startsWith('__Host-float-admin='));
   assert.match(cookie, /HttpOnly/i); assert.match(cookie, /Secure/i); assert.match(cookie, /SameSite=lax/i);
   assert.match(response.headers.getSetCookie().find(c => c.startsWith('__Host-float-admin-pkce=')), /Max-Age=0/i);
@@ -63,8 +63,11 @@ try {
   response = await api('/api/admin/acquisition?paid=invalid', { headers }); assert.equal(response.status, 400);
   response = await api('/api/admin/acquisition?creator=failure', { headers }); assert.equal(response.status, 502);
   assert.equal((await response.json()).report, undefined, 'Database failures contain no zero report');
-  response = await api('/admin/acquisition', { headers }); assert.equal(response.status, 200);
+  response = await api('/admin', { headers }); assert.equal(response.status, 200);
   assert.match(response.headers.get('cache-control'), /no-store/);
+  response = await api('/admin/acquisition', { redirect: 'manual' });
+  assert.equal(response.status, 307);
+  assert.equal(response.headers.get('location'), '/admin');
   response = await api('/api/admin/session', { method: 'DELETE', headers: { ...headers, origin: 'https://foreign.example' } }); assert.equal(response.status, 403);
   response = await api('/api/admin/session', { method: 'DELETE', headers: { ...headers, origin: base } }); assert.equal(response.status, 200);
   assert.match(response.headers.get('set-cookie'), /Max-Age=0/i);
