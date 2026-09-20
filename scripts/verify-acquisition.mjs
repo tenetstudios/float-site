@@ -47,6 +47,19 @@ try {
     const originalFetch = window.fetch;
     window.fetch = async (input, init) => {
       const url = String(input);
+      if (url.startsWith('/api/admin/engagement?')) {
+        const f = window.fixture; f.engagementCalls = (f.engagementCalls || 0) + 1;
+        f.engagementActive = (f.engagementActive || 0) + 1; f.engagementMax = Math.max(f.engagementMax || 0, f.engagementActive);
+        const { engagementStatus, engagementDelay, engagementTotal } = f;
+        try {
+          await new Promise(resolve => setTimeout(resolve, engagementDelay || 0));
+          if (engagementStatus) return Response.json({error:'Engagement setup required.'},{status:engagementStatus});
+          const response = await originalFetch(input, { ...init, signal: undefined });
+          const body = await response.json();
+          if (body.report && engagementTotal !== undefined) body.report.summary.attempts = engagementTotal;
+          return Response.json(body,{status:response.status});
+        } finally { f.engagementActive--; }
+      }
       if (url.startsWith('/api/admin/retention?')) {
         const f = window.fixture;
         f.retentionCalls = (f.retentionCalls || 0) + 1;
@@ -153,8 +166,39 @@ try {
     await command('Emulation.setDeviceMetricsOverride', { width, height: 1000, deviceScaleFactor: 1, mobile: false });
     assert(await evaluate('document.documentElement.scrollWidth <= innerWidth'), 'Retention responsive without page overflow');
   }
-  await evaluate(`Array.from(document.querySelectorAll('details > summary')).find(s => s.textContent.includes('03 · Engagement')).click()`);
-  assert(await evaluate('document.body.textContent.includes("Campaign missions started / completed / failed")'));
+  await evaluate('window.fixture.engagementStatus = 503; document.querySelector("#engagement > summary").click()');
+  await until('document.querySelector("[data-engagement-panel]")?.textContent.includes("Engagement setup required")');
+  assert.equal(await evaluate('document.querySelectorAll("[data-engagement-panel] strong").length'),0);
+  await evaluate(`window.fixture.engagementStatus = 0; Array.from(document.querySelectorAll('button')).find(b => b.textContent === 'Retry engagement').click()`);
+  await until('document.querySelector("[data-engagement-panel] strong")?.textContent === "1,200"');
+  assert(await evaluate('document.querySelector("[data-engagement-panel]").textContent.includes("50% (400 / 800)")'));
+  assert(await evaluate('document.querySelector("[data-engagement-panel]").textContent.includes("frog:quick")'));
+  await evaluate('window.fixture.engagementDelay = 300; window.fixture.engagementMax = 0; window.fixture.tick(); window.fixture.tick()');
+  await until('window.fixture.engagementActive === 0');
+  assert.equal(await evaluate('window.fixture.engagementMax'),1);
+  const engagementCalls = await evaluate('window.fixture.engagementCalls');
+  await evaluate('window.fixture.visible = false; window.fixture.tick()');
+  assert.equal(await evaluate('window.fixture.engagementCalls'),engagementCalls);
+  await evaluate('window.fixture.visible = true; window.fixture.engagementTotal = 999; window.fixture.engagementDelay = 800; window.fixture.tick()');
+  await until('window.fixture.engagementActive === 1');
+  await evaluate(`window.fixture.engagementTotal = 222; window.fixture.engagementDelay = 0; const engagementField = Array.from(document.querySelectorAll('[data-engagement-panel] label')).find(l => l.textContent === 'Creator code').querySelector('input'); Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(engagementField,'updated'); engagementField.dispatchEvent(new Event('input',{bubbles:true}));`);
+  await evaluate('document.querySelector("[data-engagement-panel] form").requestSubmit()');
+  await until('document.querySelector("[data-engagement-panel] strong")?.textContent === "222"');
+  await pause(900);
+  assert.equal(await evaluate('document.querySelector("[data-engagement-panel] strong").textContent'),'222');
+  await evaluate(`window.fixture.engagementStatus=502; Array.from(document.querySelectorAll('button')).find(b=>b.textContent==='Refresh engagement').click()`);
+  await until('document.querySelector("[data-engagement-panel]")?.textContent.includes("Showing the last successful engagement report")');
+  await evaluate(`window.fixture.engagementStatus=0; delete window.fixture.engagementTotal; const emptyField=Array.from(document.querySelectorAll('[data-engagement-panel] label')).find(l=>l.textContent==='Creator code').querySelector('input'); Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(emptyField,'empty'); emptyField.dispatchEvent(new Event('input',{bubbles:true}));`);
+  await evaluate('document.querySelector("[data-engagement-panel] form").requestSubmit()');
+  await until('document.querySelector("[data-engagement-panel]")?.textContent.includes("No campaign attempts match")');
+  assert(await evaluate('document.querySelector("[data-engagement-panel]").textContent.includes("—")'));
+  for(const width of [320,390,1440]) {
+    await command('Emulation.setDeviceMetricsOverride',{width,height:1000,deviceScaleFactor:1,mobile:false});
+    assert(await evaluate('document.documentElement.scrollWidth <= innerWidth'),'Engagement mobile layout');
+  }
+  await evaluate('document.querySelector("#engagement > summary").click()');
+  await until('!document.querySelector("[data-engagement-panel]")');
+  console.log('PASS engagement setup, aggregates, empty/error states, visible-only refresh, stale responses and mobile layout');
   assert(await evaluate('document.body.textContent.includes("Not connected")'));
   await evaluate(`document.querySelector('details > summary').click(); document.querySelector('#retention').scrollIntoView()`);
   const retentionShot = await command('Page.captureScreenshot', { format: 'png' });

@@ -1,6 +1,6 @@
 # Admin analytics and retention
 
-All seven sections are on `/admin`, behind the existing Google sign-in and UUID allowlist. Each section expands/collapses independently. Acquisition remains available; retention loads when opened. Engagement, Multiplayer, Monetization, Progression and Technical health are clearly marked **Not connected** and list the requested metrics without fabricated data. No mobile tracking or external billing/ad/telemetry integration was added in this website change.
+All seven sections are on `/admin`, behind the existing Google sign-in and UUID allowlist. Each section expands/collapses independently. Acquisition remains available; retention loads when opened. Engagement now has [campaign reporting](engagement.md). Multiplayer, Monetization, Progression and Technical health remain **Not connected**. No mobile tracking or external billing/ad/telemetry integration was added in this website change.
 
 ## Manual setup order
 

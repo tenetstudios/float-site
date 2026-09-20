@@ -67,6 +67,15 @@ try {
   response = await api('/api/admin/retention?source=failure', { headers }); assert.equal(response.status, 502);
   response = await api('/api/admin/retention?activityStart=invalid', { headers }); assert.equal(response.status, 400);
   console.log('PASS retention API: authentication, allowlist, aggregates, no-store, setup-required, errors, validation');
+  response = await api('/api/admin/engagement'); assert.equal(response.status, 401);
+  response = await api('/api/admin/engagement', { headers: { cookie: '__Host-float-admin=fixture-nonadmin' } }); assert.equal(response.status, 403);
+  response = await api('/api/admin/engagement', { headers }); assert.equal(response.status, 200);
+  assert.match(response.headers.get('cache-control'), /no-store/);
+  assert.equal((await response.json()).report.summary.attempts, 1200);
+  response = await api('/api/admin/engagement?creator=missing', { headers }); assert.equal(response.status, 503);
+  response = await api('/api/admin/engagement?creator=failure', { headers }); assert.equal(response.status, 502);
+  response = await api('/api/admin/engagement?difficulty=easy', { headers }); assert.equal(response.status, 400);
+  console.log('PASS engagement API: auth, aggregates, setup/errors, validation and caching');
   response = await api('/api/admin/acquisition?start=2026-01-01&end=2026-01-30&paid=unknown', { headers });
   assert.equal(response.status, 200); assert.equal((await response.json()).report.summary.total, 1201);
   response = await api('/api/admin/acquisition?paid=invalid', { headers }); assert.equal(response.status, 400);

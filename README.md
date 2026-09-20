@@ -9,6 +9,7 @@ Checks: `npm run lint`, `npx tsc --noEmit`, and `npm run build`.
 
 Private acquisition reporting is available at `/admin`. See [setup, manual SQL, environment variables and validation](docs/acquisition.md).
 The same page includes collapsible Retention, Engagement, Multiplayer, Monetization, Progression and Technical health sections. See [retention setup and planned metrics](docs/retention.md).
+Engagement now reports campaign attempts, outcomes, measured durations and placements. See [Engagement reporting setup](docs/engagement.md).
 
 Next.js App Router, TypeScript, Tailwind CSS 4. No new dependencies or external fonts.
 

@@ -20,6 +20,15 @@ globalThis.fetch = async (input, init = {}) => {
     return Response.json({ error: 'invalid' }, { status: 401 });
   }
   if (url.pathname === '/auth/v1/logout') return new Response(null, { status: 204 });
+  if (url.pathname === '/rest/v1/rpc/float_engagement_report') {
+    if (headers.get('apikey') !== 'sb_secret_fixture') return new Response(null, { status: 403 });
+    const args = JSON.parse(init.body);
+    if (args.p_creator === 'missing') return Response.json({ code: 'PGRST202' }, { status: 404 });
+    if (args.p_creator === 'failure') return Response.json({ code: 'XX000' }, { status: 500 });
+    const summary = { attempts: 1200, installations: 1, completed: 400, failed: 200, abandoned: 200, unknown: 200, inProgress: 200, decided: 800, completionRate: 50, averageActiveSeconds: 60, durationSamples: 200, retries: 400, restarts: 400, replays: 400, placements: 2400, placingAttempts: 1200, placementsPerPlacingAttempt: 2 };
+    if (args.p_creator === 'empty') { for (const key of Object.keys(summary)) summary[key] = 0; summary.completionRate = null; summary.averageActiveSeconds = null; summary.placementsPerPlacingAttempt = null; }
+    return Response.json({ summary, daily: [{ day: args.p_start, ...summary }], missions: summary.attempts ? [{ values: ['mission-id','v1','standard'], metrics: summary }] : [], units: summary.attempts ? [{ unit:'frog:quick',phase:'running',placements:2400,attempts:1200 }] : [], breakdowns: { country:[], campaign:[], creator:[] } });
+  }
   if (url.pathname === '/rest/v1/rpc/float_retention_report') {
     if (headers.get('apikey') !== 'sb_secret_fixture') return new Response(null, { status: 403 });
     const args = JSON.parse(init.body);
