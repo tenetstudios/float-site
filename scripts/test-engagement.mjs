@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { defaultEngagementFilters, parseEngagementFilters, engagementArgs } from '../lib/engagement.ts';
+import { defaultEngagementFilters, parseEngagementFilters, engagementArgs, formatEngagementDuration } from '../lib/engagement.ts';
 import { getEngagementReport } from '../lib/engagement-backend.ts';
 import { missionLabel } from '../lib/engagement-missions.ts';
 test('mission labels preserve IDs and fall back for unknown versions', () => {
@@ -26,4 +26,14 @@ test('distinguishes missing reporting from errors, without leaking database mess
  return Response.json({code,message:'private database details'},{status:400});
  }),{status:expected});
  }
+});
+
+test('duration displays RPC seconds as minutes/seconds without treating missing samples as zero', () => {
+ assert.equal(formatEngagementDuration(null), '\u2014');
+ assert.equal(formatEngagementDuration(0), '0m 00s');
+ assert.equal(formatEngagementDuration(60), '1m 00s');
+ assert.equal(formatEngagementDuration(125.4), '2m 05s');
+ assert.equal(formatEngagementDuration(59.99), '1m 00s');
+ assert.equal(formatEngagementDuration(3600), '60m 00s');
+ assert.equal(formatEngagementDuration(NaN), '\u2014');
 });

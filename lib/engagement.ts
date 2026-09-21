@@ -20,3 +20,10 @@ export type EngagementMetrics = { attempts: number; installations: number; compl
 export type EngagementGroup = { values: (string | null)[]; metrics: EngagementMetrics };
 export type EngagementReport = { summary: EngagementMetrics; daily: { day: string; attempts: number; completed: number; failed: number; abandoned: number; unknown: number; inProgress: number }[]; missions: EngagementGroup[]; units: { unit: string; phase: string; placements: number; attempts: number }[]; breakdowns: { country: EngagementGroup[]; campaign: EngagementGroup[]; creator: EngagementGroup[] } };
 export const unitLabels: Record<string, string> = { wall: "Wall", nails: "Nails", glue: "Glue", "frog:level1": "Level 1 frog", "frog:quick": "Quick frog", "frog:spotter": "Spotter frog", "frog:sniper": "Sniper frog", "frog:flak": "Flak frog", "frog:rocket": "Rocket frog", "frog:antiAircraft": "Anti-aircraft frog", "frog:twin": "Twin frog", "frog:tactical": "Tactical frog", "frog:armoured": "Armoured frog" };
+
+// Reporting RPC values are already seconds, not milliseconds.
+export function formatEngagementDuration(seconds: number | null): string {
+  if (seconds === null || !Number.isFinite(seconds) || seconds < 0) return "\u2014";
+  const rounded = Math.round(seconds);
+  return `${Math.floor(rounded / 60)}m ${String(rounded % 60).padStart(2, "0")}s`;
+}

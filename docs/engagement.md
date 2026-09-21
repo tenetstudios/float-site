@@ -62,3 +62,13 @@ npm run test:acquisition:api -- --browser
 ```
 
 Local SQL tests initialize an isolated PostgreSQL runtime with actual mobile schema prerequisites; this does not rerun migrations against the live project. They cover 1,200 attempts/2,400 placements, distinct installations, nonmultiplying joins, UTC boundaries, NULL/partial/zero durations, unknown/in-progress outcomes, completion denominators, retry reasons, combined filters, Top 50 limits and real database execution permissions. API/browser tests use isolated synthetic upstream responses, not live credentials. Live telemetry delivery and production performance remain deployment checks.
+
+## Duration and campaign coverage presentation
+
+The existing Engagement accordion formats `averageActiveSeconds` as minutes and
+seconds, preserving missing averages as an em dash and valid zero as 0m 00s.
+The summary and Campaign missions played table show measured sample counts.
+Scope text explicitly excludes community/sandbox maps and multiplayer, and the
+XP panel shows unavailable rather than a numeric total. Existing inclusive UTC
+date filters, Top 50 labels, authorization and reporting RPC remain unchanged.
+No additional SQL is needed if engagement-reporting.sql is already deployed.
