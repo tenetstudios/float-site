@@ -11,7 +11,9 @@
     "test:acquisition:api": "node scripts/test-acquisition-api.mjs",
     "test:retention": "node --test scripts/test-retention.mjs",
     "test:engagement": "node --test scripts/test-engagement.mjs",
-    "test:reporting:sql": "node scripts/test-reporting-sql.mjs"
+    "test:reporting:sql": "node scripts/test-reporting-sql.mjs",
+    "test:multiplayer": "node --test scripts/test-multiplayer.mjs",
+    "test:multiplayer:sql": "node scripts/test-multiplayer-sql.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",

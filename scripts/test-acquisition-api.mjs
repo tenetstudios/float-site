@@ -67,6 +67,13 @@ try {
   response = await api('/api/admin/retention?source=failure', { headers }); assert.equal(response.status, 502);
   response = await api('/api/admin/retention?activityStart=invalid', { headers }); assert.equal(response.status, 400);
   console.log('PASS retention API: authentication, allowlist, aggregates, no-store, setup-required, errors, validation');
+  response=await api('/api/admin/multiplayer');assert.equal(response.status,401);
+  response=await api('/api/admin/multiplayer',{headers:{cookie:'__Host-float-admin=fixture-nonadmin'}});assert.equal(response.status,403);
+  response=await api('/api/admin/multiplayer',{headers});assert.equal(response.status,200);assert.match(response.headers.get('cache-control'),/no-store/);assert.equal((await response.json()).report.matches.total,1200);
+  response=await api('/api/admin/multiplayer?region=missing',{headers});assert.equal(response.status,503);
+  response=await api('/api/admin/multiplayer?region=failure',{headers});assert.equal(response.status,502);
+  response=await api('/api/admin/multiplayer?platform=invalid',{headers});assert.equal(response.status,400);
+  console.log('PASS multiplayer API permissions, totals, errors and filters');
   response = await api('/api/admin/engagement'); assert.equal(response.status, 401);
   response = await api('/api/admin/engagement', { headers: { cookie: '__Host-float-admin=fixture-nonadmin' } }); assert.equal(response.status, 403);
   response = await api('/api/admin/engagement', { headers }); assert.equal(response.status, 200);

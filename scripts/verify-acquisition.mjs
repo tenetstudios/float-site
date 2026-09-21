@@ -199,6 +199,21 @@ try {
   await evaluate('document.querySelector("#engagement > summary").click()');
   await until('!document.querySelector("[data-engagement-panel]")');
   console.log('PASS engagement setup, aggregates, empty/error states, visible-only refresh, stale responses and mobile layout');
+  await evaluate('document.querySelector("#multiplayer > summary").click()');
+  await until('document.querySelector("[data-multiplayer-panel] strong")?.textContent === "1,200"');
+  assert(await evaluate('document.querySelector("[data-multiplayer-panel]").textContent.includes("100 ms")'));
+  assert(await evaluate('document.querySelector("[data-multiplayer-panel]").textContent.includes("Rematch rate: unavailable")'));
+  for(const width of [320,390,1440]) {
+    await command('Emulation.setDeviceMetricsOverride',{width,height:1000,deviceScaleFactor:1,mobile:false});
+    assert(await evaluate('document.documentElement.scrollWidth <= innerWidth'),'Multiplayer responsive layout');
+  }
+  await evaluate(`const f=Array.from(document.querySelectorAll('[data-multiplayer-panel] label')).find(l=>l.textContent==='Server region').querySelector('input');Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(f,'empty');f.dispatchEvent(new Event('input',{bubbles:true}));`);
+  await evaluate('document.querySelector("[data-multiplayer-panel] form").requestSubmit()');
+  await until('document.querySelector("[data-multiplayer-panel]")?.textContent.includes("No ranked matches or queue observations")');
+  assert(await evaluate('document.querySelector("[data-multiplayer-panel]").textContent.includes("—")'));
+  await evaluate('document.querySelector("#multiplayer > summary").click()');
+  await until('!document.querySelector("[data-multiplayer-panel]")');
+  console.log('PASS multiplayer accordion, totals, RTT, missing metrics, filters, empty state and responsive layout');
   assert(await evaluate('document.body.textContent.includes("Not connected")'));
   await evaluate(`document.querySelector('details > summary').click(); document.querySelector('#retention').scrollIntoView()`);
   const retentionShot = await command('Page.captureScreenshot', { format: 'png' });

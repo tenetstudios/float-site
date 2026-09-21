@@ -44,5 +44,15 @@ globalThis.fetch = async (input, init = {}) => {
     if (args.p_creator === 'failure') return new Response(null, { status: 500 });
     return Response.json({ summary: { total: 1201, paid: 401, organic: 400, unknown: 400 }, daily: [], countries: [], campaigns: [], creators: [], sources: [], platforms: [], campaignCountries: [], creatorReport: [] });
   }
+  if (url.pathname === '/rest/v1/rpc/float_multiplayer_report') {
+    if (headers.get('apikey') !== 'sb_secret_fixture') return new Response(null,{status:403});
+    const args=JSON.parse(init.body);
+    if(args.p_region==='missing')return Response.json({code:'PGRST202'},{status:404});
+    if(args.p_region==='failure')return Response.json({code:'XX000'},{status:500});
+    const empty=args.p_region==='empty';
+    return Response.json({matches:{total:empty?0:1200,completed:empty?0:1200,pending:0,void:0,draws:0,surrenders:0,timeoutForfeits:0,serverFailureVoids:0},
+    queues:{total:0,matched:0,cancelled:0,timedOut:0,failed:0,unknown:0,unresolved:0,averageMatchedSeconds:null,waitSamples:0},
+    participants:{total:empty?0:2400,observedMatches:empty?0:1200,wins:empty?0:1200,losses:empty?0:1200,draws:0,disconnects:0,reconnects:0,latencySamples:empty?0:3600,measuredParticipants:empty?0:1200,averageRttMs:empty?null:100,maximumRttMs:empty?null:200},daily:[],regions:[],opponents:[]});
+  }
   throw new Error('Unexpected fixture upstream URL');
 };
