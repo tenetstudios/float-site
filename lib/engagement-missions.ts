@@ -7,6 +7,8 @@ const campaignV1: Record<string, string> = {
   "chapter-2-1": "OPERATION IRON HORIZON",
   "chapter-2-2": "tough balloon",
   "chapter-2-3": "OPERATION SWIFT VICTORY",
+  "chapter-3-1": "two balloons",
+  "chapter-3-2": "hard wall",
   "chapter-3-3": "OPERATION TWIN THUNDER",
   "chapter-4-1": "OPERATION ECHO STRIKE",
   "chapter-4-2": "long tongue",
@@ -16,8 +18,10 @@ const campaignV1: Record<string, string> = {
   "chapter-5-3": "OPERATION BUNKER APPLE YELLOW SKY",
   "chapter-6-1": "metal balloon",
   "chapter-6-2": "OPERATION CROSSFIRE HURRICANE",
-  "chapter-3-2": "hard wall",
-  "chapter-3-1": "two balloons"
+  "chapter-6-3": "OPERATION BREACH POINT",
+  "chapter-7-1": "pointy stuff",
+  "chapter-7-2": "fat frog",
+  "chapter-7-3": "OPERATION EMERGENT TRAJECTORY"
 };
 export function missionLabel(id: string, version: string) {
   const title = version === "campaign-v1" ? campaignV1[id] : undefined;
