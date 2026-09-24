@@ -38,6 +38,24 @@ try {
     return result.result.value;
   };
   const until = async expression => { for (let i = 0; i < 100; i++) { if (await evaluate(expression)) return; await pause(100); } throw new Error(`Timed out: ${expression}\n${await evaluate('document.body.innerText.slice(0, 2500)')}`); };
+  async function verifySortableHeaders(scope) {
+    assert(await evaluate(`(async () => {
+      const tables = Array.from(document.querySelectorAll(${JSON.stringify(scope)} + ' table'));
+      if (!tables.length) return false;
+      for (const table of tables) {
+        for (const th of table.querySelectorAll('th')) {
+          const button = th.querySelector('button');
+          if (!button) return false;
+          button.click(); await new Promise(r => setTimeout(r, 0));
+          const first = th.getAttribute('aria-sort');
+          if (!['ascending', 'descending'].includes(first)) return false;
+          button.click(); await new Promise(r => setTimeout(r, 0));
+          if (th.getAttribute('aria-sort') !== (first === 'ascending' ? 'descending' : 'ascending')) return false;
+        }
+      }
+      return true;
+    })()`), `Every ${scope} table column toggles sorting`);
+  }
   await command('Runtime.enable'); await command('Page.enable');
   await command('Page.addScriptToEvaluateOnNewDocument', { source: `
     window.fixture = { status: 200, total: 1201, delay: 0, calls: 0, active: 0, maxActive: 0, visible: true, tick: null };
@@ -56,6 +74,13 @@ try {
           if (engagementStatus) return Response.json({error:'Engagement setup required.'},{status:engagementStatus});
           const response = await originalFetch(input, { ...init, signal: undefined });
           const body = await response.json();
+          if (body.report?.missions.length && f.sortFixtures) {
+            const original = body.report.missions[0];
+            body.report.missions = [9, 80, null].map((completionRate, i) => ({
+              values: ['sort-mission-' + i, 'v1', 'standard'],
+              metrics: { ...original.metrics, completionRate, totalActiveSeconds: [125, 3601, null][i] }
+            }));
+          }
           if (body.report && engagementTotal !== undefined) body.report.summary.attempts = engagementTotal;
           return Response.json(body,{status:response.status});
         } finally { f.engagementActive--; }
@@ -166,6 +191,7 @@ try {
     await command('Emulation.setDeviceMetricsOverride', { width, height: 1000, deviceScaleFactor: 1, mobile: false });
     assert(await evaluate('document.documentElement.scrollWidth <= innerWidth'), 'Retention responsive without page overflow');
   }
+  await verifySortableHeaders('main');
   await evaluate('window.fixture.engagementStatus = 503; document.querySelector("#engagement > summary").click()');
   await until('document.querySelector("[data-engagement-panel]")?.textContent.includes("Engagement setup required")');
   assert.equal(await evaluate('document.querySelectorAll("[data-engagement-panel] strong").length'),0);
@@ -176,6 +202,20 @@ try {
   assert(await evaluate('Array.from(document.querySelectorAll("[data-engagement-panel] section h2")).find(h => h.textContent === "Recorded campaign playtime").parentElement.textContent.includes("225h 33m 19s")'));
   assert(await evaluate('Array.from(document.querySelectorAll("[data-engagement-panel] section h2")).find(h => h.textContent === "Campaign missions played").parentElement.textContent.includes("225h 33m 19s")'));
   assert(await evaluate('document.querySelector("[data-engagement-panel]").textContent.includes("Attempts with timing: 1,000 / 1,200")'));
+  await verifySortableHeaders('[data-engagement-panel]');
+  await evaluate('window.fixture.sortFixtures = true; window.fixture.tick()');
+  await until('document.querySelector("[data-engagement-panel]").textContent.includes("sort-mission-0")');
+  await evaluate(`window.missionTable = Array.from(document.querySelectorAll('[data-engagement-panel] section')).find(s => s.querySelector('h2')?.textContent === 'Campaign missions played').querySelector('table'); window.rateButton = Array.from(window.missionTable.querySelectorAll('th button')).find(b => b.textContent.startsWith('Completion rate')); window.rateButton.click()`);
+  await until('window.missionTable.querySelector("tbody tr td").textContent === "sort-mission-1"');
+  await evaluate('window.rateButton.click()');
+  await until('window.missionTable.querySelector("tbody tr td").textContent === "sort-mission-0"');
+  assert.equal(await evaluate('window.missionTable.querySelector("tbody tr:last-child td").textContent'), 'sort-mission-2');
+  await evaluate(`Array.from(window.missionTable.querySelectorAll('th button')).find(b => b.textContent.startsWith('Recorded playtime')).click()`);
+  await until('window.missionTable.querySelector("tbody tr td").textContent === "sort-mission-1"');
+  await evaluate('window.fixture.tick()');
+  await until('window.fixture.engagementActive === 0');
+  assert.equal(await evaluate('window.missionTable.querySelector("tbody tr td").textContent'), 'sort-mission-1', 'Sort survives refresh');
+  await evaluate('window.fixture.sortFixtures = false');
   await evaluate('window.fixture.engagementDelay = 300; window.fixture.engagementMax = 0; window.fixture.tick(); window.fixture.tick()');
   await until('window.fixture.engagementActive === 0');
   assert.equal(await evaluate('window.fixture.engagementMax'),1);
@@ -205,6 +245,7 @@ try {
   await evaluate('document.querySelector("#multiplayer > summary").click()');
   await until('document.querySelector("[data-multiplayer-panel] strong")?.textContent === "1,200"');
   assert(await evaluate('document.querySelector("[data-multiplayer-panel]").textContent.includes("100 ms")'));
+  await verifySortableHeaders('[data-multiplayer-panel]');
   assert(await evaluate('document.querySelector("[data-multiplayer-panel]").textContent.includes("Rematch rate: unavailable")'));
   for(const width of [320,390,1440]) {
     await command('Emulation.setDeviceMetricsOverride',{width,height:1000,deviceScaleFactor:1,mobile:false});

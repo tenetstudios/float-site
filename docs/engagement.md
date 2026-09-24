@@ -76,3 +76,11 @@ date filters, Top 50 labels, authorization and reporting RPC remain unchanged.
 For recorded playtime totals, rerun `sql/engagement-reporting.sql` and its verification file even if an older version is already deployed. No table or column changes are required. Deploy the SQL before the website; the website shows setup required when the RPC lacks the new total.
 
 Recorded playtime appears in the summary and mission/acquisition breakdowns, formatted with hours for long totals. Timing coverage is shown alongside it. Missing timing is not treated as zero; partial timing contributes only its recorded amount. Totals include activity after the date range for attempts that started within it. The existing completed-attempt average remains unchanged.
+
+## Sorting dashboard tables
+
+All columns in Acquisition, Retention, Engagement, and Multiplayer tables are clickable. Numeric columns start highest first; text and dates start ascending. Click again to reverse. Arrows and accessible column sort states indicate the current direction. Missing observations remain last in both directions; measured zero is a real value. Rates, playtime, and latency sort by their underlying numeric values, not formatted text. Retention compound columns sort by installs or retention percentage as labeled. Inactivity buckets sort by their starting day (Today is zero).
+
+Sorting is independent per table and persists through report refreshes while the panel remains open. It reorders only returned rows: Top 50 reports still select their existing Top 50 groups, not a global ranking of every group. Charts retain chronological order. No SQL changes are needed for sorting.
+
+Run `npm run test:sorting` for comparison checks and `npm run test:acquisition:api -- --browser` after building for column toggles and mission rate/playtime order checks.

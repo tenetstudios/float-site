@@ -1,12 +1,13 @@
 "use client";
+import SortableTable, { type ReportCell } from "./sortable-table";
 import {useEffect,useState} from 'react';
 import {defaultMultiplayerFilters,type MultiplayerFilters,type MultiplayerReport} from '@/lib/multiplayer';
 import {formatEngagementDuration} from '@/lib/engagement';
 import styles from './acquisition/dashboard.module.css';
 const number=(v:number|null)=>v===null?'—':v.toLocaleString('en-US',{maximumFractionDigits:1});
 const ms=(v:number|null)=>v===null?'—':`${number(v)} ms`;
-function Table({title,labels,rows}:{title:string;labels:string[];rows:(string|number)[][]}){
- return <section className={styles.panel}><h2>{title}</h2><div className={styles.tableScroll} role="region" aria-label={title} tabIndex={0}><table><thead><tr>{labels.map(l=><th key={l} scope="col">{l}</th>)}</tr></thead><tbody>{rows.map((r,i)=><tr key={i}>{r.map((v,j)=><td key={j}>{typeof v==='number'?number(v):v}</td>)}</tr>)}</tbody></table></div>{!rows.length&&<p>No matching observations.</p>}</section>;
+function Table({title,labels,rows}:{title:string;labels:string[];rows:(string|number|null|ReportCell)[][]}){
+ return <section className={styles.panel}><h2>{title}</h2><div className={styles.tableScroll} role="region" aria-label={title} tabIndex={0}><SortableTable labels={labels} rows={rows.map(row => row.map(value => typeof value === 'object' && value !== null ? value : ({ value, content: typeof value === 'number' ? number(value) : value ?? 'Unknown' })))} /></div>{!rows.length&&<p>No matching observations.</p>}</section>;
 }
 export default function MultiplayerPanel({onUnauthorized}:{onUnauthorized:()=>void}){
  const [draft,setDraft]=useState(defaultMultiplayerFilters),[filters,setFilters]=useState(defaultMultiplayerFilters);
@@ -60,8 +61,8 @@ export default function MultiplayerPanel({onUnauthorized}:{onUnauthorized:()=>vo
    <Table title="Observed participant record in this date range" labels={['Wins','Losses','Draws']} rows={[[report.participants.wins,report.participants.losses,report.participants.draws]]}/>
    <p className={styles.muted}>These are participant outcomes, not lifetime player records. One decisive match normally contributes one win and one loss; player filters can select only one side.</p>
    <Table title="Ranked matches by day" labels={['UTC match-start date','Matches','Completed']} rows={report.daily.map(d=>[d.day,d.matches,d.completed])}/>
-   <Table title="Server regions · top 50 by observed participants" labels={['Server region','Observed matches','Participants','Disconnects','RTT samples','Average RTT']} rows={report.regions.map(r=>[r.region??'Unknown',r.matches,r.participants,r.disconnects,r.samples,ms(r.average_rtt_ms)])}/>
-   <Table title="Opponent countries · device-locale estimates · top 50" labels={['Player country','Opponent country','Participants','Wins','Losses','Draws']} rows={report.opponents.map(r=>[r.country??'Unknown',r.opponent??'Unknown',r.participants,r.wins,r.losses,r.draws])}/>
+   <Table title="Server regions · top 50 by observed participants" labels={['Server region','Observed matches','Participants','Disconnects','RTT samples','Average RTT']} rows={report.regions.map(r=>[r.region,r.matches,r.participants,r.disconnects,r.samples,{value:r.average_rtt_ms,content:ms(r.average_rtt_ms)}])}/>
+   <Table title="Opponent countries · device-locale estimates · top 50" labels={['Player country','Opponent country','Participants','Wins','Losses','Draws']} rows={report.opponents.map(r=>[r.country,r.opponent,r.participants,r.wins,r.losses,r.draws])}/>
   </div>}
   <section className={styles.panel}><h2>Faction and unavailable metrics</h2><p>Faction: both attack and defense. Ranked sides A/B do not identify Lion/Frog factions.</p><p>Opponent geographic region: unavailable. Device-locale countries are estimates, not verified locations.</p><p>Rematch rate: unavailable until explicit rematch offers and responses are tracked.</p></section>
   <footer className={styles.notes}><p>Match totals include historical matches without telemetry when no participant filters are selected. Country, platform, server region and app-version filters restrict matches to those with a matching observed participant. Queue filters apply independently at queue start.</p><p>Wait averages include matched queues with measured durations only. RTT is weighted by sample count; missing responses are not zero or packet loss. Observed disconnect counts do not prove complete coverage. Server-failure voids can include both players disconnecting and do not establish a hosting outage. Late uploads and settlement can revise history.</p></footer>
