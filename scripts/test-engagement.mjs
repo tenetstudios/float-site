@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { defaultEngagementFilters, parseEngagementFilters, engagementArgs, formatEngagementDuration } from '../lib/engagement.ts';
+import { defaultEngagementFilters, parseEngagementFilters, engagementArgs, formatEngagementDuration, formatEngagementPlaytime } from '../lib/engagement.ts';
 import { getEngagementReport } from '../lib/engagement-backend.ts';
 import { missionLabel } from '../lib/engagement-missions.ts';
 test('mission labels preserve IDs and fall back for unknown versions', () => {
@@ -36,4 +36,21 @@ test('duration displays RPC seconds as minutes/seconds without treating missing 
  assert.equal(formatEngagementDuration(59.99), '1m 00s');
  assert.equal(formatEngagementDuration(3600), '60m 00s');
  assert.equal(formatEngagementDuration(NaN), '\u2014');
+});
+
+test('playtime totals format long durations and preserve unknown and zero', () => {
+ assert.equal(formatEngagementPlaytime(null), '\u2014');
+ assert.equal(formatEngagementPlaytime(0), '0m 00s');
+ assert.equal(formatEngagementPlaytime(125), '2m 05s');
+ assert.equal(formatEngagementPlaytime(3599.99), '1h 00m 00s');
+ assert.equal(formatEngagementPlaytime(90061), '25h 01m 01s');
+});
+
+test('older reporting SQL requires setup; current reports preserve null and measured totals', async () => {
+ for (const summary of [{ attempts: 1 }, { totalActiveSeconds: null }, { totalActiveSeconds: 0 }, { totalActiveSeconds: 90 }]) {
+  const request = getEngagementReport('token', defaultEngagementFilters(), cfg, async url =>
+   Response.json(url.endsWith('/auth/v1/user') ? { id: 'admin' } : { summary }));
+  if (!Object.hasOwn(summary, 'totalActiveSeconds')) await assert.rejects(request, { status: 503 });
+  else assert.deepEqual(await request, { summary });
+ }
 });

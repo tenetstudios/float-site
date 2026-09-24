@@ -173,6 +173,9 @@ try {
   await until('document.querySelector("[data-engagement-panel] strong")?.textContent === "1,200"');
   assert(await evaluate('document.querySelector("[data-engagement-panel]").textContent.includes("50% (400 / 800)")'));
   assert(await evaluate('document.querySelector("[data-engagement-panel]").textContent.includes("frog:quick")'));
+  assert(await evaluate('Array.from(document.querySelectorAll("[data-engagement-panel] section h2")).find(h => h.textContent === "Recorded campaign playtime").parentElement.textContent.includes("225h 33m 19s")'));
+  assert(await evaluate('Array.from(document.querySelectorAll("[data-engagement-panel] section h2")).find(h => h.textContent === "Campaign missions played").parentElement.textContent.includes("225h 33m 19s")'));
+  assert(await evaluate('document.querySelector("[data-engagement-panel]").textContent.includes("Attempts with timing: 1,000 / 1,200")'));
   await evaluate('window.fixture.engagementDelay = 300; window.fixture.engagementMax = 0; window.fixture.tick(); window.fixture.tick()');
   await until('window.fixture.engagementActive === 0');
   assert.equal(await evaluate('window.fixture.engagementMax'),1);

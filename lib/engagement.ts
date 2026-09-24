@@ -16,7 +16,7 @@ export function parseEngagementFilters(params: URLSearchParams): EngagementFilte
 export function engagementArgs(f: EngagementFilters) {
   return { p_start: f.start, p_end: f.end, p_country: f.country || null, p_platform: f.platform || null, p_campaign: f.campaign || null, p_creator: f.creator || null, p_difficulty: f.difficulty || null, p_app_version: f.appVersion || null };
 }
-export type EngagementMetrics = { attempts: number; installations: number; completed: number; failed: number; abandoned: number; unknown: number; inProgress: number; decided: number; completionRate: number | null; averageActiveSeconds: number | null; durationSamples: number; retries: number; restarts: number; replays: number; placements: number; placingAttempts: number; placementsPerPlacingAttempt: number | null };
+export type EngagementMetrics = { attempts: number; installations: number; completed: number; failed: number; abandoned: number; unknown: number; inProgress: number; decided: number; completionRate: number | null; averageActiveSeconds: number | null; durationSamples: number; totalActiveSeconds: number | null; playtimeSamples: number; partialPlaytimeSamples: number; missingPlaytimeSamples: number; retries: number; restarts: number; replays: number; placements: number; placingAttempts: number; placementsPerPlacingAttempt: number | null };
 export type EngagementGroup = { values: (string | null)[]; metrics: EngagementMetrics };
 export type EngagementReport = { summary: EngagementMetrics; daily: { day: string; attempts: number; completed: number; failed: number; abandoned: number; unknown: number; inProgress: number }[]; missions: EngagementGroup[]; units: { unit: string; phase: string; placements: number; attempts: number }[]; breakdowns: { country: EngagementGroup[]; campaign: EngagementGroup[]; creator: EngagementGroup[] } };
 export const unitLabels: Record<string, string> = { wall: "Wall", nails: "Nails", glue: "Glue", "frog:level1": "Level 1 frog", "frog:quick": "Quick frog", "frog:spotter": "Spotter frog", "frog:sniper": "Sniper frog", "frog:flak": "Flak frog", "frog:rocket": "Rocket frog", "frog:antiAircraft": "Anti-aircraft frog", "frog:twin": "Twin frog", "frog:tactical": "Tactical frog", "frog:armoured": "Armoured frog" };
@@ -26,4 +26,12 @@ export function formatEngagementDuration(seconds: number | null): string {
   if (seconds === null || !Number.isFinite(seconds) || seconds < 0) return "\u2014";
   const rounded = Math.round(seconds);
   return `${Math.floor(rounded / 60)}m ${String(rounded % 60).padStart(2, "0")}s`;
+}
+
+// Totals can span many hours; keep the completed-attempt average formatter unchanged.
+export function formatEngagementPlaytime(seconds: number | null): string {
+  if (seconds === null || !Number.isFinite(seconds) || seconds < 0) return "\u2014";
+  const rounded = Math.round(seconds);
+  if (rounded < 3600) return formatEngagementDuration(seconds);
+  return `${Math.floor(rounded / 3600)}h ${String(Math.floor(rounded % 3600 / 60)).padStart(2, "0")}m ${String(rounded % 60).padStart(2, "0")}s`;
 }

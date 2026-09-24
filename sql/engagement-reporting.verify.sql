@@ -39,6 +39,15 @@ begin
  if (r#>>'{summary,completionRate}')::numeric is distinct from 50 or (r#>>'{summary,decided}')::int is distinct from 800 then raise exception 'FAIL abandoned denominator'; end if;
  if (r#>>'{summary,unknown}')::int is distinct from 200 or (r#>>'{summary,inProgress}')::int is distinct from 200 then raise exception 'FAIL unresolved outcomes'; end if;
  if (r#>>'{summary,averageActiveSeconds}')::numeric is distinct from 60 or (r#>>'{summary,durationSamples}')::int is distinct from 200 then raise exception 'FAIL completed measured durations'; end if;
+ -- All outcomes contribute once, even with multiple placements per attempt.
+ if (r#>>'{summary,totalActiveSeconds}')::numeric is distinct from 811999.20
+ or (r#>>'{summary,playtimeSamples}')::int is distinct from 1000
+ or (r#>>'{summary,missingPlaytimeSamples}')::int is distinct from 200
+ or (r#>>'{summary,partialPlaytimeSamples}')::int is distinct from 0
+ or (r#>>'{missions,0,metrics,totalActiveSeconds}')::numeric is distinct from 811999.20
+ or (r#>>'{breakdowns,country,0,metrics,totalActiveSeconds}')::numeric is distinct from 811999.20
+ or (r#>>'{breakdowns,campaign,0,metrics,totalActiveSeconds}')::numeric is distinct from 811999.20
+ or (r#>>'{breakdowns,creator,0,metrics,totalActiveSeconds}')::numeric is distinct from 811999.20 then raise exception 'FAIL all-outcome playtime / coverage / join multiplication'; end if;
  if (r#>>'{summary,retries}')::int is distinct from 400 or (r#>>'{summary,restarts}')::int is distinct from 400 or (r#>>'{summary,replays}')::int is distinct from 400 then raise exception 'FAIL retry reasons'; end if;
  if (r#>>'{summary,placements}')::int is distinct from 2400 or (r#>>'{summary,placementsPerPlacingAttempt}')::numeric is distinct from 2 or (r#>>'{summary,placingAttempts}')::int is distinct from 1200 then raise exception 'FAIL placement join multiplication'; end if;
  if (r#>>'{missions,0,metrics,attempts}')::int is distinct from 1200 or (r#>>'{units,0,attempts}')::int is distinct from 1200 then raise exception 'FAIL mission/unit aggregation'; end if;
@@ -47,16 +56,28 @@ begin
  if (r#>>'{summary,attempts}')::int is distinct from 1200 then raise exception 'FAIL combined filters / attempt app version'; end if;
  r := pg_temp.fixture_engagement_report('2026-01-01','2026-01-01',null,null,null,null,null,'old-acquisition-version');
  if (r#>>'{summary,attempts}')::int is distinct from 0 or r#>'{summary,completionRate}' is distinct from 'null'::jsonb or r->'missions' is distinct from '[]'::jsonb then raise exception 'FAIL empty / zero denominator'; end if;
+ if r#>'{summary,totalActiveSeconds}' is distinct from 'null'::jsonb
+ or (r#>>'{summary,playtimeSamples}')::int is distinct from 0
+ or (r#>>'{summary,missingPlaytimeSamples}')::int is distinct from 0 then raise exception 'FAIL empty playtime'; end if;
  -- Partial completed duration must not enter the mean; real zero is a valid measurement.
  insert into pg_temp.engagement_attempts(attempt_id,install_id,mission_id,content_version,difficulty,started_at,ended_at,outcome,active_gameplay_ms,duration_complete)
  values (gen_random_uuid(),'fixture-install','duration','v1','standard','2026-02-01 00:00+00','2026-02-01 00:05+00','completed',90000,false),
  (gen_random_uuid(),'fixture-install','duration','v1','standard','2026-02-01 00:00+00','2026-02-01 00:05+00','completed',0,true);
  r := pg_temp.fixture_engagement_report('2026-02-01','2026-02-01');
  if (r#>>'{summary,durationSamples}')::int is distinct from 1 or (r#>>'{summary,averageActiveSeconds}')::numeric is distinct from 0 or r#>'{summary,placementsPerPlacingAttempt}' is distinct from 'null'::jsonb then raise exception 'FAIL partial/null/zero measurements'; end if;
+ if (r#>>'{summary,totalActiveSeconds}')::numeric is distinct from 90
+ or (r#>>'{summary,playtimeSamples}')::int is distinct from 2
+ or (r#>>'{summary,partialPlaytimeSamples}')::int is distinct from 1 then raise exception 'FAIL partial playtime included'; end if;
+ update pg_temp.engagement_attempts set active_gameplay_ms=0 where mission_id='duration';
+ r := pg_temp.fixture_engagement_report('2026-02-01','2026-02-01');
+ if (r#>>'{summary,totalActiveSeconds}')::numeric is distinct from 0 then raise exception 'FAIL measured zero playtime'; end if;
  insert into pg_temp.engagement_attempts(attempt_id,install_id,mission_id,content_version,difficulty,started_at,outcome)
  select gen_random_uuid(),'missing-attribution','group-'||i,'v1','hard','2026-03-01 00:00+00','unknown' from generate_series(1,60) i;
  r := pg_temp.fixture_engagement_report('2026-03-01','2026-03-01');
  if jsonb_array_length(r->'missions') is distinct from 50 or (r#>>'{summary,attempts}')::int is distinct from 60 or r#>'{breakdowns,country,0,values}' is distinct from '[null]'::jsonb or r#>'{summary,completionRate}' is distinct from 'null'::jsonb then raise exception 'FAIL limits / unknown attribution / unresolved denominator'; end if;
+ if r#>'{summary,totalActiveSeconds}' is distinct from 'null'::jsonb
+ or (r#>>'{summary,missingPlaytimeSamples}')::int is distinct from 60
+ or (r#>>'{summary,playtimeSamples}')::int is distinct from 0 then raise exception 'FAIL all-missing playtime'; end if;
  begin
  perform pg_temp.fixture_engagement_report('2026-01-02','2026-01-01'); raise exception 'FAIL invalid dates';
  exception when invalid_parameter_value then null; end;

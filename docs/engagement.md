@@ -25,6 +25,8 @@ After manual SQL setup, push/deploy through the existing Vercel workflow and ope
 | Installations | Distinct install_id values across selected attempts, never accounts/people |
 | Completion rate | Completed / (completed + failed + abandoned); unknown and in_progress shown separately and excluded |
 | Active duration | Average active_gameplay_ms / 1000, only for completed attempts with duration_complete=true and a non-null value; measured sample count shown |
+| Recorded playtime | Sum of non-null active_gameplay_ms / 1000 across all selected attempts and outcomes, including partial timing; NULL when nothing was measured |
+| Playtime coverage | Attempts with timing, partial timing (measured but duration_complete is not true), and missing timing; partial is a subset of measured |
 | Retry / restart / replay | Child attempt's explicit restart_reason; parent can be outside the selected date range; no inferred timestamp chains |
 | Placements | All accepted placement rows belonging to selected attempts, even when placed_at is outside the attempt-start window |
 | Placements per placing attempt | Total recorded placements / distinct attempts with recorded placements |
@@ -71,4 +73,6 @@ The summary and Campaign missions played table show measured sample counts.
 Scope text explicitly excludes community/sandbox maps and multiplayer, and the
 XP panel shows unavailable rather than a numeric total. Existing inclusive UTC
 date filters, Top 50 labels, authorization and reporting RPC remain unchanged.
-No additional SQL is needed if engagement-reporting.sql is already deployed.
+For recorded playtime totals, rerun `sql/engagement-reporting.sql` and its verification file even if an older version is already deployed. No table or column changes are required. Deploy the SQL before the website; the website shows setup required when the RPC lacks the new total.
+
+Recorded playtime appears in the summary and mission/acquisition breakdowns, formatted with hours for long totals. Timing coverage is shown alongside it. Missing timing is not treated as zero; partial timing contributes only its recorded amount. Totals include activity after the date range for attempts that started within it. The existing completed-attempt average remains unchanged.

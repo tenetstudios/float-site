@@ -13,5 +13,9 @@ export async function getEngagementReport(token: string | undefined, filters: En
     if (["PGRST202", "42P01", "42883", "42703"].includes(code)) throw new ReportError(503, "Engagement setup required. See docs/engagement.md for the website reporting SQL and backend prerequisites.");
     throw new ReportError(502, "Engagement reporting is unavailable. Please retry.");
   }
-  return response.json();
+  const report = await response.json();
+  if (!Object.hasOwn(report?.summary ?? {}, "totalActiveSeconds")) {
+    throw new ReportError(503, "Engagement setup required. Rerun sql/engagement-reporting.sql in Supabase to enable playtime totals.");
+  }
+  return report;
 }
