@@ -26,7 +26,7 @@ export const artwork: Record<string, Artwork> = {
   lionsKnownAssets: { src: "/images/lions/float-lions-known-assets.png", alt: "A lion commander and aircrew oversee red and gold lion balloons from a wooden launch platform" },
   multiplayer: { src: "/images/modes/float-multiplayer.png", alt: "Frog soldiers defend floating islands with cannons as red and gold lion balloons approach" },
   sandbox: { src: "/images/modes/float-sandbox-portrait.png", alt: "A relaxed frog tinkers with a rocket in a wooden sandbox beneath floating sky islands" },
-  campaign: { src: "/images/modes/float-campaign.png", alt: "A green frog soldier sits on a grassy floating island beside a red and gold lion balloon" },
+  campaign: { src: "/images/modes/float-campaign-helmet.png", alt: "A green frog soldier sits on a grassy floating island beside a red and gold lion balloon" },
 };
 export const frogUnits: Artwork[] = ["Basic Frog", "Rocket Frog", "Flak Frog", "Anti-Aircraft Frog"].map((alt) => ({ alt }));
 export const lionUnits: Artwork[] = ["Lion Balloon", "Shield Balloon", "War Balloon", "Dread Balloon", "Royal Airship"].map((alt) => ({ alt }));

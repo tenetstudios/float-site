@@ -1,0 +1,9 @@
+Tool: built-in imagegen
+Edit target: public/images/modes/float-campaign.png
+Reference: public/images/hero/float-web-hero.png
+
+Use case: precise-object-edit.
+Asset type: existing Float website campaign card artwork.
+Input images: image 1 is the EDIT TARGET, portrait campaign art with a seated frog and lion balloon. Image 2 is the REFERENCE ONLY, wide top header with FLOAT cloud lettering and a frog peeking over a wall.
+Primary request: edit ONLY the yellow insignia painted on the campaign frog's olive helmet in image 1 so it matches the helmet insignia in image 2. Match the reference yellow frog-head silhouette: broad solid rounded lower head, two raised circular eye lobes with dark olive circular eye cutouts and two tiny dark nostril dots; NO curved smile or mouth. Preserve the badge's natural painted appearance, original placement, scale, and perspective on the campaign helmet. Match the reference insignia accurately.
+Constraints: preserve the entire rest of image 1 unchanged, including the helmet shape and olive color, frog face and sleepy expression, pose, body, lion balloon, basket, floating island, grass, clouds, background, framing, original portrait aspect ratio and lighting. Do not reproduce the wide reference image or add FLOAT lettering. Output only the edited portrait campaign artwork, ideally original 1149 by 1369 resolution.
