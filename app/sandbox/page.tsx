@@ -4,7 +4,7 @@ import { Footer } from "@/components/site-shell";
 import { pageMetadata } from "@/lib/site";
 import styles from "./sandbox.module.css";
 
-const baseMetadata = pageMetadata("Sandbox", "/sandbox", "Create. Experiment. See what’s possible. Build your own floating islands in Float’s Sandbox, coming October 2026.");
+const baseMetadata = pageMetadata("Sandbox", "/sandbox", "Create. Experiment. See what’s possible. Build your own floating islands in Float’s Sandbox, coming December 2026.");
 export const metadata = {
   ...baseMetadata,
   openGraph: { ...baseMetadata.openGraph, images: [{ url: "/images/sandbox/builder-scene.webp", width: 1182, height: 1330, alt: "Frog builders construct floating islands in yellow hardhats" }] },
@@ -89,7 +89,7 @@ export default function SandboxPage() {
         </section>
       </div>
       <div id="sandbox-availability" popover="auto" role="dialog" aria-labelledby="sandbox-availability-title" className={styles.availability}>
-        <h2 id="sandbox-availability-title">Coming October 2026</h2>
+        <h2 id="sandbox-availability-title">Coming December 2026</h2>
         <button type="button" popoverTarget="sandbox-availability" popoverTargetAction="hide" aria-label="Close">×</button>
       </div>
     </main>

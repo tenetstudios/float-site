@@ -104,7 +104,7 @@ export default function CampaignPage() {
       </div>
 
       <div id="campaign-availability" popover="auto" role="dialog" aria-labelledby="campaign-availability-title" className={styles.availability}>
-        <h2 id="campaign-availability-title">Coming October 2026</h2>
+        <h2 id="campaign-availability-title">Coming December 2026</h2>
         <button type="button" popoverTarget="campaign-availability" popoverTargetAction="hide" aria-label="Close">×</button>
       </div>
     </main>

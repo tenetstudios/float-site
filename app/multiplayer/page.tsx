@@ -80,7 +80,7 @@ export default function MultiplayerPage() {
         </section>
       </main>
       <div id="multiplayer-availability" popover="auto" className={styles.availability}>
-        <h2>Coming October 2026</h2>
+        <h2>Coming December 2026</h2>
         <button type="button" popoverTarget="multiplayer-availability" popoverTargetAction="hide" aria-label="Close">×</button>
       </div>
     </div>

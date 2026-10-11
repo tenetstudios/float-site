@@ -18,7 +18,7 @@ export function Hero() {
   return (
     <section className="hero" aria-labelledby="hero-title">
       <h1 id="hero-title" className="sr-only">FLOAT — Field Report 001</h1>
-      <div className="report-masthead"><p className="eyebrow">Field report 001</p><p className="eyebrow">Coming October 2026</p></div>
+      <div className="report-masthead"><p className="eyebrow">Field report 001</p><p className="eyebrow">Coming December 2026</p></div>
       <figure className="opening-figure">
         <ArtworkSlot asset={artwork.hero} className="hero-art" position="50% 43%" preload sizes="100vw" />
         <figcaption><p>Aerial activity has increased.</p><span className="eyebrow">Float / Situation report</span><a href="#situation" aria-label="Read the current situation">Continue <span aria-hidden="true">↓</span></a></figcaption>
@@ -119,7 +119,7 @@ export function TrailerSection() {
 }
 
 export function ReleaseCTA() {
-  return <section className="release-section" id="release"><div className="deployment-heading"><p className="eyebrow">Deployment</p><h2>OCTOBER 2026</h2><p className="caption">Assuming the wall holds.</p></div><div className="deployment-platforms"><p className="eyebrow">Planned distribution</p><StorePlaceholders /></div></section>;
+  return <section className="release-section" id="release"><div className="deployment-heading"><p className="eyebrow">Deployment</p><h2>DECEMBER 2026</h2><p className="caption">Assuming the wall holds.</p></div><div className="deployment-platforms"><p className="eyebrow">Planned distribution</p><StorePlaceholders /></div></section>;
 }
 
 export function PageIntro({ label, title, children }: { label: string; title: string; children: React.ReactNode }) {
