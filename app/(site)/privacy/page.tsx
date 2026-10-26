@@ -14,7 +14,7 @@ const sections = [
   },
   {
     "title": "Age requirement",
-    "body": "Float is intended for people aged 13 and older, including its offline modes. Children under 13 must not use Float or create an account. We do not knowingly collect personal information from children under 13. If you believe a child under 13 has provided information, contact contact@tenetstudios.ca so we can investigate, remove the information as required, and disable the associated account. Where local law requires parental or guardian authorization for a person aged 13 or older, that authorization is also required. This age policy is not a claim that we have verified every player's age."
+    "body": "Float is intended for people aged 13 and older, including its offline modes. Children under 13 must not use Float or create an account. We do not knowingly collect personal information from children under 13. If you believe a child under 13 has provided information, contact contact@tenetstudios.ca so we can investigate, remove the information as required, and disable the associated account. Where local law requires parental or guardian authorization for a person aged 13 or older, that authorization is also required. The mobile app asks for an age range before allowing play and stores the answer on your device. Players who select under 13 cannot proceed. Players who select ages 13–17 can play but do not receive ads. This is a self-declaration, not identity verification."
   },
   {
     "title": "Accounts and information you provide",
@@ -42,7 +42,7 @@ const sections = [
   },
   {
     "title": "Advertising",
-    "body": "Advertising through Google AdMob is planned but is not connected in the current Float implementation as of this policy's effective date. Creating an AdMob listing or publishing an app-ads.txt file does not itself send player information to AdMob. Before enabling advertising, we will update this policy to describe the data collected by the released ad integration and the privacy choices available. This policy does not represent that personalized ads, advertising consent controls, or rewarded-ad verification are currently active."
+    "body": "In versions with advertising enabled, Float uses Google AdMob for interstitial ads between games and optional rewarded ads. Ads are disabled for players who declare an age below 18. For adults, Google’s User Messaging Platform manages applicable advertising consent before ad requests are made. You can reopen available controls through Ad privacy choices in the main menu. We request non-personalized ads; these can still involve device or advertising identifiers, IP addresses, approximate location, ad interactions, and diagnostic information used for delivery, measurement, frequency limits, and fraud prevention. The integration does not request precise device location. For rewarded retries, Google receives an expiring token linked to the gameplay attempt and sends a signed completion callback to our server; installation credentials are not sent to Google. A retry is granted only after server verification. Feature availability depends on the app version and rollout; development builds use test ads. Google’s data practices are described at policies.google.com/privacy and policies.google.com/technologies/partner-sites."
   },
   {
     "title": "Storage, permissions, and communications",
