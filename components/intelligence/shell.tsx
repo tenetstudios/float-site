@@ -25,6 +25,7 @@ export function SiteFooter() {
       </div>
       <nav aria-label="Footer navigation">
         <Link href="/">Home</Link>
+        <Link href="/delete-account">Delete account</Link>
         {["About", "Privacy", "Terms", "Safety", "Contact"].map(label => <Link key={label} href={`/${label.toLowerCase()}`}>{label}</Link>)}
       </nav>
     </footer>
