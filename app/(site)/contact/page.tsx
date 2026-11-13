@@ -1,6 +1,20 @@
-import { InformationPage } from "@/components/information-page";
+import { PageIntro } from "@/components/game-sections";
 import { pageMetadata } from "@/lib/site";
-export const metadata = pageMetadata("Contact", "/contact", "Official contact information for Float and Tenet Studios is coming soon.");
+
+export const metadata = pageMetadata("Player support", "/contact", "Contact Tenet Studios for help with Float.");
+
 export default function ContactPage() {
-  return <InformationPage label="Contact" title="Say hello. Soon." intro="Float is made by Tenet Studios. Official contact channels are being prepared." sections={[{ title: "Player support", body: "Support contact details will be published here when available." }, { title: "Press and other enquiries", body: "A verified contact for press, creators, and general enquiries will be added here." }]} />;
+  return (
+    <>
+      <PageIntro label="Contact" title="Float player support">
+        <p>Need help with Float? Email <a href="mailto:contact@tenetstudios.ca">contact@tenetstudios.ca</a>.</p>
+      </PageIntro>
+      <div className="legal-content">
+        <section>
+          <h2>Report a problem</h2>
+          <p>Tell us what happened and which device you were playing on. If the issue happened during a mission, include the mission name so we can find it.</p>
+        </section>
+      </div>
+    </>
+  );
 }
