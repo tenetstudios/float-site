@@ -10,9 +10,9 @@ export const metadata = pageMetadata(
 );
 
 const features = [
-  { title: "Play as Frogs", lines: ["Build, defend, and hold the skies", "with clever strategy."] },
-  { title: "Play as Lions", lines: ["Launch aerial assaults and", "overwhelm enemy defenses."] },
-  { title: "1v1 Online PvP", lines: ["Real players. Real battles.", "See who rules the sky."] },
+  { title: "Play as Frogs", image: "/images/multiplayer/feature-play-as-frogs.webp", lines: ["Build, defend, and hold the skies", "with clever strategy."] },
+  { title: "Play as Lions", image: "/images/multiplayer/feature-play-as-lions.webp", lines: ["Launch aerial assaults and", "overwhelm enemy defenses."] },
+  { title: "1v1 Online PvP", image: "/images/multiplayer/feature-online-pvp.webp", lines: ["Real players. Real battles.", "See who rules the sky."] },
 ];
 
 const steps = [
@@ -56,7 +56,9 @@ export default function MultiplayerPage() {
         <section className={styles.features} aria-label="Multiplayer features">
           {features.map(feature => (
             <article className={styles.feature} key={feature.title}>
-              <div className={styles.imageSlot} aria-hidden="true" />
+              <div className={styles.imageSlot}>
+                <Image src={feature.image} alt="" fill sizes="(max-width: 600px) 90vw, 30vw" />
+              </div>
               <h2>{feature.title}</h2>
               <p>{feature.lines.map(line => <span key={line}>{line}</span>)}</p>
             </article>

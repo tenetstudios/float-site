@@ -26,7 +26,8 @@
 .content { width: 87.7%; margin-inline: auto; }
 .features { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
 .feature { min-width: 0; padding: 8px 8px 18px; border: 1px solid white; border-radius: 24px; background: #fffffff7; box-shadow: 0 6px 20px #597fbc15; text-align: center; }
-.imageSlot { width: 100%; aspect-ratio: 1.86; border-radius: 18px; background: radial-gradient(ellipse at 48% 42%, #eef7ff, #dcecff 58%, #b9d6fc); box-shadow: inset 0 1px 3px #92b8ef33; }
+.imageSlot { position: relative; overflow: hidden; width: 100%; aspect-ratio: 1.86; border-radius: 18px; background: radial-gradient(ellipse at 48% 42%, #eef7ff, #dcecff 58%, #b9d6fc); box-shadow: inset 0 1px 3px #92b8ef33; }
+.imageSlot img { object-fit: cover; }
 .feature h2 { margin: 12px 0 7px; font-size: clamp(17px, 1.78vw, 28px); line-height: 1.2; font-weight: 900; letter-spacing: -.04em; }
 .feature p { color: #7281a4; font-size: clamp(13px, 1.35vw, 21px); line-height: 1.25; }
 .feature p span, .steps p span { display: block; }

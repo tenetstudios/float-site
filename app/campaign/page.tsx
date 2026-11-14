@@ -11,9 +11,9 @@ export const metadata = pageMetadata(
 );
 
 const features = [
-  { title: "Explore New Worlds", lines: ["Unique islands, new enemies,", "and escalating challenges."] },
-  { title: "Unlock New Defenses", lines: ["Discover new frogs, upgrades,", "and powerful strategies."] },
-  { title: "Take on the Lion Army", lines: ["Face new threats, epic battles,", "and massive bosses."] },
+  { title: "Explore New Worlds", image: "/images/campaign/feature-explore-new-worlds.webp", lines: ["Unique islands, new enemies,", "and escalating challenges."] },
+  { title: "Unlock New Defenses", image: "/images/campaign/feature-unlock-new-defenses.webp", lines: ["Discover new frogs, upgrades,", "and powerful strategies."] },
+  { title: "Take on the Lion Army", image: "/images/campaign/feature-lion-army.webp", lines: ["Face new threats, epic battles,", "and massive bosses."] },
 ];
 
 const steps = [
@@ -85,7 +85,9 @@ export default function CampaignPage() {
       <div className={styles.content}>
         <section className={styles.features} aria-label="Campaign features">
           {features.map(feature => <article className={styles.feature} key={feature.title}>
-            <div className={styles.imageSlot} aria-hidden="true" />
+            <div className={styles.imageSlot}>
+              <Image src={feature.image} alt="" fill sizes="(max-width: 600px) 90vw, 30vw" />
+            </div>
             <h2>{feature.title}</h2>
             <p>{feature.lines.map(line => <span key={line}>{line}</span>)}</p>
           </article>)}

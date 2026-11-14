@@ -12,9 +12,9 @@ export const metadata = {
 };
 
 const features = [
-  { title: "Build Without Limits", lines: ["Design your own floating islands", "with total creative freedom."] },
-  { title: "Test and Experiment", lines: ["Try new defenses, strategies,", "and wild ideas."] },
-  { title: "Share Your Creations", lines: ["Build, refine, and show off", "your best islands."] },
+  { title: "Build Without Limits", image: "/images/sandbox/feature-build-without-limits.webp", lines: ["Design your own floating islands", "with total creative freedom."] },
+  { title: "Test and Experiment", image: "/images/sandbox/feature-test-and-experiment.webp", lines: ["Try new defenses, strategies,", "and wild ideas."] },
+  { title: "Share Your Creations", image: "/images/sandbox/feature-share-your-creations.webp", lines: ["Build, refine, and show off", "your best islands."] },
 ];
 
 const steps = [
@@ -72,7 +72,9 @@ export default function SandboxPage() {
       <div className={styles.content}>
         <section className={styles.features} aria-label="Sandbox features">
           {features.map(feature => <article className={styles.feature} key={feature.title}>
-            <div className={styles.imageSlot} aria-hidden="true" />
+            <div className={styles.imageSlot}>
+              <Image src={feature.image} alt="" fill sizes="(max-width: 600px) 90vw, 30vw" />
+            </div>
             <h2>{feature.title}</h2>
             <p>{feature.lines.map(line => <span key={line}>{line}</span>)}</p>
           </article>)}
