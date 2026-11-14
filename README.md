@@ -30,7 +30,7 @@ All five reports remain intentionally pending. Replace each section's optional `
 
 `/`, `/about`, `/game`, `/campaign`, `/multiplayer`, `/media`, `/privacy`, `/terms`, `/safety`, `/contact`.
 
-Existing pages were moved unchanged into `app/(site)/` with their original shared header/footer. URLs are unchanged. About and Safety are new minimal pages. Privacy, Terms and Contact retain their existing publication placeholders. Safety also awaits approved copy. App Store and Google Play buttons are disabled Coming Soon placeholders.
+Existing pages were moved unchanged into `app/(site)/` with their original shared header/footer. URLs are unchanged. About and Safety are new minimal pages. Privacy, Terms and Contact retain their existing publication placeholders. Safety also awaits approved copy. The App Store button remains a disabled Coming Soon placeholder. Google Play buttons link to the live Float listing.
 
 ## Browser verification
 

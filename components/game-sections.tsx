@@ -11,7 +11,7 @@ function TechnicalFields({ entries }: { entries: { label: string; value: string 
 }
 
 export function StorePlaceholders() {
-  return <div className="store-links" aria-label="Store availability"><div className="store-placeholder"><span>App Store</span><small>Coming soon</small></div><div className="store-placeholder"><span>Google Play</span><small>Coming soon</small></div></div>;
+  return <div className="store-links" aria-label="Store availability"><div className="store-placeholder"><span>App Store</span><small>Coming soon</small></div><a className="store-placeholder" href="https://play.google.com/store/apps/details?id=io.floatgame.app"><span>Google Play</span><small>Download now</small></a></div>;
 }
 
 export function Hero() {

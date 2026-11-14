@@ -61,7 +61,7 @@
 .portal-release p { font-size: 20px; margin-top: 15px; }
 .portal-release > div > small { font: 10px/1.6 var(--label-font); }
 .portal-stores { display: flex; justify-content: center; gap: 14px; margin: 28px 0; }
-.portal-stores button { background: var(--float-navy); color: white; border: 0; border-radius: 5px; padding: 14px 28px; min-width: 155px; font: 16px Arial, sans-serif; }
+.portal-stores button, .portal-stores a { background: var(--float-navy); color: white; border: 0; border-radius: 5px; padding: 14px 28px; min-width: 155px; font: 16px Arial, sans-serif; }
 .portal-stores small { display: block; font: 9px var(--label-font); margin-top: 7px; color: #d3dcec; text-transform: uppercase; }
 @media (min-width: 1700px) { .portal-modes { max-width: 2000px; margin-inline: auto; } }
 @media (max-width: 1000px) { .mode-doors { gap: 12px; } .mode-copy { padding: 20px 15px; } .mode-title-row h3 { font-size: 2.65vw; } .mode-arrow { font-size: 20px; } .mode-copy > p { font-size: 12px; } }
@@ -94,7 +94,7 @@
   .portal-screen-placeholder > span { font-size: 6px; }
   .portal-screen-placeholder > div > .eyebrow { font-size: 8px; }
   .portal-stores { gap: 10px; }
-  .portal-stores button { min-width: 0; padding: 14px 22px; }
+  .portal-stores button, .portal-stores a { min-width: 0; padding: 14px 22px; }
 }
 @media (prefers-reduced-motion: reduce) { .mode-art img, .mode-title-row h3, .mode-arrow { transition: none; } .mode-door:is(:hover, :focus-visible) img { transform: scaleX(var(--art-direction, 1)); } .mode-door:is(:hover, :focus-visible) h3, .mode-door:is(:hover, :focus-visible) .mode-arrow { transform: none; } }
 @media (max-width: 700px) { .portal-key-art { height: clamp(360px, 58svh, 520px); } }

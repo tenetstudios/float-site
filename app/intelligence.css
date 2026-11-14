@@ -88,7 +88,8 @@
 .intelligence-footer { min-height: 84px; margin-inline: 5%; border-top: 1px solid var(--archive-rule); padding: 16px 0 20px; display: flex; justify-content: space-between; align-items: center; gap: 24px; font: 10px/1.5 var(--archive-mono); }
 .intelligence-downloads { display: flex; gap: 14px; align-items: center; text-transform: uppercase; letter-spacing: 1px; }
 .intelligence-downloads > span { margin-right: 10px; color: var(--archive-muted); font-size: 9px; }
-.intelligence-downloads button:disabled { cursor: default; color: var(--archive-text); background: #bbc0bc04; border: 1px solid var(--archive-rule); padding: 6px 14px; min-height: 44px; text-transform: uppercase; letter-spacing: 1px; text-align: left; font-size: 9px; }
+.intelligence-downloads button:disabled, .intelligence-downloads > a { cursor: default; color: var(--archive-text); background: #bbc0bc04; border: 1px solid var(--archive-rule); padding: 6px 14px; min-height: 44px; text-transform: uppercase; letter-spacing: 1px; text-align: left; font-size: 9px; }
+.intelligence-downloads > a { cursor: pointer; }
 .intelligence-downloads small { display: block; font-size: 8px; color: var(--archive-muted); margin-top: 2px; }
 .intelligence-footer nav { display: flex; gap: 24px; }
 .intelligence-footer nav a { display: inline-flex; align-items: center; min-height: 44px; }
@@ -125,7 +126,7 @@
   .intelligence-footer { flex-direction: column; gap: 8px; padding-block: 16px; margin-inline: 24px; min-height: 135px; }
   .intelligence-downloads { gap: 10px; }
   .intelligence-downloads > span { font-size: 8px; max-width: 45px; margin-right: 0; }
-  .intelligence-downloads button:disabled { padding-inline: 10px; }
+  .intelligence-downloads button:disabled, .intelligence-downloads > a { padding-inline: 10px; }
   .intelligence-footer nav { width: 100%; max-width: 370px; justify-content: space-between; gap: 12px; font-size: 10px; }
   .intelligence-home::after { inset: 10px; }
 }

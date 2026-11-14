@@ -21,7 +21,7 @@ export function SiteFooter() {
       <div className="intelligence-downloads">
         <span>Get the game</span>
         <button disabled><span>App Store</span><small>Coming soon</small></button>
-        <button disabled><span>Google Play</span><small>Coming soon</small></button>
+        <a href="https://play.google.com/store/apps/details?id=io.floatgame.app"><span>Google Play</span><small>Download now</small></a>
       </div>
       <nav aria-label="Footer navigation">
         <Link href="/">Home</Link>
